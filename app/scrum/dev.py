@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from flask import request, session, Blueprint, json
 
 dev = Blueprint('dev', __name__)
@@ -28,3 +27,4 @@ def VDesarrollador():
 
 
 #Use case code ends here
+
