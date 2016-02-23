@@ -186,6 +186,15 @@ class backlog(object):
             return found
         return([]) 
       
+    def sprintsAsociatedToProduct(self,idBacklog):
+        ''' Permite obtener una lista de los Sprints asociados a una pila de Producto'''
+        
+        checkTypeId = type(idBacklog) == int   
+         
+        if checkTypeId: 
+            found = clsSprint.query.filter_by(O_idBacklog = idBacklog).all()
+            return found
+        return([]) 
     
     def userHistoryAsociatedToProduct(self,idBacklog):
         ''' Permite obtener una lista de los historias de usuario asociadas a una pila de Producto'''
