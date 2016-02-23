@@ -1,48 +1,48 @@
-scrumModule.service('objetivoService', ['$q', '$http', function($q, $http) {
+scrumModule.service('sprintService', ['$q', '$http', function($q, $http) {
 
-    this.ACrearObjetivo = function(fObjetivo) {
+    this.ACrearSprint = function(fSprint) {
         return  $http({
-          url: "objetivo/ACrearObjetivo",
-          data: fObjetivo,
+          url: "sprint/ACrearSprint",
+          data: fSprint,
           method: 'POST',
         });
-    //    var labels = ["/VProducto", "/VCrearObjetivo", ];
+    //    var labels = ["/VSprints", "/VSprint", ];
     //    var res = labels[0];
     //    var deferred = $q.defer();
     //    deferred.resolve(res);
     //    return deferred.promise;
     };
 
-    this.AElimObjetivo = function(args) {
+    this.AElimSprint = function(args) {
         if(typeof args == 'undefined') args={};
         return $http({
-          url: 'objetivo/AElimObjetivo',
+          url: 'sprint/AElimSprint',
           method: 'GET',
           params: args
         });
-    //    var labels = ["/VProducto", "/VObjetivo", ];
+    //    var labels = ["/VSprints", "/VSprint", ];
     //    var res = labels[0];
     //    var deferred = $q.defer();
     //    deferred.resolve(res);
     //    return deferred.promise;
     };
-    this.AModifObjetivo = function(fObjetivo) {
+    this.AModifSprint = function(fSprint) {
         return  $http({
-          url: "objetivo/AModifObjetivo",
-          data: fObjetivo,
+          url: "sprint/AModifSprint",
+          data: fSprint,
           method: 'POST',
         });
-    //    var labels = ["/VProducto", "/VObjetivo", ];
+    //    var labels = ["/VSprints", "/VSprint", ];
     //    var res = labels[0];
     //    var deferred = $q.defer();
     //    deferred.resolve(res);
     //    return deferred.promise;
     };
 
-    this.VCrearObjetivo = function(args) {
+    this.VCrearSprint = function(args) {
         if(typeof args == 'undefined') args={};
         return $http({
-          url: 'objetivo/VCrearObjetivo',
+          url: 'sprint/VCrearSprint',
           method: 'GET',
           params: args
         });
@@ -52,10 +52,23 @@ scrumModule.service('objetivoService', ['$q', '$http', function($q, $http) {
     //    return deferred.promise;
     };
 
-    this.VObjetivo = function(args) {
+    this.VSprint = function(args) {
         if(typeof args == 'undefined') args={};
         return $http({
-          url: 'objetivo/VObjetivo',
+          url: 'sprint/VSprint',
+          method: 'GET',
+          params: args
+        });
+    //    var res = {};
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+
+    this.VSprints = function(args) {
+        if(typeof args == 'undefined') args={};
+        return $http({
+          url: 'sprint/VSprints',
           method: 'GET',
           params: args
         });

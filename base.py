@@ -1,14 +1,14 @@
-from flask            import Flask, request, session
+from flask import Flask, session
 from flask.ext.script import Manager, Server
-from random           import SystemRandom
-from datetime         import timedelta
+from random import SystemRandom
+from datetime import timedelta
 
 app = Flask(__name__, static_url_path='')
 manager = Manager(app)
 manager.add_command("runserver", Server(
     use_debugger = True,
     use_reloader = True,
-    host = '0.0.0.0')
+    host = '0.0.0.0', port = 8080)
 )
 
 @app.before_request
@@ -44,8 +44,12 @@ from app.scrum.historias import historias
 app.register_blueprint(historias)
 from app.scrum.tareas import tareas
 app.register_blueprint(tareas)
-from app.scrum.cates import cates
-app.register_blueprint(cates)
+from app.scrum.anexo import anexo
+app.register_blueprint(anexo)
+from app.scrum.sprint import sprint
+app.register_blueprint(sprint)
+from app.scrum.equipo import equipo
+app.register_blueprint(equipo)
 
 
 if __name__ == '__main__':

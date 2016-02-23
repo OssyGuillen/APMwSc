@@ -243,20 +243,22 @@ class clsCategory(db.Model):
         return '<C_idCategory  %r, C_nameCate %r, C_weight %r>' % (self.C_idCategory,self.C_nameCate,self.C_weight)
 
 class clsSprint(db.Model):
-    '''Clase que define el modelo de la tabla Category'''
+    '''Clase que define el modelo de la tabla Sprint'''
     
     __tablename__ = 'sprint'
     S_idSprint          = db.Column(db.Integer, primary_key = True, index = True)
+    S_numero            = db.Column(db.Integer, unique = True)
     S_sprintDescription = db.Column(db.String(140))
     S_idBacklog         = db.Column(db.Integer, db.ForeignKey('backlog.BL_idBacklog'))
-    #S_refSprintClass    = db.relationship('clsSprintClass', backref = 'sprintClass', lazy = 'dynamic',cascade = "all, delete, delete-orphan")
 
-    def __init__(self, descriptionSprint):
-        self.S_printDescription   = descriptionSprint
+    def __init__(self, numero, sprintDescription, idBacklog):
+        self.S_numero            = numero
+        self.S_sprintDescription = sprintDescription
+        self.S_idBacklog = idBacklog
 
     def __repr__(self):
         '''Representacion en string del Sprint'''
-        return '<S_idSprint  %r, S_descriptionSprint %r>' % (self.S_idSprint, self.S_descriptionSprint)
+        return '<S_idSprint %r, S_numero %r, S_sprintDescription %r, S_idBacklog>' % (self.S_idSprint, self.S_numero, self.S_sprintDescription, self.S_idBacklog)
 
 migrate = Migrate(app, db)
 manager = Manager(app)

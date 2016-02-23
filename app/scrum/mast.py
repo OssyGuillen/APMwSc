@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import request, session, Blueprint, json
 
 mast = Blueprint('mast', __name__)
@@ -27,4 +28,3 @@ def VMaestroScrum():
 
 
 #Use case code ends here
-

@@ -192,7 +192,7 @@ class backlog(object):
         checkTypeId = type(idBacklog) == int   
          
         if checkTypeId: 
-            found = clsSprint.query.filter_by(O_idBacklog = idBacklog).all()
+            found = clsSprint.query.filter_by(S_idBacklog = idBacklog).all()
             return found
         return([]) 
     

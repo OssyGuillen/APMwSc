@@ -11,10 +11,10 @@ MIN_ID                 = 1
 MIN_SPRINT_DESCRIPTION = 1
 MAX_SPRINT_DESCRIPTION = 140
 
-class sprint(object):
+class sprints(object):
     '''Clase que permite manejar los sprints de manera persistente'''
 
-    def insertSprint(self, sprintDescription, idBacklog):
+    def insertSprint(self, sprintNumber, sprintDescription, idBacklog):
         '''Permite insertar una Sprint asociado a un producto'''   
         
         checkTypeDescription = type(sprintDescription) == str
@@ -28,7 +28,7 @@ class sprint(object):
                 foundBacklog = clsBacklog.query.filter_by(BL_idBacklog = idBacklog).all()                      
                 
                 if foundBacklog != []:
-                    foundSprints = clsSprint.query.filter_by(AC_idBacklog = idBacklog).all()
+                    foundSprints = clsSprint.query.filter_by(S_idBacklog = idBacklog).all()
                     foundSprintDesc = []
                     for desc in foundSprints:
                         if desc.S_sprintDescription.lower()  == sprintDescription.lower():
@@ -36,7 +36,7 @@ class sprint(object):
                             break
                          
                     if foundSprintDesc == []:
-                        newSprint = clsSprint(sprintDescription,idBacklog)
+                        newSprint = clsSprint(sprintNumber, sprintDescription, idBacklog)
                         db.session.add(newSprint)
                         db.session.commit()
                         return True
