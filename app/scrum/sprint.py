@@ -47,7 +47,7 @@ def AElimSprint():
 def AModifSprint():
     #POST/PUT parameters
     params = request.get_json()
-    results = [{'label':'/VSprints', 'msg':['Sprint modificado']}, {'label':'/VSprint', 'msg':['Error al guardar Spront']}, ]
+    results = [{'label':'/VSprints', 'msg':['Sprint modificado']}, {'label':'/VSprint', 'msg':['Error al guardar Sprint']}, ]
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
 
@@ -59,6 +59,7 @@ def AModifSprint():
             session.pop("actor", None)
         else:
             session['actor'] = res['actor']
+    
     return json.dumps(res)
 
 
@@ -122,7 +123,7 @@ def VSprints():
       res['logout'] = '/'
       return json.dumps(res)
     res['usuario'] = session['usuario']
-    res['data1'] = [{'numero':1, 'descripcion':'Carrera inicial'}]
+    res['data1'] = [{'numero':12, 'descripcion':'Carrera inicial'}]
     res['idPila'] = 1
 
     #Action code ends here
