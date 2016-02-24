@@ -66,12 +66,23 @@ def AModifSprint():
     #POST/PUT parameters
     params = request.get_json()
 
-    results = [{'label':'/VSprints', 'msg':['Sprint modificado']}, {'label':'/VSprint', 'msg':['Error al guardar Sprint']}, ]
+    results = [{'label':'/VSprints', 'msg':['Sprint modificado']}, {'label':'/VSprints', 'msg':['Error al guardar Sprint']}, ]
     res = results[0]
+
+    idPila = int(session['idPila'])
+    idSprint = int(params['idSprint'])
+    newSprintNumber = int(params['numero'])
+    newDescription = str(params['descripcion'])
+
     #Action code goes here, res should be a list with a label and a message
 
     res['label'] = res['label'] + '/' + repr(1)
-
+    print(idSprint, idPila, file = sys.stderr )
+    oSprint = sprints()
+    result = oSprint.updateSprint(idSprint, idPila, newSprintNumber, newDescription)
+    if not result:
+        res = results[1]        
+        res['label'] = res['label'] + '/' + repr(1)
     #Action code ends here
     if "actor" in res:
         if res['actor'] is None:
@@ -115,8 +126,8 @@ def VSprint():
 
     # Obtenemos el id del producto y del sprint
     idPila  = int(session['idPila'])
-    idSprint = request.args['idSprint']
-
+    idSprint = int(request.args['idSprint'])
+    
 
     if "actor" in session:
         res['actor']=session['actor']
@@ -137,10 +148,11 @@ def VSprint():
 
 
     # Buscamos el actor actual
-    oSprint = sprint()
-    result = oActor.findIdActor(idActor) 
-    
-    res['fSprint'] = {'idSprint':idSprint, 'descripcion':result[0].S_sprintDescription}    
+    oSprint = sprints()
+    result = oSprint.searchIdSprint(idSprint,idPila)
+    print(idSprint)
+    res['fSprint'] = {'idSprint':idSprint, 'numero':result[0].S_numero, 'descripcion':result[0].S_sprintDescription}    
+
     res['idPila'] = idPila
     session['idSprint'] = idSprint
 
