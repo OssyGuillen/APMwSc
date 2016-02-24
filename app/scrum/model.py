@@ -247,7 +247,7 @@ class clsSprint(db.Model):
     
     __tablename__ = 'sprint'
     S_idSprint          = db.Column(db.Integer, primary_key = True, index = True)
-    S_numero            = db.Column(db.Integer, unique = True)
+    S_numero            = db.Column(db.Integer)
     S_sprintDescription = db.Column(db.String(140))
     S_idBacklog         = db.Column(db.Integer, db.ForeignKey('backlog.BL_idBacklog'))
 
