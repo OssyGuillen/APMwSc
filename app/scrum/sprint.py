@@ -152,27 +152,23 @@ def VSprint():
 def VSprints():
     #GET parameter
 
-    idPila = request.args.get('idPila',1)
-    #idPila = request.args['idPila']
+    idPila = int(request.args.get('idPila',1))
 
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
-    #Action code goes here, res should be a JSON structure
 
     if 'usuario' not in session:
       res['logout'] = '/'
       return json.dumps(res)
-    res['usuario'] = session['usuario']
 
-    #res['data1'] = [{'numero':1, 'descripcion':'Carrera inicial'}]
+    res['usuario'] = session['usuario']
     res['idPila'] = idPila
 
     oBacklog   = backlog()
     sprintList = oBacklog.sprintsAsociatedToProduct(idPila)
     res['data1'] = [{'numero':spr.S_numero, 'descripcion':spr.S_sprintDescription } for spr in sprintList]
 
-    #Action code ends here
     return json.dumps(res)
 
 

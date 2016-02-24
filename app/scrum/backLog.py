@@ -196,6 +196,9 @@ class backlog(object):
             found = clsSprint.query.filter_by(S_idBacklog = idBacklog).all()
 
             return found
+        else:
+            print(type(idBacklog))
+            print("*****************")
         return([]) 
     
     def userHistoryAsociatedToProduct(self,idBacklog):

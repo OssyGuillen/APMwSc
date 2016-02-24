@@ -21,8 +21,9 @@ class sprints(object):
         
         checkTypeDescription = type(sprintDescription) == str
         checkTypeId          = type(idBacklog) == int
-        
-        if checkTypeDescription and checkTypeId:
+        checkTypeNumber      = type(sprintNumber) == int
+
+        if checkTypeDescription and checkTypeId and checkTypeNumber:
             checkLongSprintDescription = MIN_SPRINT_DESCRIPTION <= len(sprintDescription) <= MAX_SPRINT_DESCRIPTION
             checkLongId                = MIN_ID <= idBacklog
         
