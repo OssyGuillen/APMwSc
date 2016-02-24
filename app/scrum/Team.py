@@ -28,6 +28,15 @@ class team(object):
 
         return (aTeam)
 
+    def verifyScrumMaster(self,lista):
+        cant = 0
+        for miembro in lista:
+            if miembro['rol'] == "Scrum master":
+                cant += 1
+        if cant > 1:
+                return False
+        return True
+
     def deleteMiembro(self, username, rol,idBacklog):
         '''Permite eliminar un miembro de un equipo'''
         
@@ -117,14 +126,16 @@ class team(object):
                 
                 if foundBacklog != [] or idBacklog == 0:
                     miembros = clsEquipo.query.filter_by(EQ_idBacklog = idBacklog).all()
-                    for miembro in miembros:
-                        if miembro.EQ_username not in users:
-                            self.deleteMiembro(miembro.EQ_username, miembro.EQ_rol, idBacklog)
 
-                    for user in lista:
-                        username = user['miembro']
-                        self.insertMiembro(username,user['rol'],idBacklog)
-                    return True
+                    if self.verifyScrumMaster(lista):
+                        for miembro in miembros:
+                            if miembro.EQ_username not in users:
+                                self.deleteMiembro(miembro.EQ_username, miembro.EQ_rol, idBacklog)
+
+                        for user in lista:
+                            username = user['miembro']
+                            self.insertMiembro(username,user['rol'],idBacklog)
+                        return True
         return False
 
 # Fin Clase Team
