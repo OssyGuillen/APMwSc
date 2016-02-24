@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # -*- coding: utf-8 -*-
 
 from flask import request, session, Blueprint, json
@@ -6,11 +7,19 @@ from app.scrum.backLog           import *
 
 sprint = Blueprint('sprint', __name__)
 
+=======
+from flask import request, session, Blueprint, json
+
+sprint = Blueprint('sprint', __name__)
+
+
+>>>>>>> 4b889625c5354c2e8820abbf9cb3b19d2e4b3a2e
 @sprint.route('/sprint/ACrearSprint', methods=['POST'])
 def ACrearSprint():
     #POST/PUT parameters
     params = request.get_json()
     results = [{'label':'/VSprints', 'msg':['Sprint creado']}, {'label':'/VSprint', 'msg':['Error al crear Sprint']}, ]
+<<<<<<< HEAD
     res = results[1]
     #Action code goes here, res should be a list with a label and a message
     
@@ -30,6 +39,12 @@ def ACrearSprint():
             res = results[0]
 
     res['label'] = res['label'] + '/' + str(idPila)
+=======
+    res = results[0]
+    #Action code goes here, res should be a list with a label and a message
+
+    res['label'] = res['label'] + '/' + repr(1)
+>>>>>>> 4b889625c5354c2e8820abbf9cb3b19d2e4b3a2e
 
     #Action code ends here
     if "actor" in res:
@@ -65,7 +80,8 @@ def AElimSprint():
 def AModifSprint():
     #POST/PUT parameters
     params = request.get_json()
-    results = [{'label':'/VSprints', 'msg':['Sprint modificado']}, {'label':'/VSprint', 'msg':['Error al guardar Spront']}, ]
+
+    results = [{'label':'/VSprints', 'msg':['Sprint modificado']}, {'label':'/VSprint', 'msg':['Error al guardar Sprint']}, ]
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
 
@@ -77,6 +93,7 @@ def AModifSprint():
             session.pop("actor", None)
         else:
             session['actor'] = res['actor']
+
     return json.dumps(res)
 
 
@@ -84,6 +101,7 @@ def AModifSprint():
 @sprint.route('/sprint/VCrearSprint')
 def VCrearSprint():
     #GET parameter
+
     #idPila = request.args['idPila']
     idPila = request.args.get('idPila',1)
 
@@ -96,8 +114,6 @@ def VCrearSprint():
       res['logout'] = '/'
       return json.dumps(res)
     res['usuario'] = session['usuario']
-    #res['fSprint'] = {'idPila':idPila}
-
     
     res['fSprint'] = {'idPila':idPila}
 
@@ -109,11 +125,13 @@ def VCrearSprint():
 @sprint.route('/sprint/VSprint')
 def VSprint():
     #GET parameter
+
     res = {}
 
     # Obtenemos el id del producto y del sprint
     idPila  = int(session['idPila'])
     idSprint = request.args['idSprint']
+
 
     if "actor" in session:
         res['actor']=session['actor']
@@ -123,6 +141,7 @@ def VSprint():
       res['logout'] = '/'
       return json.dumps(res)
     res['usuario'] = session['usuario']
+
     # res['fSprint'] = {
     #   'idPila':1,
     #   'numero':1, 
@@ -147,7 +166,10 @@ def VSprint():
 @sprint.route('/sprint/VSprints')
 def VSprints():
     #GET parameter
+
     idPila = request.args.get('idPila',1)
+    #idPila = request.args['idPila']
+
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
@@ -157,6 +179,7 @@ def VSprints():
       res['logout'] = '/'
       return json.dumps(res)
     res['usuario'] = session['usuario']
+
     #res['data1'] = [{'numero':1, 'descripcion':'Carrera inicial'}]
     #res['idPila'] = 1
 

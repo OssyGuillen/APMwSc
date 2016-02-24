@@ -11,7 +11,9 @@ def AIdentificar():
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
 
+
     session['usuario'] = {'nombre':"Gia Mara"}
+
 
     #Action code ends here
     if "actor" in res:
