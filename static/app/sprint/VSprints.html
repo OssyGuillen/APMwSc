@@ -1,0 +1,42 @@
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" 
+                    data-toggle="collapse" 
+                    data-target="#contenido-plegable">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand" >Sprints</span>
+        </div>
+        <div class="collapse navbar-collapse" id="contenido-plegable">
+            <ul class="nav navbar-nav navbar-left">
+<li><a ng-click="VCrearSprint2(idPila)"
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+  +Sprint</a></li>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+<li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
+<li><a ng-click="VProducto0(idPila)"
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+    Regresar</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+        <table ng-table="tableParams1" template-pagination="pager.html" class="table">
+            <tr ng-repeat="row in $data">
+                <td data-title="'Número'" ng-bind="row['numero']"></td>
+                <td data-title="'Descripción'" ng-bind="row['descripcion']"></td>
+                <td ng-show="row['numero']"><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VSprint1(row['numero'])">Ver</a></td>
+            </tr>
+        </table>
+
+<hr />
+
+
+<div id="right"></div>

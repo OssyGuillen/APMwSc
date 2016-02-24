@@ -1,4 +1,4 @@
-scrumModule.config(function ($routeProvider) {
+scrumModule.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/VActor/:idActor', {
                 controller: 'VActorController',
                 templateUrl: 'app/actor/VActor.html'
@@ -6,11 +6,11 @@ scrumModule.config(function ($routeProvider) {
                 controller: 'VCrearActorController',
                 templateUrl: 'app/actor/VCrearActor.html'
             });
-});
+}]);
 
 scrumModule.controller('VActorController', 
-   ['$scope', '$location', '$route', 'flash', '$routeParams', 'actorService', 'identService', 'prodService',
-    function ($scope, $location, $route, flash, $routeParams, actorService, identService, prodService) {
+   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'actorService', 'identService', 'prodService',
+    function ($scope, $location, $route, $timeout, flash, $routeParams, actorService, identService, prodService) {
       $scope.msg = '';
       $scope.fActor = {};
 
@@ -22,6 +22,8 @@ scrumModule.controller('VActorController',
         if ($scope.logout) {
             $location.path('/');
         }
+
+
       });
       $scope.VProducto1 = function(idPila) {
         $location.path('/VProducto/'+idPila);
@@ -56,8 +58,8 @@ scrumModule.controller('VActorController',
 
     }]);
 scrumModule.controller('VCrearActorController', 
-   ['$scope', '$location', '$route', 'flash', '$routeParams', 'actorService', 'identService', 'prodService',
-    function ($scope, $location, $route, flash, $routeParams, actorService, identService, prodService) {
+   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'actorService', 'identService', 'prodService',
+    function ($scope, $location, $route, $timeout, flash, $routeParams, actorService, identService, prodService) {
       $scope.msg = '';
       $scope.fActor = {};
 
@@ -69,6 +71,8 @@ scrumModule.controller('VCrearActorController',
         if ($scope.logout) {
             $location.path('/');
         }
+
+
       });
       $scope.VProducto1 = function(idPila) {
         $location.path('/VProducto/'+idPila);

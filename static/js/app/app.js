@@ -1,15 +1,15 @@
 // Creación del módulo de la aplicación
-var scrumModule = angular.module('scrum', ['ngRoute', 'ngAnimate', 'ngTable', 'textAngular', 'flash']);
-scrumModule.config(function ($routeProvider) {
+var scrumModule = angular.module('scrum', ['ngRoute', 'ngAnimate', 'ngTable', 'textAngular', 'ngSanitize', 'flash']);
+scrumModule.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
         .when('/', {
                 controller: 'VLoginController',
                 templateUrl: 'app/ident/VLogin.html'
             });
-});
+}]);
 scrumModule.controller('scrumController_',  ['$scope', '$http', '$location',
 function($scope) {
-    $scope.title = "APMwSc:\nA supporting tool the process of\nAgile Project Management with Scrum";
+    $scope.title = "Aplicación";
 }]);
 scrumModule.directive('sameAs', [function () {
     return {
@@ -34,3 +34,18 @@ scrumModule.directive('sameAs', [function () {
         }
     };
 }]);
+scrumModule.directive('file', function () {
+    return {
+        restrict: 'A',
+        scope: {
+            file: '='
+        },
+        link: function (scope, el, attrs) {
+            el.bind('change', function (event) {
+                var file = event.target.files[0];
+                scope.file = file ? file : undefined;
+                scope.$apply();
+            });
+        }
+    };
+});

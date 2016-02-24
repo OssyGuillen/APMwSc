@@ -241,6 +241,27 @@ class clsCategory(db.Model):
 		'''Representacion en string de la Categoria'''
 		return '<C_idCategory  %r, C_nameCate %r, C_weight %r>' % (self.C_idCategory,self.C_nameCate,self.C_weight)
 
+
+class clsEquipo(db.Model):
+    '''Clase que define el modelo Equipo'''
+
+    __tablename__ = 'equipo'
+    EQ_idEquipo         = db.Column(db.Integer, primary_key = True)
+    EQ_username         = db.Column(db.String(16), db.ForeignKey('user.U_username'))
+    EQ_rol				= db.Column(db.String(140))
+    EQ_idBacklog         = db.Column(db.Integer,db.ForeignKey('backlog.BL_idBacklog'))
+
+    def __init__(self, username,rol,idBacklog):
+        '''Constructor del modelo Equipo'''
+        self.EQ_username        = username
+        self.EQ_rol				= rol
+        self.EQ_idBacklog       = idBacklog
+
+    def __repr__(self):
+        '''Respresentacion en string del modelo Equipo'''
+        return '<IdEquipo %r, Nombre de Usuario %r, Rol %r, IdBacklog %r>' %(self.EQ_idEquipo, self.EQ_username , self.EQ_rol, self.EQ_idBacklog)
+  
+
 migrate = Migrate(app, db)
 manager = Manager(app)
 

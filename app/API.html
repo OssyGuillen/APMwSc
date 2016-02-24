@@ -1132,4 +1132,65 @@ Parámetros GET: idCategoria
  </li>
 </ol>
 
+<h2>Equipo</h2>
+<p></p>
+<ol>
+ <li>
+  <p></p>
+  <ul>
+   <li>URL: '/equipo/AActualizarEquipo'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>idProyecto -  
+Opcional. 
+     </li>     <li>opcionesRol - <br> 
+Opcional. 
+     </li>     <li>opcionesMiembros -  
+Opcional. 
+     </li>     <li>lista -  
+Opcional. 
+     </li>     <li>miembro -  
+Requerido. 
+     </li>     <li>rol -  
+Requerido. 
+     </li>     <li>lista.eliminar -  
+Opcional. 
+     </li>     <li>Agregar -  
+Opcional. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: Sin restricción de rol
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VEquipo',</li>
+       <li> msg:"Equipo actualizado".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VEquipo',</li>
+       <li> msg:"Error al actualizar el equipo".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/equipo/VEquipo'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idPila
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+  </ul>
+ </li>
+</ol>
 </html>

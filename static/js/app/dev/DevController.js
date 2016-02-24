@@ -1,13 +1,13 @@
-scrumModule.config(function ($routeProvider) {
+scrumModule.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/VDesarrollador', {
                 controller: 'VDesarrolladorController',
                 templateUrl: 'app/dev/VDesarrollador.html'
             });
-});
+}]);
 
 scrumModule.controller('VDesarrolladorController', 
-   ['$scope', '$location', '$route', 'flash', 'devService', 'identService',
-    function ($scope, $location, $route, flash, devService, identService) {
+   ['$scope', '$location', '$route', '$timeout', 'flash', 'devService', 'identService',
+    function ($scope, $location, $route, $timeout, flash, devService, identService) {
       $scope.msg = '';
       devService.VDesarrollador().then(function (object) {
         $scope.res = object.data;
@@ -17,6 +17,8 @@ scrumModule.controller('VDesarrolladorController',
         if ($scope.logout) {
             $location.path('/');
         }
+
+
       });
       $scope.VLogin0 = function() {
         $location.path('/VLogin');

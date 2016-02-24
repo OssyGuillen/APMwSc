@@ -174,7 +174,7 @@ class backlog(object):
             found = clsAccion.query.filter_by(AC_idBacklog  = idBacklog).all()
             return found
         return([]) 
-     
+   
 
     def objectivesAsociatedToProduct(self,idBacklog):
         ''' Permite obtener una lista de los Objetivos asociados a una pila de Producto'''

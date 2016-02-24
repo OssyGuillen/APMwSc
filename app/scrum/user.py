@@ -18,6 +18,12 @@ CONST_MIN_PASSWORD = 1
 class user(object):
     '''Clase que permite manejar usuarios de manera persistente'''
     
+    def getAllUsers(self):
+        '''Permite obtener todos los productos de la tabla'''
+        
+        result = clsUser.query.all()
+        return result
+
     def searchUser(self,username):
         '''Permite buscar un usuario por su nombre'''
         
