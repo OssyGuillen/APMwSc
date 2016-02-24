@@ -33,13 +33,13 @@ class sprints(object):
                 if foundBacklog != []:
                     foundSprints = clsSprint.query.filter_by(S_idBacklog = idBacklog).all()
 
-                    foundSprintDesc = []
-                    for desc in foundSprints:
-                        if desc.S_sprintDescription.lower()  == sprintDescription.lower():
-                            foundSprintDesc.append(desc)
+                    foundSprintNum = []
+                    for num in foundSprints:
+                        if num.S_numero  == sprintNumber:
+                            foundSprintNum.append(num)
                             break
                          
-                    if foundSprintDesc == []:
+                    if foundSprintNum == []:
 
                         newSprint = clsSprint(sprintNumber, sprintDescription, idBacklog)
 
