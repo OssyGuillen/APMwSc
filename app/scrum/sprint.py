@@ -11,15 +11,14 @@ def ACrearSprint():
     #POST/PUT parameters
     params = request.get_json()
     results = [{'label':'/VSprints', 'msg':['Sprint creado']}, {'label':'/VSprint', 'msg':['Error al crear Sprint']}, ]
-
+    print(session, file=sys.stderr)
     res = results[1]
     #Action code goes here, res should be a list with a label and a message
     
     # Obtenemos el id del producto
-    idPila  = int(session['fSprint'].idPila)
-    
+    idPila  = int(session['idPila'])
+
     if request.method == 'POST':
-    
         # Extraemos los parámetros
         newNumero       = params['numero'] 
         newDescription  = params['descripcion']
@@ -167,7 +166,7 @@ def VSprints():
     res['usuario'] = session['usuario']
 
     #res['data1'] = [{'numero':1, 'descripcion':'Carrera inicial'}]
-    #res['idPila'] = 1
+    res['idPila'] = idPila
 
     oBacklog   = backlog()
     sprintList = oBacklog.sprintsAsociatedToProduct(idPila)
