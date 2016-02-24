@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # -*- coding: utf-8 -*-
 
 from flask import request, session, Blueprint, json
@@ -7,19 +7,13 @@ from app.scrum.backLog           import *
 
 sprint = Blueprint('sprint', __name__)
 
-=======
-from flask import request, session, Blueprint, json
 
-sprint = Blueprint('sprint', __name__)
-
-
->>>>>>> 4b889625c5354c2e8820abbf9cb3b19d2e4b3a2e
 @sprint.route('/sprint/ACrearSprint', methods=['POST'])
 def ACrearSprint():
     #POST/PUT parameters
     params = request.get_json()
     results = [{'label':'/VSprints', 'msg':['Sprint creado']}, {'label':'/VSprint', 'msg':['Error al crear Sprint']}, ]
-<<<<<<< HEAD
+
     res = results[1]
     #Action code goes here, res should be a list with a label and a message
     
@@ -39,12 +33,7 @@ def ACrearSprint():
             res = results[0]
 
     res['label'] = res['label'] + '/' + str(idPila)
-=======
-    res = results[0]
-    #Action code goes here, res should be a list with a label and a message
 
-    res['label'] = res['label'] + '/' + repr(1)
->>>>>>> 4b889625c5354c2e8820abbf9cb3b19d2e4b3a2e
 
     #Action code ends here
     if "actor" in res:

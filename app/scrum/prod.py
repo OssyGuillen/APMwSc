@@ -74,33 +74,33 @@ def VProducto():
       res['logout'] = '/'
       return json.dumps(res)
     res['usuario'] = session['usuario']
-<<<<<<< HEAD
+# <<<<<<< HEAD
 
-    # Obtenemos los datos asociados al producto
-    oBacklog   = backlog()
-    actorsList = oBacklog.actorsAsociatedToProduct(idPila)
-    accionList = oBacklog.accionsAsociatedToProduct(idPila)
-    objectList = oBacklog.objectivesAsociatedToProduct(idPila)
-    #sprintList = oBacklog.sprintsAsociatedToProduct(idPila)
+#     # Obtenemos los datos asociados al producto
+#     oBacklog   = backlog()
+#     actorsList = oBacklog.actorsAsociatedToProduct(idPila)
+#     accionList = oBacklog.accionsAsociatedToProduct(idPila)
+#     objectList = oBacklog.objectivesAsociatedToProduct(idPila)
+#     #sprintList = oBacklog.sprintsAsociatedToProduct(idPila)
     
-    # Mostramos los datos en la vista.
-    res['data3'] = [{'idActor':act.A_idActor,'descripcion':act.A_nameActor + ' : ' + act.A_actorDescription}for act in actorsList]
-    res['data5'] = [{'idAccion':acc.AC_idAccion , 'descripcion':acc.AC_accionDescription}for acc in accionList]
-    res['data7'] = [{'idObjetivo':obj.O_idObjective, 'descripcion':obj.O_descObjective } for obj in objectList]
-    #res['data9'] = [{'idSprint':spr.S_idSprint, 'descripcion':spr.S_sprintDescription } for spr in sprintList]
+#     # Mostramos los datos en la vista.
+#     res['data3'] = [{'idActor':act.A_idActor,'descripcion':act.A_nameActor + ' : ' + act.A_actorDescription}for act in actorsList]
+#     res['data5'] = [{'idAccion':acc.AC_idAccion , 'descripcion':acc.AC_accionDescription}for acc in accionList]
+#     res['data7'] = [{'idObjetivo':obj.O_idObjective, 'descripcion':obj.O_descObjective } for obj in objectList]
+#     #res['data9'] = [{'idSprint':spr.S_idSprint, 'descripcion':spr.S_sprintDescription } for spr in sprintList]
 
-    # Buscamos el producto actual
-    result = oBacklog.findIdProduct(idPila)
+#     # Buscamos el producto actual
+#     result = oBacklog.findIdProduct(idPila)
      
-    # Mostramos los valores seleccionados
-    res['fPila'] = {'idPila':idPila,'nombre': result.BL_name,'descripcion':result.BL_description,'escala':result.BL_scaleType}
-    res['fPila_opcionesEscala'] = [{'key':1,'value':'Alta/Media/Baja'}, {'key':2,'value':'Entre 1 y 20'}]
+#     # Mostramos los valores seleccionados
+#     res['fPila'] = {'idPila':idPila,'nombre': result.BL_name,'descripcion':result.BL_description,'escala':result.BL_scaleType}
+#     res['fPila_opcionesEscala'] = [{'key':1,'value':'Alta/Media/Baja'}, {'key':2,'value':'Entre 1 y 20'}]
     
-    # Guardamos el id del producto
-    session['idPila'] = idPila
-    res['idPila']     = idPila
+#     # Guardamos el id del producto
+#     session['idPila'] = idPila
+#     res['idPila']     = idPila
     
-=======
+# =======
     idPila = int(request.args.get('idPila', 1))
     pilas = [{'idPila':1, 'nombre':'Pagos en línea', 'descripcion':'Pagos usando tarjeta de débito', 'escala':1},
              {'idPila':2, 'nombre':'Recomendaciones de playas', 'descripcion':'Red social para playeros consumados', 'escala':2},
@@ -115,7 +115,7 @@ def VProducto():
       {'key':2,'value':'Entre 1 y 20'}]
 
     #Action code ends here
->>>>>>> 4b889625c5354c2e8820abbf9cb3b19d2e4b3a2e
+# >>>>>>> 4b889625c5354c2e8820abbf9cb3b19d2e4b3a2e
     return json.dumps(res)
 
 
