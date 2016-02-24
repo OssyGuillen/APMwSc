@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 
 from flask import request, session, Blueprint, json
@@ -6,7 +5,6 @@ from app.scrum.sprintClass       import *
 from app.scrum.backLog           import *
 
 sprint = Blueprint('sprint', __name__)
-
 
 @sprint.route('/sprint/ACrearSprint', methods=['POST'])
 def ACrearSprint():
@@ -33,7 +31,6 @@ def ACrearSprint():
             res = results[0]
 
     res['label'] = res['label'] + '/' + str(idPila)
-
 
     #Action code ends here
     if "actor" in res:
