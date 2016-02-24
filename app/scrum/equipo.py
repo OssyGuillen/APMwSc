@@ -61,7 +61,6 @@ def VEquipo():
     res['fEquipo_opcionesRol'] =[
         {'key':'Desarrollador', 'value':'Desarrollador'},
         {'key':'Scrum master', 'value':'Scrum master'},
-        {'key':'Product owner', 'value':'Product owner'},
       ]
 
     res['fEquipo_opcionesMiembros'] =[{'key':user.U_username,'value': user.U_username} for user in userList]
