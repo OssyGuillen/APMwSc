@@ -17,8 +17,8 @@ class TestTeam(unittest.TestCase):
 
     # Probar que la funcionalidad se ejecuta
     def testEmptyTable(self):
-    	team_object = team()
-    	team_object.emptyTable()
+        team_object = team()
+        team_object.emptyTable()
 
     # Probar que hay elementos en team
     def testEmptyTableFalse(self):
@@ -205,6 +205,44 @@ class TestTeam(unittest.TestCase):
         self.assertFalse(result)
         # Eliminamos los datos insertados
         _backlog.deleteProduct('Backlog')
-        
+
+    #############################################      
+    #         Pruebas para verifyScrumMaster    #
+    #############################################
+
+    # Probar que la funcionalidad se ejecuta
+    def testverifyScrumMaster(self):
+        # Creamos el backlog
+        _backlog  = backlog()
+        _backlog.insertBacklog('Backlog','Prueba',2)
+        findId    = _backlog.findName('Backlog')
+        idBacklog = findId[0].BL_idBacklog 
+        # Creamos el actor 1
+        actor = role()
+        actor.insertActor('Actor1','Scrum master',idBacklog)
+        result    = actor.findNameActor('Actor1',idBacklog)
+        idActor   = result[0].A_idActor
+        # Creamos el actor 2
+        actor.insertActor('Actor2','Scrum master',idBacklog)
+        result    = actor.findNameActor('Actor2',idBacklog)
+        idActor   = result[0].A_idActor
+        # Creamos el usuario 1
+        _user = user()
+        _user.insertUser('fullname','user1','password1234','prueba@user1.com',idActor)
+        # Creamos el usuario 2
+        _user.insertUser('fullname','user2','password1232','prueba@user2.com',idActor)        
+        # Agregamos los usuarios al equipo
+        team_object = team()
+        team_object.insertMiembro('user1','Actor1',idBacklog) 
+        team_object.insertMiembro('user2','Actor2',idBacklog) 
+        # Obtenemos los miembros del equipo
+        teamList = team_object.getTeam(idBacklog)
+        userList = _user.getAllUsers()
+        # Creamos la lista
+        lista = [{'miembro':team.EQ_username, 'rol': team.EQ_rol} for team in teamList]
+        # Ejecutamos la funcion
+        team_object.verifyScrumMaster(lista)
+    
+
 if __name__ == '__main__':
     unittest.main()
