@@ -74,9 +74,8 @@ class sprints(object):
 
 	def searchIdSprint(self, sprintNumber, backlog):
 		'''Permite buscar sprints por su id'''
-		
 		checkTypeIdSprint = type(sprintNumber) == int
-		checkTypeBacklog = type(backlog) == int
+		checkTypeBacklog  = type(backlog) == int
 		foundSprint       = []
 
 		if checkTypeIdSprint and checkTypeBacklog:
@@ -93,9 +92,9 @@ class sprints(object):
 			checkLongIdBacklog   = MIN_ID <= idBacklog
 
 			if checkLenSprintNumber and checkLongIdBacklog:
-				foundSprint = clsAccion.query.filter_by(S_numero = sprintNumber,S_idBacklog = idBacklog).all()
+				foundSprint = clsSprint.query.filter_by(S_numero = sprintNumber,S_idBacklog = idBacklog).all()
 				if foundSprint != []:
-					for i in found:
+					for i in foundSprint:
 						db.session.delete(i)
 					db.session.commit()
 					return True
