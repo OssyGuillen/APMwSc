@@ -165,31 +165,29 @@ class TestTeam(unittest.TestCase):
         findId    = _backlog.findName('Backlog')
         idBacklog = findId[0].BL_idBacklog 
         # Creamos el actor 1
-        actor1 = role()
-        actor1.insertActor('Actor1','Descripcion',idBacklog)
-        result    = actor1.findNameActor('Actor1',idBacklog)
+        actor = role()
+        actor.insertActor('Actor1','Descripcion',idBacklog)
+        result    = actor.findNameActor('Actor1',idBacklog)
+        idActor   = result[0].A_idActor
+        # Creamos el actor 2
+        actor.insertActor('Actor2','Descripcion',idBacklog)
+        result    = actor.findNameActor('Actor2',idBacklog)
         idActor   = result[0].A_idActor
         # Creamos el usuario 1
-        _user1 = user()
-        _user1.insertUser('fullname','user1','password1234','prueba@user1.com',idActor)
-        # Creamos el actor 2
-        actor2 = role()
-        actor2.insertActor('Actor2','Descripcion',idBacklog)
-        result    = actor2.findNameActor('Actor2',idBacklog)
-        idActor   = result[0].A_idActor
+        _user = user()
+        _user.insertUser('fullname','user1','password1234','prueba@user1.com',idActor)
         # Creamos el usuario
-        _user2 = user()
-        _user2.insertUser('fullname','user2','password1232','prueba@user2.com',idActor)
+        _user.insertUser('fullname','user2','password1232','prueba@user2.com',idActor)
         # Ejecutamos la funcion
         team_object = team()
         team_object.getTeam(idBacklog)
         # Eliminamos los datos insertados
         team_object.deleteMiembro('user1','Actor1',idBacklog)
-        _user1.deleteUser('user1')
-        actor1.deleteActor('Actor1',idBacklog)
+        _user.deleteUser('user1')
+        actor.deleteActor('Actor1',idBacklog)
         team_object.deleteMiembro('user2','Actor2',idBacklog)
-        _user2.deleteUser('user2')
-        actor2.deleteActor('Actor2',idBacklog)
+        _user.deleteUser('user2')
+        actor.deleteActor('Actor2',idBacklog)
         _backlog.deleteProduct('Backlog')
 
     # Caso en que no hay miembros en el quipo
