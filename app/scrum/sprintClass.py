@@ -80,7 +80,9 @@ class sprints(object):
 			foundSprint = clsSprint.query.filter_by(S_numero  = sprintNumber).filter_by(S_idBacklog = backlog).all()
 		return foundSprint
 
-
+	def deleteSprint(self, sprintDescription,idBacklog):
+		'''Permite eliminar un Sprint segun su id'''
+		pass
 
 
 
