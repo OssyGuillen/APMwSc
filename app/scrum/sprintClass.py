@@ -58,9 +58,10 @@ class sprints(object):
 			checkLongNewDescription    = MIN_SPRINT_DESCRIPTION <= len(newDescription) <= MAX_SPRINT_DESCRIPTION
 			foundSprint = self.searchIdSprint(idSprint, idBacklog)
 			if foundSprint != [] and checkLongNewDescription:
-				for num in clsSprint.query.filter_by(S_idBacklog = idBacklog).all():
-					if num.S_numero  == newSprintNumber:
-						return False
+				if foundSprint[0].S_numero != newSprintNumber:
+					for num in clsSprint.query.filter_by(S_idBacklog = idBacklog).all():
+						if num.S_numero  == newSprintNumber:
+							return False
 				foundSprint[0].S_sprintDescription = newDescription
 				foundSprint[0].S_numero = newSprintNumber
 				foundSprint[0].S_idSprint = idSprint
