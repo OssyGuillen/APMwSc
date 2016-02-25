@@ -29,7 +29,7 @@ class TestTeam(unittest.TestCase):
     def testinsertMiembro(self):
         # Creamos el backlog
         _backlog  = backlog()
-        _backlog.insertBacklog('Backlog','Prueba',1)
+        _backlog.insertBacklog('Backlog','Prueba',2)
         findId    = _backlog.findName('Backlog')
         idBacklog = findId[0].BL_idBacklog 
         # Creamos el actor
@@ -39,13 +39,41 @@ class TestTeam(unittest.TestCase):
         idActor   = result[0].A_idActor
         # Creamos el usuario
         _user = user()
-        _user.insertUser('fullname','username','password','email',idActor)
+        _user.insertUser('fullname','userr','password1234','prueba@user.com',idActor)
         # Ejecutamos la funcion
         team_object = team()
-        team_object.insertMiembro('fullname','Actor',idBacklog)  
+        team_object.insertMiembro('userr','Actor',idBacklog)  
         # Eliminamos los datos insertados
-        team_object.deleteMiembro('fullname','Actor',idBacklog)
-        _user.deleteUser('username')
+        team_object.deleteMiembro('userr','Actor',idBacklog)
+        _user.deleteUser('userr')
+        actor.deleteActor('Actor',idBacklog)
+        _backlog.deleteProduct('Backlog')
+
+    #############################################      
+    #         Pruebas para deleteMiembro        #
+    #############################################
+
+    # Probar que la funcionalidad se ejecuta
+    def testdeleteMiembro(self):
+        # Creamos el backlog
+        _backlog  = backlog()
+        _backlog.insertBacklog('Backlog','Prueba',2)
+        findId    = _backlog.findName('Backlog')
+        idBacklog = findId[0].BL_idBacklog 
+        # Creamos el actor
+        actor = role()
+        actor.insertActor('Actor','Descripcion',idBacklog)
+        result    = actor.findNameActor('Actor',idBacklog)
+        idActor   = result[0].A_idActor
+        # Creamos el usuario
+        _user = user()
+        _user.insertUser('fullname','userr','password1234','prueba@user.com',idActor)
+        # Ejecutamos la funcion
+        team_object = team()
+        team_object.insertMiembro('userr','Actor',idBacklog)          
+        team_object.deleteMiembro('userr','Actor',idBacklog)
+        # Eliminamos los datos insertados
+        _user.deleteUser('userr')
         actor.deleteActor('Actor',idBacklog)
         _backlog.deleteProduct('Backlog')
 
