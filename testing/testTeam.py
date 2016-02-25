@@ -77,6 +77,30 @@ class TestTeam(unittest.TestCase):
         actor.deleteActor('Actor',idBacklog)
         _backlog.deleteProduct('Backlog')
 
+    # Eliminar un usuario que no existe
+    def testdeleteMiembroFalse(self):
+        # Creamos el backlog
+        _backlog  = backlog()
+        _backlog.insertBacklog('Backlog','Prueba',2)
+        findId    = _backlog.findName('Backlog')
+        idBacklog = findId[0].BL_idBacklog 
+        # Creamos el actor
+        actor = role()
+        actor.insertActor('Actor','Descripcion',idBacklog)
+        result    = actor.findNameActor('Actor',idBacklog)
+        idActor   = result[0].A_idActor
+        # Creamos el usuario
+        _user = user()
+        _user.insertUser('fullname','userr','password1234','prueba@user.com',idActor)
+        # Ejecutamos la funcion
+        team_object = team()
+        result = team_object.deleteMiembro('false_user','Actor',idBacklog)
+        self.assertFalse(result)
+        # Eliminamos los datos insertados
+        _user.deleteUser('userr')
+        actor.deleteActor('Actor',idBacklog)
+        _backlog.deleteProduct('Backlog')
+
 
 if __name__ == '__main__':
     unittest.main()
