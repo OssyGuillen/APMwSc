@@ -46,10 +46,26 @@ def AElimSprint():
     #POST/PUT parameters
     params = request.get_json()
     results = [{'label':'/VSprints', 'msg':['Sprint eliminado']}, {'label':'/VSprint', 'msg':['Error al eliminar Sptrint']}, ]
-    res = results[0]
-    #Action code goes here, res should be a list with a label and a message
+    res = results[1]
+    
+    # Obtenemos el id del producto
+    idPila       = int(session['idPila'])
 
-    res['label'] = res['label'] + '/' + repr(1)
+    # Obtenemos el id del sprint
+    #idSprint = int(params['idSprint'])
+    idSprint = int(session['idSprint'])
+
+    # Conseguimos el sprint a eliminar
+    oSprint  = sprint()
+    found    = oSprint.searchIdSprint(idSprint,idPila)
+
+    if (found != []):
+        deleted = oSprint.deleteSprint(found[0].S_numero, found[0].S_idBacklog)
+
+    if deleted:
+            res = results[0]  
+
+    res['label'] = res['label'] + '/' + str(idPila)
 
     #Action code ends here
     if "actor" in res:
