@@ -10,7 +10,9 @@ import unittest, time, re
 import sys
 # Ruta que permite utilizar el módulo user.py
 sys.path.append('../app/scrum')
-from backLog   import *
+from backLog    import *
+from user       import *
+from role       import *
 
 class TestEquipo(unittest.TestCase):
     def setUp(self):
@@ -26,15 +28,37 @@ class TestEquipo(unittest.TestCase):
         aBacklog   = backlog()
         result     = aBacklog.deleteProduct('Test Product Equipo')
         everybacklog = clsBacklog.query.all()
-        number= len(everybacklog) +1
+        number= len(everybacklog) + 1
 
-        #print (result2)
+
+        aUser = user()
+
+        
+        # Creamos el backlog
+        _backlog  = backlog()
+        _backlog.insertBacklog('Backlog','Prueba',2)
+        findId    = _backlog.findName('Backlog')
+        idBacklog = findId[0].BL_idBacklog 
+        # Creamos el actor
+        actor = role()
+        actor.insertActor('Actor','Descripcion',idBacklog)
+        result    = actor.findNameActor('Actor',idBacklog)
+        idActor   = result[0].A_idActor
+        # Creamos el usuario
+        _user = user()
+        _user.insertUser('fullname','userr','password1234','prueba@user.com',idActor)
+
+        uuu = user()
+        uuu.insertUser('abcddd', 'abc', 'Password1234.', 'a@bf.c', idActor)
+        #print (uuu.U_idActor)
+
+
         # Usuario inicia sesión
         driver.get(self.base_url + "/#/VLogin")
         driver.find_element_by_id("fLogin_usuario").clear()
-        driver.find_element_by_id("fLogin_usuario").send_keys("andrea")
+        driver.find_element_by_id("fLogin_usuario").send_keys('andrea')
         driver.find_element_by_id("fLogin_clave").clear()
-        driver.find_element_by_id("fLogin_clave").send_keys("@Andread92")
+        driver.find_element_by_id("fLogin_clave").send_keys('@Andread92')
         driver.find_element_by_xpath("//button[@type='submit']").click()
         sleep (2)
 
@@ -58,7 +82,7 @@ class TestEquipo(unittest.TestCase):
         driver.find_element_by_link_text("Equipo").click()
         sleep(2)
         driver.find_element_by_link_text("+Miembro").click()
-        Select(driver.find_element_by_id("fEquipo_miembro")).select_by_visible_text("aldrix")
+        Select(driver.find_element_by_id("fEquipo_miembro")).select_by_visible_text("userr")
         driver.find_element_by_css_selector("option[value=\"0\"]").click()
         Select(driver.find_element_by_id("fEquipo_rol")).select_by_visible_text("Desarrollador")
         driver.find_element_by_css_selector("#fEquipo_rol > option[value=\"0\"]").click()
@@ -89,6 +113,10 @@ class TestEquipo(unittest.TestCase):
         #driver.find_element_by_link_text("Regresar").click()
         
         result     = aBacklog.deleteProduct('Test Product Equipo')
+        _user.deleteUser('userr')
+        actor.deleteActor('Actor',idBacklog)
+        _backlog.deleteProduct('Backlog')
+        
     
     def is_element_present(self, how, what):
         try: self.driver.find_element(by=how, value=what)
