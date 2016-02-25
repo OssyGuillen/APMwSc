@@ -8,6 +8,12 @@ scrumModule.config(function ($routeProvider) {
             }).when('/VHistoria/:idHistoria', {
                 controller: 'VHistoriaController',
                 templateUrl: 'app/historias/VHistoria.html'
+            }).when('/VHistorias/:idPila', {
+                controller: 'VHistoriasController',
+                templateUrl: 'app/historias/VHistorias.html'
+            }).when('/VPrelaciones/:idPila', {
+                controller: 'VPrelacionesController',
+                templateUrl: 'app/historias/VPrelaciones.html'
             }).when('/VPrioridades/:idPila', {
                 controller: 'VPrioridadesController',
                 templateUrl: 'app/historias/VPrioridades.html'
@@ -17,7 +23,7 @@ scrumModule.config(function ($routeProvider) {
             });
 });
 
-scrumModule.controller('VHistoriasController', 
+scrumModule.controller('VHistoriasController',
    ['$scope', '$location', '$route', 'flash', '$routeParams', 'ngTableParams', 'accionService', 'actorService', 'historiasService', 'identService', 'objetivoService', 'prodService', 'tareasService',
     function ($scope, $location, $route, flash, $routeParams, ngTableParams, accionService, actorService, historiasService, identService, objetivoService, prodService, tareasService) {
       $scope.msg = '';
@@ -39,7 +45,7 @@ scrumModule.controller('VHistoriasController',
                   getData: function($defer, params) {
                       $defer.resolve(VHistoria0Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                   }
-              });            
+              });
 
 
       });
@@ -62,8 +68,8 @@ scrumModule.controller('VHistoriasController',
 
     }]);
 scrumModule.controller('VCrearHistoriaController', 
-   ['$scope', '$location', '$route', 'flash', '$routeParams', 'accionService', 'actorService', 'historiasService', 'identService', 'objetivoService', 'prodService', 'tareasService',
-    function ($scope, $location, $route, flash, $routeParams, accionService, actorService, historiasService, identService, objetivoService, prodService, tareasService) {
+   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'accionService', 'actorService', 'historiasService', 'identService', 'objetivoService', 'prodService', 'tareasService',
+    function ($scope, $location, $route, $timeout, flash, $routeParams, accionService, actorService, historiasService, identService, objetivoService, prodService, tareasService) {
       $scope.msg = '';
       $scope.fHistoria = {};
 
@@ -109,8 +115,8 @@ scrumModule.controller('VCrearHistoriaController',
 
     }]);
 scrumModule.controller('VHistoriaController', 
-   ['$scope', '$location', '$route', 'flash', '$routeParams', 'ngTableParams', 'accionService', 'actorService', 'historiasService', 'identService', 'objetivoService', 'prodService', 'tareasService',
-    function ($scope, $location, $route, flash, $routeParams, ngTableParams, accionService, actorService, historiasService, identService, objetivoService, prodService, tareasService) {
+   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngTableParams', 'accionService', 'actorService', 'historiasService', 'identService', 'objetivoService', 'prodService', 'tareasService',
+    function ($scope, $location, $route, $timeout, flash, $routeParams, ngTableParams, accionService, actorService, historiasService, identService, objetivoService, prodService, tareasService) {
       $scope.msg = '';
       $scope.fHistoria = {};
 
@@ -187,9 +193,103 @@ scrumModule.controller('VHistoriaController',
       };
 
     }]);
+scrumModule.controller('VHistoriasController', 
+   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngTableParams', 'accionService', 'actorService', 'historiasService', 'identService', 'objetivoService', 'prodService', 'tareasService',
+    function ($scope, $location, $route, $timeout, flash, $routeParams, ngTableParams, accionService, actorService, historiasService, identService, objetivoService, prodService, tareasService) {
+      $scope.msg = '';
+      historiasService.VHistorias({"idPila":$routeParams.idPila}).then(function (object) {
+        $scope.res = object.data;
+        for (var key in object.data) {
+            $scope[key] = object.data[key];
+        }
+        if ($scope.logout) {
+            $location.path('/');
+        }
+
+
+              var VHistoria0Data = $scope.res.data0;
+              if(typeof VHistoria0Data === 'undefined') VHistoria0Data=[];
+              $scope.tableParams0 = new ngTableParams({
+                  page: 1,            // show first page
+                  count: 10           // count per page
+              }, {
+                  total: VHistoria0Data.length, // length of data
+                  getData: function($defer, params) {
+                      $defer.resolve(VHistoria0Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                  }
+              });            
+
+
+      });
+      $scope.VCrearHistoria1 = function(idPila) {
+        $location.path('/VCrearHistoria/'+idPila);
+      };
+      $scope.VProducto2 = function(idPila) {
+        $location.path('/VProducto/'+idPila);
+      };
+      $scope.VPrioridades3 = function(idPila) {
+        $location.path('/VPrioridades/'+idPila);
+      };
+      $scope.VLogin4 = function() {
+        $location.path('/VLogin');
+      };
+      $scope.VPrelaciones5 = function(idPila) {
+        $location.path('/VPrelaciones/'+idPila);
+      };
+
+      $scope.VHistoria0 = function(idHistoria) {
+        $location.path('/VHistoria/'+((typeof idHistoria === 'object')?JSON.stringify(idHistoria):idHistoria));
+      };
+
+    }]);
+scrumModule.controller('VPrelacionesController', 
+   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'accionService', 'actorService', 'historiasService', 'identService', 'objetivoService', 'prodService', 'tareasService',
+    function ($scope, $location, $route, $timeout, flash, $routeParams, accionService, actorService, historiasService, identService, objetivoService, prodService, tareasService) {
+      $scope.msg = '';
+      $scope.fPrelaciones = {};
+
+      historiasService.VPrelaciones({"idPila":$routeParams.idPila}).then(function (object) {
+        $scope.res = object.data;
+        for (var key in object.data) {
+            $scope[key] = object.data[key];
+        }
+        if ($scope.logout) {
+            $location.path('/');
+        }
+
+
+$scope.agrPrelacion = function () {
+  $scope.fPrelaciones.lista.push({antecedente:null, consecuente:null})
+}
+$scope.elimPrelacion = function (index) {
+  $scope.fPrelaciones.lista.splice(index, 1);
+}
+
+
+      });
+      $scope.VHistorias1 = function(idPila) {
+        $location.path('/VHistorias/'+idPila);
+      };
+
+      $scope.fPrelacionesSubmitted = false;
+      $scope.APrelaciones0 = function(isValid) {
+        $scope.fPrelacionesSubmitted = true;
+        if (isValid) {
+          
+          historiasService.APrelaciones($scope.fPrelaciones).then(function (object) {
+              var msg = object.data["msg"];
+              if (msg) flash(msg);
+              var label = object.data["label"];
+              $location.path(label);
+              $route.reload();
+          });
+        }
+      };
+
+    }]);
 scrumModule.controller('VPrioridadesController', 
-   ['$scope', '$location', '$route', 'flash', '$routeParams', 'accionService', 'actorService', 'historiasService', 'identService', 'objetivoService', 'prodService', 'tareasService',
-    function ($scope, $location, $route, flash, $routeParams, accionService, actorService, historiasService, identService, objetivoService, prodService, tareasService) {
+   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'accionService', 'actorService', 'historiasService', 'identService', 'objetivoService', 'prodService', 'tareasService',
+    function ($scope, $location, $route, $timeout, flash, $routeParams, accionService, actorService, historiasService, identService, objetivoService, prodService, tareasService) {
       $scope.msg = '';
       $scope.fPrioridades = {};
 
@@ -225,7 +325,7 @@ scrumModule.controller('VPrioridadesController',
       };
 
     }]);
-scrumModule.controller('VDesempenoController', 
+scrumModule.controller('VDesempenoController',
    ['$scope', '$location', '$route', 'flash', '$routeParams', 'accionService', 'actorService', 'historiasService', 'identService', 'objetivoService', 'prodService', 'tareasService',
     function ($scope, $location, $route, flash, $routeParams, accionService, actorService, historiasService, identService, objetivoService, prodService, tareasService) {
       $scope.msg = '';

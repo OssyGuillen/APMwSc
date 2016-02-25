@@ -1,0 +1,41 @@
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" 
+                    data-toggle="collapse" 
+                    data-target="#contenido-plegable">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand" >Prelación entre tareas</span>
+        </div>
+        <div class="collapse navbar-collapse" id="contenido-plegable">
+            <ul class="nav navbar-nav navbar-left">
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+<li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
+<li><a ng-click="VHistorias1(idPila)"
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+    Regresar</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <form name="fPrelacionesForm" ng-submit="APrelaciones0(fPrelacionesForm.$valid)" novalidate>
+            <input id="fPrelaciones_idProyecto" type="hidden" name="idProyecto" ng-model="fPrelaciones.idProyecto" />
+            <div ng-repeat="item_fPrelaciones in fPrelaciones.lista"><ng-form name="fPrelaciones_lista_form">
+            <div class="form-group" ng-class="{ 'has-error' :  fPrelacionesSubmitted && fPrelacionesForm.antecedente.$invalid && fPrelacionesForm.antecedente.$pristine && fPrelacionesSubmitted}"><label for="fPrelaciones_antecedente">Antecedente</label>:&nbsp;<select id="fPrelaciones_antecedente" ng-model="item_fPrelaciones.antecedente" required ng-options="item.key as item.value for item in fPrelaciones_listaTareas"></select><p ng-show="fPrelacionesSubmitted && fPrelacionesForm.antecedente.$invalid" class="help-block">Error en campo Antecedente.</p></div>
+            <div class="form-group" ng-class="{ 'has-error' :  fPrelacionesSubmitted && fPrelacionesForm.consecuente.$invalid && fPrelacionesForm.consecuente.$pristine && fPrelacionesSubmitted}"><label for="fPrelaciones_consecuente">Consecuente</label>:&nbsp;<select id="fPrelaciones_consecuente" ng-model="item_fPrelaciones.consecuente" required ng-options="item.key as item.value for item in fPrelaciones_listaTareas"></select><p ng-show="fPrelacionesSubmitted && fPrelacionesForm.consecuente.$invalid" class="help-block">Error en campo Consecuente.</p></div>
+            <a ng-click="elimPrelacion($index)" class="btn btn-primary">-Prelación</a></ng-form></div>
+            <a ng-click="agrPrelacion()" class="btn btn-primary">+Prelación</a>
+        <button type="submit" class="btn btn-perso btn-lg btn-block">
+            <span class="glyphicon glyphicon-flash"></span>Guardar
+        </button>
+    </form>
+    <hr />
+
+
+<div id="right"></div>
