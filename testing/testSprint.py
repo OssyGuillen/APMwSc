@@ -230,7 +230,6 @@ class TestSprintClass(unittest.TestCase):
         aSprint.deleteSprint(2,self.idBacklog)
 
     # Casos Normales
-    '''
     # Prueba
     def testupdateSprintDesc(self):
         aSprint   = sprints()
@@ -307,7 +306,7 @@ class TestSprintClass(unittest.TestCase):
     #         Pruebas para deleteSprint         #
     ##############################################
     # Caso Inicial
-    # Prueba 53
+    # Prueba
     def testDeletSprintExists(self):
         # Insertamos los datos necesarios. 
         oSprint  = sprints()
@@ -318,7 +317,7 @@ class TestSprintClass(unittest.TestCase):
 
     # Casos Normales
 
-    # Prueba 54
+    # Prueba
     def testDeleteValidSprint(self):
         # Insertamos los datos necesarios.
         oSprint  = sprints()
@@ -330,7 +329,7 @@ class TestSprintClass(unittest.TestCase):
 
     # Casos Fronteras internas
  
-    # Prueba 55
+    # Prueba
     def testDeleteSprintNum1ValidIdBacklog(self):
         # Insertamos los datos necesarios.
         oSprint  = sprints()
@@ -339,7 +338,7 @@ class TestSprintClass(unittest.TestCase):
         result   = oSprint.deleteSprint(1,self.idBacklog)
         self.assertTrue(result) 
 
-    #Prueba 56
+    #Prueba
     def testDeleteSprintNum1000ValidIdBacklog(self):
         # Insertamos los datos necesarios.
         oSprint  = sprints()
@@ -351,7 +350,7 @@ class TestSprintClass(unittest.TestCase):
     
     # Casos Fronteras internas
 
-    #Prueba 57
+    #Prueba
     def testDeleteSprintNum0ValidIdBacklog(self):
         # Insertamos los datos necesarios.
         oSprint  = sprints()
@@ -360,7 +359,7 @@ class TestSprintClass(unittest.TestCase):
         result   = oSprint.deleteSprint(0,self.idBacklog)
         self.assertFalse(result)  
 
-    #Prueba 58
+    #Prueba
     def testDeleteSprintNum1001ValidIdBacklog(self):
         # Insertamos los datos necesarios.
         oSprint  = sprints()
@@ -369,7 +368,7 @@ class TestSprintClass(unittest.TestCase):
         result   = oSprint.deleteSprint(1001,self.idBacklog)
         self.assertFalse(result) 
 
-    #Prueba 59
+    #Prueba
     def testDeleteSprintNegativeNumValidIdBacklog(self):
         # Insertamos los datos necesarios.
         oSprint  = sprints()
@@ -378,7 +377,7 @@ class TestSprintClass(unittest.TestCase):
         result   = oSprint.deleteSprint(-1,self.idBacklog)
         self.assertFalse(result) 
 
-    #Prueba 60
+    #Prueba
     def testDeleteSprintStringNumValidIdBacklog(self):
         # Insertamos los datos necesarios.
         oSprint  = sprints()
@@ -387,7 +386,7 @@ class TestSprintClass(unittest.TestCase):
         result   = oSprint.deleteSprint('1',self.idBacklog)
         self.assertFalse(result) 
 
-    #Prueba 61
+    #Prueba
     def testDeleteSprintNullNumValidIdBacklog(self):
         # Insertamos los datos necesarios.
         oSprint  = sprints()
@@ -397,10 +396,10 @@ class TestSprintClass(unittest.TestCase):
         self.assertFalse(result) 
     '''
     '''
-    #Prueba 62
+    #Prueba
     def testDeleteSprintNotNumValidIdBacklog(self):
         # Insertamos los datos necesarios.
         oSprint  = sprints()
         # Inicio de la prueba.
         result   = oSprint.deleteSprint(100,self.idBacklog)
-        self.assertFalse(result)'''
+        self.assertFalse(result)
