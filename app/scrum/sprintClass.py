@@ -64,7 +64,6 @@ class sprints(object):
 							return False
 				foundSprint[0].S_sprintDescription = newDescription
 				foundSprint[0].S_numero = newSprintNumber
-				foundSprint[0].S_idSprint = idSprint
 				db.session.commit()
 				return True
 		return False
