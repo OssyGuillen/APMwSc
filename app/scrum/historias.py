@@ -620,20 +620,13 @@ def VPrelaciones():
     #Se obtienen todas las tareas de las historias de usuarios
     for hist in userHistoriesList:
         taskList.append(oTask.taskAsociatedToUserHistory(hist.UH_idUserHistory))
-        #result = oUserHistory.transformUserHistory(hist.UH_idUserHistory)
-        #userHistories.append(result)
-        #tupla = (hist.UH_idUserHistory,oTask.historyWeight(hist.UH_idUserHistory))
-        #pesos.append(tupla)
 
     #Se transforman las tareas para la vista
     for lista in taskList:
         for tarea in lista:
             tasks.append(tarea)
 
-        #pesos.append(tupla)
-
-    print (tasks)
-    res['fPrelaciones_listaTareas'] = [{'key':tarea['idTask'], 'value':tarea['description']}for tarea in tasks]
+    res['fPrelaciones_listaTareas'] = [{'key':tarea.HW_idTask, 'value':tarea.HW_description + ' | historia:' + str(tarea.HW_idUserHistory)}for tarea in tasks]
 
     #Action code ends here
     return json.dumps(res)
