@@ -492,180 +492,107 @@ class TestSprintClass(unittest.TestCase):
         aSprint.deleteSprint('@patvr ponytgs do vodn',idBacklog)
         aBacklog.deleteProduct('Bxtyllz')
 
+    '''
+
     #############################################
     #         Pruebas para deleteSprint         #
     #############################################
 
     # Caso Inicial
-
-    # Prueba 55
-    def testDeleteAccionExists(self):
-        # Insertamos los datos necesarios.
-        aBacklog  = backlog()
-        aBacklog.insertBacklog('Bxtyllz','Mxtyrzx',1)
-        findId    = aBacklog.findName('Bxtyllz')
-        idBacklog = findId[0].BL_idBacklog
-        aSprint      = sprints()
-        aSprint.insertSprint('Us@r m2jop vlanct',idBacklog)
+        
+    # Prueba 53
+    def testDeletSprintExists(self):
+        # Insertamos los datos necesarios. 
+        oSprint  = sprints()
+        result   = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
         # Inicio de la prueba.
-        aSprint.deleteSprint('Us@r m2jop vlanct',idBacklog)
-        # Eliminamos los datos insertados.
-        aBacklog.deleteProduct('Bxtyllz')
+        oSprint.deleteSprint(1,self.idBacklog)
+
 
     # Casos Normales
 
-    # Prueba 56      
-    def testDeleteAccionDesc(self):
+    # Prueba 54
+    def testDeleteValidSprint(self):
         # Insertamos los datos necesarios.
-        aBacklog   = backlog()
-        aBacklog.insertBacklog('Bxtyllz','Mxtyrzx',1)
-        findId    = aBacklog.findName('Bxtyllz')
-        idBacklog = findId[0].BL_idBacklog
-        aSprint      = sprints()
-        aSprint.insertSprint('Dysdñvr prm@s',idBacklog)
+        oSprint  = sprints()
+        result   = oSprint.insertSprint(2,'VtXcyr pvntgs dw wydz',self.idBacklog)
         # Inicio de la prueba.
-        result    = aSprint.deleteSprint('Dysdñvr prm@s',idBacklog)
+        result   = oSprint.deleteSprint(2,self.idBacklog)
         self.assertTrue(result)
-        # Eliminamos los datos insertados.
-        aBacklog.deleteProduct('Bxtyllz')
 
-    # Prueba 57
-    def testDeleteAccionDescNotExits(self):
+
+    # Casos Fronteras internas
+ 
+    # Prueba 55
+    def testDeleteSprintNum1ValidIdBacklog(self):
         # Insertamos los datos necesarios.
-        aBacklog  = backlog()
-        aBacklog.insertBacklog('Bxtyllz','Mxtyrzx',1)
-        findId    = aBacklog.findName('Bxtyllz')
-        idBacklog = findId[0].BL_idBacklog
-        aSprint      = sprints()
-        aSprint.insertSprint('Dysdñvr prm@s',idBacklog)
-        result    = aSprint.deleteSprint('Dysdñvr v3styfzzos',idBacklog)
-        self.assertFalse(result)
+        oSprint  = sprints()
+        result   = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
         # Inicio de la prueba.
-        aSprint.deleteSprint('Dysdñvr prm@s',idBacklog)
-        # Eliminamos los datos insertados.
-        aBacklog.deleteProduct('Bxtyllz')
+        result   = oSprint.deleteSprint(1,self.idBacklog)
+        self.assertTrue(result) 
 
-    # Casos Fronteras
-
-    # Prueba 58
-    def testDeleteAccionDescLen1(self):
+    #Prueba 56
+    def testDeleteSprintNum1000ValidIdBacklog(self):
         # Insertamos los datos necesarios.
-        aBacklog  = backlog()
-        aBacklog.insertBacklog('Bxtyllz','Mxtyrzx',1)
-        findId    = aBacklog.findName('Bxtyllz')
-        idBacklog = findId[0].BL_idBacklog
-        aSprint      = sprints()
-        aSprint.insertSprint('U',idBacklog)
+        oSprint  = sprints()
+        result   = oSprint.insertSprint(1000,'VtXcyr pvntgs dw wydz',self.idBacklog)
         # Inicio de la prueba.
-        result    = aSprint.deleteSprint('U',idBacklog)
+        result   = oSprint.deleteSprint(1000,self.idBacklog)
         self.assertTrue(result)
-        # Eliminamos los datos insertados.
-        aBacklog.deleteProduct('Bxtyllz')
 
-    # Prueba 59
-    def testDeleteAccionDescLen140(self):
+    
+    # Casos Fronteras internas
+
+    #Prueba 57
+    def testDeleteSprintNum0ValidIdBacklog(self):
         # Insertamos los datos necesarios.
-        aBacklog   = backlog()
-        aBacklog.insertBacklog('Bxtyllz','Mxtyrzx',1)
-        findId     = aBacklog.findName('Bxtyllz')
-        idBacklog  = findId[0].BL_idBacklog
-        aSprint       = sprints()
-        aSprint.insertSprint(20*'Zewftsx',idBacklog)
+        oSprint  = sprints()
+        result   = oSprint.insertSprint(0,'VtXcyr pvntgs dw wydz',self.idBacklog)
         # Inicio de la prueba.
-        result     = aSprint.deleteSprint(20*'Zewftsx',idBacklog)
-        self.assertTrue(result)
-        # Eliminamos los datos insertados.
-        aBacklog.deleteProduct('Bxtyllz')
+        result   = oSprint.deleteSprint(0,self.idBacklog)
+        self.assertFalse(result)  
 
-    # Prueba 60
-    def testDeleteAccionDescLen0(self):
+    #Prueba 58
+    def testDeleteSprintNum1001ValidIdBacklog(self):
         # Insertamos los datos necesarios.
-        aBacklog   = backlog()
-        aBacklog.insertBacklog('Bxtyllz','Mxtyrzx',1)
-        findId     = aBacklog.findName('Bxtyllz')
-        idBacklog  = findId[0].BL_idBacklog
-        aSprint       = sprints()
-        aSprint.insertSprint('',idBacklog)
+        oSprint  = sprints()
+        result   = oSprint.insertSprint(1001,'VtXcyr pvntgs dw wydz',self.idBacklog)
         # Inicio de la prueba.
-        result     = aSprint.deleteSprint('',idBacklog)
-        self.assertFalse(result)
-        # Eliminamos los datos insertados.
-        aBacklog.deleteProduct('Bxtyllz')
+        result   = oSprint.deleteSprint(1001,self.idBacklog)
+        self.assertFalse(result) 
 
-    # Prueba 61
-    def testDeleteAccionDescLen141(self):
+    #Prueba 59
+    def testDeleteSprintNegativeNumValidIdBacklog(self):
         # Insertamos los datos necesarios.
-        aBacklog  = backlog()
-        aBacklog.insertBacklog('Bxtyllz','Mxtyrzx',1)
-        findId    = aBacklog.findName('Bxtyllz')
-        idBacklog = findId[0].BL_idBacklog
-        aSprint      = sprints()
-        aSprint.insertSprint(20*'Zewftsx'+'r',idBacklog)
+        oSprint  = sprints()
+        result   = oSprint.insertSprint(-1,'VtXcyr pvntgs dw wydz',self.idBacklog)
         # Inicio de la prueba.
-        result    = aSprint.deleteSprint(20*'Zewftsx'+'r',idBacklog)
-        self.assertFalse(result)
-        # Eliminamos los datos insertados.
-        aBacklog.deleteProduct('Bxtyllz')
+        result   = oSprint.deleteSprint(-1,self.idBacklog)
+        self.assertFalse(result) 
 
-    # Prueba 62
-    def testDeleteAccionIdBacklogInvalid(self):
-        # Inicio de la prueba.
-        aSprint      = sprints()
-        result    = aSprint.deleteSprint(20*'Zewftsx'+'r',0)
-        self.assertFalse(result)
-
-    # Casos Maliciosos
-
-    # Prueba 63
-    def testDeleteAccionDescNone(self):
+    #Prueba 60
+    def testDeleteSprintStringNumValidIdBacklog(self):
         # Insertamos los datos necesarios.
-        aBacklog  = backlog()
-        aBacklog.insertBacklog('Bxtyllz','Mxtyrzx',1)
-        findId    = aBacklog.findName('Bxtyllz')
-        idBacklog = findId[0].BL_idBacklog
+        oSprint  = sprints()
+        result   = oSprint.insertSprint('1','VtXcyr pvntgs dw wydz',self.idBacklog)
         # Inicio de la prueba.
-        aSprint      = sprints()
-        result    = aSprint.deleteSprint(None,idBacklog)
-        self.assertFalse(result,"Descripcion válida")
-        # Eliminamos los datos insertados.
-        aBacklog.deleteProduct('Bxtyllz')
+        result   = oSprint.deleteSprint('1',self.idBacklog)
+        self.assertFalse(result) 
 
-    # Prueba 64
-    def testDeleteAccionNotString(self):
+    #Prueba 61
+    def testDeleteSprintNullNumValidIdBacklog(self):
         # Insertamos los datos necesarios.
-        aBacklog  = backlog()
-        aBacklog.insertBacklog('Bxtyllz','Mxtyrzx',1)
-        findId    = aBacklog.findName('Bxtyllz')
-        idBacklog = findId[0].BL_idBacklog
-        aSprint      = sprints()
-        aSprint.insertSprint(12345,idBacklog)
+        oSprint  = sprints()
+        result   = oSprint.insertSprint(null,'VtXcyr pvntgs dw wydz',self.idBacklog)
         # Inicio de la prueba.
-        result    = aSprint.deleteSprint(12345,idBacklog)
-        self.assertFalse(result,"Descripcion válida")
-        # Eliminamos los datos insertados.
-        aBacklog.deleteProduct('Bxtyllz')
+        result   = oSprint.deleteSprint(null,self.idBacklog)
+        self.assertFalse(result) 
 
-    # Prueba 65    
-    def testDeleteAccionNotExist(self):
+    #Prueba 62
+    def testDeleteSprintNotNumValidIdBacklog(self):
         # Insertamos los datos necesarios.
-        aBacklog = backlog()
-        aBacklog.insertBacklog('Bxtyllz','3nxmygzs db cAmpq',1)
+        oSprint  = sprints()
         # Inicio de la prueba.
-        aSprint     = sprints()
-        result   = aSprint.deleteSprint('Lys@a dp 3nfmsgzs xn vactayta',2)
-        self.assertFalse(result)
-        # Eliminamos los datos insertados.
-        aBacklog.deleteProduct('Bxtyllz')
-
-    # Prueba 66
-    def testDeleteAccionDescIdNegative(self):
-        # Insertamos los datos necesarios.
-        aBacklog = backlog()
-        aBacklog.insertBacklog('Bxtyllz','3nxmygzs db cAmpq',1)
-        # Inicio de la prueba.
-        aSprint     = sprints()
-        result   = aSprint.deleteSprint('Lys@a dp 3nfmsgzs',-1)
-        self.assertFalse(result,"Id válida")
-        # Eliminamos los datos insertados.
-        aBacklog.deleteProduct('Bxtyllz')
-'''''
+        result   = oSprint.deleteSprint(100,self.idBacklog)
+        self.assertFalse(result) 
