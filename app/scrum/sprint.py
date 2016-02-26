@@ -82,7 +82,7 @@ def AModifSprint():
     result = oSprint.updateSprint(idSprint, idPila, newSprintNumber, newDescription)
     if not result:
         res = results[1]        
-        res['label'] = res['label'] + '/' + repr(idPila)
+        res['label'] = res['label'] + '/' + str(idPila)
     #Action code ends here
     if "actor" in res:
         if res['actor'] is None:
