@@ -10,6 +10,8 @@ from backLog import *
 MIN_ID                 = 1
 MIN_SPRINT_DESCRIPTION = 1
 MAX_SPRINT_DESCRIPTION = 140
+MIN_SPRINT_NUMBER = 1
+MAX_SPRINT_NUMBER = 1000
 
 
 class sprints(object):
@@ -24,10 +26,11 @@ class sprints(object):
 		checkTypeNumber      = type(sprintNumber) == int
 
 		if checkTypeDescription and checkTypeId and checkTypeNumber:
+			checkSprintNumber          = MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
 			checkLongSprintDescription = MIN_SPRINT_DESCRIPTION <= len(sprintDescription) <= MAX_SPRINT_DESCRIPTION
 			checkLongId                = MIN_ID <= idBacklog
-		
-			if checkLongSprintDescription and checkLongId:
+
+			if checkSprintNumber and checkLongSprintDescription and checkLongId:
 				foundBacklog = clsBacklog.query.filter_by(BL_idBacklog = idBacklog).all()                      
 				
 				if foundBacklog != []:
@@ -70,19 +73,29 @@ class sprints(object):
 
 	def searchIdSprint(self, sprintNumber, backlog):
 		'''Permite buscar sprints por su id'''
-		
 		checkTypeIdSprint = type(sprintNumber) == int
-		checkTypeBacklog = type(backlog) == int
+		checkTypeBacklog  = type(backlog) == int
 		foundSprint       = []
 
 		if checkTypeIdSprint and checkTypeBacklog:
 			foundSprint = clsSprint.query.filter_by(S_numero  = sprintNumber).filter_by(S_idBacklog = backlog).all()
 		return foundSprint
 
-	def deleteSprint(self, sprintNumber,idBacklog):
+	def deleteSprint(self,sprintNumber,idBacklog):
 		'''Permite eliminar un Sprint segun su numero en el backlog'''
-		pass
+		checkTypeSprintNumber = type(sprintNumber) == int
+		checkTypeidBacklog    = type(idBacklog) == int
 
+		if checkTypeSprintNumber and checkTypeidBacklog:
+			checkLenSprintNumber = MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
+			checkLongIdBacklog   = MIN_ID <= idBacklog
 
-
+			if checkLenSprintNumber and checkLongIdBacklog:
+				foundSprint = clsSprint.query.filter_by(S_numero = sprintNumber,S_idBacklog = idBacklog).all()
+				if foundSprint != []:
+					for i in foundSprint:
+						db.session.delete(i)
+					db.session.commit()
+					return True
+		return False
 # Fin Clase Sprint
