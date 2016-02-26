@@ -6,7 +6,7 @@ import unittest
 # Ruta que permite utilizar el módulo sprintClass.py
 sys.path.append('../app/scrum')
 
-from app.scrum.sprintClass import *
+from sprintClass import *
 
 class TestSprintClass(unittest.TestCase):
 
