@@ -46,10 +46,26 @@ def AElimSprint():
     #POST/PUT parameters
     params = request.get_json()
     results = [{'label':'/VSprints', 'msg':['Sprint eliminado']}, {'label':'/VSprint', 'msg':['Error al eliminar Sptrint']}, ]
-    res = results[0]
-    #Action code goes here, res should be a list with a label and a message
+    res = results[1]
+    
+    # Obtenemos el id del producto
+    idPila       = int(session['idPila'])
 
-    res['label'] = res['label'] + '/' + repr(1)
+    # Obtenemos el id del sprint
+    #idSprint = int(params['idSprint'])
+    idSprint = int(session['idSprint'])
+
+    # Conseguimos el sprint a eliminar
+    oSprint  = sprint()
+    found    = oSprint.searchIdSprint(idSprint,idPila)
+
+    if (found != []):
+        deleted = oSprint.deleteSprint(found[0].S_numero, found[0].S_idBacklog)
+
+    if deleted:
+            res = results[0]  
+
+    res['label'] = res['label'] + '/' + str(idPila)
 
     #Action code ends here
     if "actor" in res:
@@ -76,19 +92,22 @@ def AModifSprint():
 
     #Action code goes here, res should be a list with a label and a message
 
-    res['label'] = res['label'] + '/' + repr(1)
+    res['label'] = res['label'] + '/' + str(idPila)
     print(idSprint, idPila, file = sys.stderr )
     oSprint = sprints()
     result = oSprint.updateSprint(idSprint, idPila, newSprintNumber, newDescription)
     if not result:
         res = results[1]        
-        res['label'] = res['label'] + '/' + repr(1)
+        res['label'] = res['label'] + '/' + str(idPila)
     #Action code ends here
     if "actor" in res:
         if res['actor'] is None:
             session.pop("actor", None)
         else:
             session['actor'] = res['actor']
+
+    res['idPila'] = idPila
+
 
     return json.dumps(res)
 
@@ -138,15 +157,6 @@ def VSprint():
       return json.dumps(res)
     res['usuario'] = session['usuario']
 
-    # res['fSprint'] = {
-    #   'idPila':1,
-    #   'numero':1, 
-    #   'descripcion' :'Carrera inicial. Modelo de datos, MVC, identificación'
-    #   }
-    # res['idPila'] = 1
-
-
-
     # Buscamos el actor actual
     oSprint = sprints()
     result = oSprint.searchIdSprint(idSprint,idPila)
@@ -164,8 +174,9 @@ def VSprint():
 def VSprints():
     #GET parameter
 
-    idPila = int(request.args.get('idPila',1))
-
+    idPila = int(request.args['idPila'])
+    print(">>>>", file=sys.stderr)
+    print(idPila, file=sys.stderr)
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
