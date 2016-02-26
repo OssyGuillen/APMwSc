@@ -612,8 +612,6 @@ def VPrelaciones():
 
     #Hacer query para obtener las tareas de esta historia y devolverlas con su id y valor en una lista
     userHistoriesList = oBacklog.userHistoryAsociatedToProduct(int(idPila))
-    pesos          = []
-    userHistories  = []
     taskList = []
     tasks = []
 
