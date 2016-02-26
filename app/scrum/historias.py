@@ -614,14 +614,26 @@ def VPrelaciones():
     userHistoriesList = oBacklog.userHistoryAsociatedToProduct(int(idPila))
     pesos          = []
     userHistories  = []
+    taskList = []
+    tasks = []
 
+    #Se obtienen todas las tareas de las historias de usuarios
     for hist in userHistoriesList:
-        result = oUserHistory.transformUserHistory(hist.UH_idUserHistory)
-        userHistories.append(result)
-        tupla = (hist.UH_idUserHistory,oTask.historyWeight(hist.UH_idUserHistory))
-        pesos.append(tupla)
+        taskList.append(oTask.taskAsociatedToUserHistory(hist.UH_idUserHistory))
+        #result = oUserHistory.transformUserHistory(hist.UH_idUserHistory)
+        #userHistories.append(result)
+        #tupla = (hist.UH_idUserHistory,oTask.historyWeight(hist.UH_idUserHistory))
+        #pesos.append(tupla)
 
-    res['fPrelaciones_listaTareas'] = [{'key':historia['idHistory'], 'value':'En tanto ' + historia['actors'] + historia['accions'] + ' para ' + historia['objectives']}for historia in userHistories]
+    #Se transforman las tareas para la vista
+    for tarea in taskList:
+        result = oUserHistory.transformUserHistory(hist.UH_idUserHistory)
+        tasks.append(tarea)
+        tupla = (hist.UH_idUserHistory,oTask.historyWeight(hist.UH_idUserHistory))
+        #pesos.append(tupla)
+
+    print (taskList)
+    res['fPrelaciones_listaTareas'] = [{'key':tare['idTask'], 'value':tare['description']}for tare in tasks]
 
     #Action code ends here
     return json.dumps(res)
