@@ -29,7 +29,7 @@
 </nav>
 
         <table ng-table="tableParams1" template-pagination="pager.html" class="table">
-            <tr ng-repeat="row in $data">
+            <tr ng-repeat="row in $data | orderBy:'descripcion'">
                 <td data-title="'Número'" ng-bind="row['numero']"></td>
                 <td data-title="'Descripción'" ng-bind="row['descripcion']"></td>
                   <td ng-show="row['numero']"><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VSprint1(row['numero'])">Ver</a></td>
