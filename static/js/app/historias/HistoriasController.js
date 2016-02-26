@@ -8,10 +8,7 @@ scrumModule.config(function ($routeProvider) {
             }).when('/VHistoria/:idHistoria', {
                 controller: 'VHistoriaController',
                 templateUrl: 'app/historias/VHistoria.html'
-            }).when('/VHistorias/:idPila', {
-                controller: 'VHistoriasController',
-                templateUrl: 'app/historias/VHistorias.html'
-            }).when('/VPrelaciones/:idPila', {
+            }).when('/VPrelaciones/:idPila', { // CAMBIO idPila -> idHistoria
                 controller: 'VPrelacionesController',
                 templateUrl: 'app/historias/VPrelaciones.html'
             }).when('/VPrioridades/:idPila', {
@@ -233,7 +230,7 @@ scrumModule.controller('VHistoriasController',
       $scope.VLogin4 = function() {
         $location.path('/VLogin');
       };
-      $scope.VPrelaciones5 = function(idPila) {
+      $scope.VPrelaciones5 = function(idPila) {  // CAMBIO idPila -> idHistoria
         $location.path('/VPrelaciones/'+idPila);
       };
 
@@ -248,7 +245,7 @@ scrumModule.controller('VPrelacionesController',
       $scope.msg = '';
       $scope.fPrelaciones = {};
 
-      historiasService.VPrelaciones({"idPila":$routeParams.idPila}).then(function (object) {
+      historiasService.VPrelaciones({"idPila":$routeParams.idPila}).then(function (object) { // CAMBIO idPila -> idHistoria
         $scope.res = object.data;
         for (var key in object.data) {
             $scope[key] = object.data[key];

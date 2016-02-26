@@ -246,8 +246,8 @@ class clsPriority(db.Model):
 
 	__tablename__ = 'priority'
 	P_idPriority      = db.Column(db.Integer, primary_key = True, index = True)
-	P_idFirstTask     = db.Column(db.Integer, db.ForeignKey('task.HW_idTask'))
-	P_idSecondTask    = db.Column(db.Integer, db.ForeignKey('task.HW_idTask')) 
+	P_idFirstTask     = db.Column(db.Integer, db.ForeignKey('userHistory.UH_idUserHistory'))
+	P_idSecondTask    = db.Column(db.Integer, db.ForeignKey('userHistory.UH_idUserHistory'))
 
 
 	def __init__(self, firstTask, secondTask):

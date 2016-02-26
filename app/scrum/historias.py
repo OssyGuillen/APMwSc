@@ -424,7 +424,7 @@ def VHistorias():
     oObjUserHIst      = objectivesUserHistory()
         
     # Obtenemos las historias asociadas al producto idPila.
-    userHistoriesList = oBacklog.userHistoryAsociatedToProduct(idPila)  
+    userHistoriesList = oBacklog.userHistoryAsociatedToProduct(idPila)
     pesos          = []         
     userHistories  = []
     options        = {1:'podria ',2:'puede '}
@@ -558,7 +558,16 @@ def APrelaciones():
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
 
-    print(params['lista'])
+    params  = request.get_json()
+    for i in params['lista']:
+        if (int(i['antecedente']) == int(i['consecuente'])):
+            print('Error, la historia no debe prelarse a si misma')
+        else:
+            newPriority = clsPriority(int(i['antecedente']),int(i['consecuente']))
+            db.session.add(newPriority)
+            db.session.commit()
+
+
     res['label'] = res['label'] + '/' + repr(1)
 
     #Action code ends here
@@ -572,7 +581,7 @@ def APrelaciones():
 @historias.route('/historias/VPrelaciones')
 def VPrelaciones():
     #GET parameter
-    idPila = request.args['idPila']
+    idPila = request.args['idPila'] # CAMBIO
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
@@ -581,16 +590,38 @@ def VPrelaciones():
     if 'usuario' not in session:
       res['logout'] = '/'
       return json.dumps(res)
+
     res['usuario'] = session['usuario']
+
+    # Obtenemos el id del producto y de la historia.
+    idPila = request.args['idPila']
+
+    oBacklog          = backlog()
+    oUserHistory      = userHistory()
+    oTask             = task()
+
+
+    #Hacer query para obtener las prelaciones que existen ya en esta historia y devolverlas en fPrelaciones
     res['fPrelaciones'] = {'lista':[
       {'antecedente':1, 'consecuente':2},
       {'antecedente':2, 'consecuente':3}]}
-    res['idPila'] = 1
-    res['fPrelaciones_listaTareas'] = [
-      {'key':1,'value':'Cortar el césped'},
-      {'key':2,'value':'Hacer la siesta'},
-      {'key':3,'value':'Almorzar'}
-    ]
+
+
+
+    res['idPila'] = idPila
+
+    #Hacer query para obtener las tareas de esta historia y devolverlas con su id y valor en una lista
+    userHistoriesList = oBacklog.userHistoryAsociatedToProduct(int(idPila))
+    pesos          = []
+    userHistories  = []
+
+    for hist in userHistoriesList:
+        result = oUserHistory.transformUserHistory(hist.UH_idUserHistory)
+        userHistories.append(result)
+        tupla = (hist.UH_idUserHistory,oTask.historyWeight(hist.UH_idUserHistory))
+        pesos.append(tupla)
+
+    res['fPrelaciones_listaTareas'] = [{'key':historia['idHistory'], 'value':'En tanto ' + historia['actors'] + historia['accions'] + ' para ' + historia['objectives']}for historia in userHistories]
 
     #Action code ends here
     return json.dumps(res)
