@@ -14,7 +14,7 @@ class precedence(object):
     def insertPrecedence(self, idFirstTask, idSecondTask, idPila):
         if (idFirstTask != idSecondTask):
             if self.doesNotMakeLoops(idFirstTask, idSecondTask):
-                newPrecedence = clsPrecedence(idFirstTask, idSecondTask)
+                newPrecedence = clsPrecedence(idFirstTask, idSecondTask, idPila)
                 db.session.add(newPrecedence)
                 db.session.commit()
             else:
