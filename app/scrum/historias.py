@@ -633,7 +633,7 @@ def VPrelaciones():
         #pesos.append(tupla)
 
     print (tasks)
-    res['fPrelaciones_listaTareas'] = [{'key':tarea['idTask'], 'value':tarea['description']}for tarea in tasks]
+    res['fPrelaciones_listaTareas'] = [{'key':tarea.HW_idTask, 'value':tarea.HW_description}for tarea in tasks]
 
     #Action code ends here
     return json.dumps(res)
