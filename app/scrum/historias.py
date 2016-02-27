@@ -579,7 +579,7 @@ def APrelaciones():
 @historias.route('/historias/VPrelaciones')
 def VPrelaciones():
     #GET parameter
-    idPila = request.args['idPila'] # CAMBIO
+    idPila = request.args['idPila']
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
@@ -597,12 +597,22 @@ def VPrelaciones():
     oBacklog          = backlog()
     oUserHistory      = userHistory()
     oTask             = task()
+    oPrecedence       = precedence()
 
 
-    #Hacer query para obtener las prelaciones que existen ya en esta historia y devolverlas en fPrelaciones
-    res['fPrelaciones'] = {'lista':[
-      {'antecedente':1, 'consecuente':2},
-      {'antecedente':2, 'consecuente':3}]}
+    #Hacer query para obtener las prelaciones que existen ya en este producto y devolverlas en fPrelaciones
+    lista = []
+    precedenceList = oPrecedence.getAllPrecedences(idPila)
+    print(precedenceList)
+    for object in precedenceList:
+        lista.append({'antecedente':object.P_idFirstTask, 'consecuente':object.P_idSecondTask})
+    print(lista)
+
+    res['fPrelaciones'] = {'lista':lista}
+
+    #res['fPrelaciones'] = {'lista':[
+    #  {'antecedente':1, 'consecuente':2},
+    #  {'antecedente':2, 'consecuente':3}]}
 
 
 
@@ -618,11 +628,11 @@ def VPrelaciones():
         taskList.append(oTask.taskAsociatedToUserHistory(hist.UH_idUserHistory))
 
     #Se transforman las tareas para la vista
-    for lista in taskList:
-        for tarea in lista:
+    for listaT in taskList:
+        for tarea in listaT:
             tasks.append(tarea)
 
-    res['fPrelaciones_listaTareas'] = [{'key':tarea.HW_idTask, 'value':tarea.HW_description + ' | historia:' + str(tarea.HW_idUserHistory)}for tarea in tasks]
+    res['fPrelaciones_listaTareas'] = [{'key':tarea.HW_idTask, 'value':tarea.HW_description + ' | historia:' + oUserHistory.getUHCodeFromId(tarea.HW_idUserHistory)}for tarea in tasks]
 
     #Action code ends here
     return json.dumps(res)

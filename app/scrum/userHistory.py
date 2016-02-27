@@ -357,5 +357,9 @@ class userHistory(object):
                     return historyDict
 
         return historyDict 
-    
+
+    def getUHCodeFromId(self,idUserHistory):
+        found = clsUserHistory.query.filter_by(UH_idUserHistory = idUserHistory).first()
+        return found.UH_codeUserHistory
+
 # Fin Clase userHistory
