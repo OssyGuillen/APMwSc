@@ -254,7 +254,7 @@ class clsPrecedence(db.Model):
 	def __init__(self, firstTask, secondTask, idPila):
 		self.P_idFirstTask = firstTask
 		self.P_idSecondTask = secondTask
-        self.P_idPila = idPila
+		self.P_idPila = idPila
 
 	def __repr__(self):
 		'''Representacion en string de la Categoria'''
