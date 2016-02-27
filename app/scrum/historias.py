@@ -560,8 +560,20 @@ def APrelaciones():
     #Action code goes here, res should be a list with a label and a message
 
     oPrecedence = precedence()
-    for i in params['lista']:
-        if (int(i['antecedente']) == int(i['consecuente'])):
+    # Obtenemos prelaciones ya existentes en el producto
+    previous = oPrecedence.getAllPrecedences(session['idPila'])
+    # Buscamos que precedencias fueron eliminadas y agregadas por el usuario e ignoramos las que no fueron cambiadas
+    for object in previous:
+        esta = False
+        for i in params['lista']:
+            if (object.P_idFirstTask == int(i['antecedente']) and object.P_idSecondTask == int(i['consecuente'])):
+                esta = True
+                params['lista'].remove(i)
+        if not esta: # Fue eliminada
+            oPrecedence.deletePrecedence(object.P_idFirstTask, object.P_idSecondTask) #Podria eliminar el objeto directamente, sin el deletePrecedence
+
+    for i in params['lista']: # Los que van a ser agregados
+        if (int(i['antecedente']) == int(i['consecuente'])): # Este if se puede quitar porque se esta haciendo la verficiacion en insertPrecedence
             print('Error, la historia no debe prelarse a si misma')
         else:
             oPrecedence.insertPrecedence(int(i['antecedente']), int(i['consecuente']), session['idPila'])
@@ -603,10 +615,8 @@ def VPrelaciones():
     #Hacer query para obtener las prelaciones que existen ya en este producto y devolverlas en fPrelaciones
     lista = []
     precedenceList = oPrecedence.getAllPrecedences(idPila)
-    print(precedenceList)
     for object in precedenceList:
         lista.append({'antecedente':object.P_idFirstTask, 'consecuente':object.P_idSecondTask})
-    print(lista)
 
     res['fPrelaciones'] = {'lista':lista}
 
@@ -621,18 +631,18 @@ def VPrelaciones():
     #Hacer query para obtener las tareas de esta historia y devolverlas con su id y valor en una lista
     userHistoriesList = oBacklog.userHistoryAsociatedToProduct(int(idPila))
     taskList = []
-    tasks = []
+    #tasks = []
 
     #Se obtienen todas las tareas de las historias de usuarios
     for hist in userHistoriesList:
-        taskList.append(oTask.taskAsociatedToUserHistory(hist.UH_idUserHistory))
+        taskList.extend(oTask.taskAsociatedToUserHistory(hist.UH_idUserHistory))
 
     #Se transforman las tareas para la vista
-    for listaT in taskList:
-        for tarea in listaT:
-            tasks.append(tarea)
+    #for listaT in taskList:
+    #    for tarea in listaT:
+    #    tasks.append(tarea)
 
-    res['fPrelaciones_listaTareas'] = [{'key':tarea.HW_idTask, 'value':tarea.HW_description + ' | historia:' + oUserHistory.getUHCodeFromId(tarea.HW_idUserHistory)}for tarea in tasks]
+    res['fPrelaciones_listaTareas'] = [{'key':tarea.HW_idTask, 'value':tarea.HW_description + ' | historia:' + oUserHistory.getUHCodeFromId(tarea.HW_idUserHistory)}for tarea in taskList]
 
     #Action code ends here
     return json.dumps(res)

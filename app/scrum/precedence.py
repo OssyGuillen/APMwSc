@@ -27,8 +27,11 @@ class precedence(object):
             print('Error')
         return
 
-
     def deletePrecedence(self, idFirstTask, idSecondTask):
+        exists = clsPrecedence.query.filter_by(P_idFirstTask = idFirstTask, P_idSecondTask = idSecondTask).first()
+        if exists != []:
+            db.session.delete(exists)
+            db.session.commit()
         return
 
     def searchTaskByPrec(self, idTask):
