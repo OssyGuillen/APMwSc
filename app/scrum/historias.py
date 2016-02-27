@@ -9,6 +9,7 @@ from app.scrum.objective             import *
 from app.scrum.objectivesUserHistory import *
 from app.scrum.actorsUserHistory     import * 
 from app.scrum.task                  import *
+from app.scrum.precedence            import *
 from sqlalchemy.ext.baked            import Result
 
 historias = Blueprint('historias', __name__)
@@ -558,15 +559,12 @@ def APrelaciones():
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
 
-    params  = request.get_json()
+    oPrecedence = precedence()
     for i in params['lista']:
         if (int(i['antecedente']) == int(i['consecuente'])):
             print('Error, la historia no debe prelarse a si misma')
         else:
-            newPriority = clsPriority(int(i['antecedente']),int(i['consecuente']))
-            db.session.add(newPriority)
-            db.session.commit()
-
+            oPrecedence.insertPrecedence(int(i['antecedente']), int(i['consecuente']), session['idPila'])
 
     res['label'] = res['label'] + '/' + repr(1)
 

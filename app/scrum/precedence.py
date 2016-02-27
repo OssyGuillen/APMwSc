@@ -8,8 +8,12 @@ sys.path.append('app/scrum')
 from model import *
 
 class precedence(object):
-    def gelAllPrecedences(self, idPila):
-        return
+    def getAllPrecedences(self, idPila):
+        existsBacklog = clsBacklog.query.filter_by(BL_idBacklog = idPila).first()
+        if existsBacklog != []:
+            found = clsPrecedence.query.filter_by(P_idPila = idPila).all()
+            return found
+        return ([])
 
     def insertPrecedence(self, idFirstTask, idSecondTask, idPila):
         if (idFirstTask != idSecondTask):
