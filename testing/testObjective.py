@@ -2,7 +2,6 @@
 
 import sys
 import unittest
-from gi.overrides.keysyms import idotless
 
 # Ruta que permite utilizar el módulo objective.py
 sys.path.append('../app/scrum')
