@@ -1,7 +1,8 @@
-# -*- coding: utf-8 -*-.
+# -*- coding: utf-8 -*-. 
 
 import sys
 import datetime
+
 # Ruta que permite utilizar el módulo model.py
 sys.path.append('app/scrum')
 
@@ -10,9 +11,9 @@ from model import *
 # Declaracion de constantes.
 CONST_MAX_DESCRIPTION = 140
 CONST_MIN_DESCRIPTION = 1
-CONST_MAX_NAME = 50
-CONST_MIN_NAME = 1
-CONST_MIN_ID = 1
+CONST_MAX_NAME        = 50
+CONST_MIN_NAME        = 1
+CONST_MIN_ID          = 1
 
 # Estructuras relacionadas a ;as escalas de los productos.
 scale_type = [1, 2]
@@ -77,6 +78,7 @@ class backlog(object):
                     return True
         return False
 
+
     def modifyBacklog(self, name, new_name, new_description, new_scale):
         '''Permite actualizar los valores de un producto'''
 
@@ -135,11 +137,12 @@ class backlog(object):
             foundName = self.findName(name)
 
             if foundName != []:
-                tupla = clsBacklog.query.filter_by(BL_name=name).first()
+                tupla = clsBacklog.query.filter_by(BL_name = name).first()    
                 db.session.delete(tupla)
                 db.session.commit()
                 return True
-        return False
+        return False            
+
 
     def scaleType(self, idBacklog):
         '''Permite obtener el tipo de escala seleccionado para un producto'''
@@ -148,11 +151,77 @@ class backlog(object):
 
         if checkTypeId:
             found = clsBacklog.query.filter_by(BL_idBacklog=idBacklog).all()
-
             if found != []:
                 scale = found[0].BL_scaleType
                 return scale
         return ([])
+    
+
+    def actorsAsociatedToProduct(self,idBacklog):
+        ''' Permite obtener una lista de los Actores asociados a una pila de Producto'''
+        
+        checkTypeId = type(idBacklog) == int 
+           
+        if checkTypeId: 
+            found = clsActor.query.filter_by(A_idBacklog = idBacklog).all()
+            return found
+        return([])              
+                   
+
+    def accionsAsociatedToProduct(self,idBacklog):
+        ''' Permite obtener una lista de las acciones asociados a una pila de Producto'''
+        
+        checkTypeId = type(idBacklog) == int    
+        
+        if checkTypeId: 
+            found = clsAccion.query.filter_by(AC_idBacklog  = idBacklog).all()
+            return found
+        return([]) 
+   
+
+    def objectivesAsociatedToProduct(self,idBacklog):
+        ''' Permite obtener una lista de los Objetivos asociados a una pila de Producto'''
+        
+        checkTypeId = type(idBacklog) == int   
+         
+        if checkTypeId: 
+            found = clsObjective.query.filter_by(O_idBacklog = idBacklog).all()
+            return found
+        return([]) 
+      
+    
+    def userHistoryAsociatedToProduct(self,idBacklog):
+        ''' Permite obtener una lista de los historias de usuario asociadas a una pila de Producto'''
+        
+        checkTypeId = type(idBacklog) == int    
+        
+        if checkTypeId: 
+            found = clsUserHistory.query.filter_by(UH_idBacklog  = idBacklog).all()
+            return found
+        return([])       
+                          
+
+    def updateScaleType(self,idUserHistory,new_scale):
+        """Permite actualizar el volor actual de la escala de una historia de usuario"""
+        
+        checkTypeId    = type(idUserHistory) == int
+        checkTypeScale = type(new_scale) == int and new_scale in scale 
+          
+        if checkTypeId and checkTypeScale:
+            foundUH = clsUserHistory.query.filter_by(UH_idUserHistory = idUserHistory).first()  
+                     
+            if foundUH != None:
+                
+                if new_scale == 1:
+                    
+                    if foundUH.UH_scale in scale_alta:foundUH.UH_scale = 1
+                    elif foundUH.UH_scale in scale_media:foundUH.UH_scale = 2
+                    elif foundUH.UH_scale in scale_baja: foundUH.UH_scale = 3
+                    db.session.commit()
+                    return True
+                
+                elif new_scale == 2:
+                    
 
     def actorsAsociatedToProduct(self, idBacklog):
         ''' Permite obtener una lista de los Actores asociados a una pila de Producto'''
@@ -264,6 +333,8 @@ class backlog(object):
                         foundUH.UH_scale = scale[foundUH.UH_scale]
                         db.session.commit()
                         return True
+        return False 
+        
         return False
 
 # Fin Clase Backlog

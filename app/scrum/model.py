@@ -19,6 +19,7 @@ SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] =\
+
     'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 
