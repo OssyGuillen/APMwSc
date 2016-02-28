@@ -50,6 +50,11 @@ from app.scrum.equipo import equipo
 app.register_blueprint(equipo)
 from app.scrum.anexo import anexo
 app.register_blueprint(anexo)
+from app.scrum.sprint import sprint
+app.register_blueprint(sprint)
+from app.scrum.equipo import equipo
+app.register_blueprint(equipo)
+
 
 if __name__ == '__main__':
     app.config.update(
