@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-.
 
 import unittest
+import os
+
+os.chdir("testing")
 
 from testAccions                import *
 from testActorsUserHistory      import *
