@@ -114,7 +114,7 @@ scrumModule.controller('VProductoController',
                   getData: function($defer, params) {
                       $defer.resolve(VFiles9Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                   }
-              });                           
+              });
 
 
       });

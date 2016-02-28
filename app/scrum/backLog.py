@@ -22,7 +22,6 @@ scale_baja = [i for i in range(13, 21)]
 scale_type1 = [i for i in range(0, 4)]
 scale = {0: 0, 1: 1, 2: 10, 3: 20}
 
-
 class backlog(object):
     '''Clase que permite (completar)'''
 
@@ -217,13 +216,13 @@ class backlog(object):
 
     def sprintsAsociatedToProduct(self,idBacklog):
         ''' Permite obtener una lista de los Sprints asociados a una pila de Producto'''
-        
-        checkTypeId = type(idBacklog) == int   
-         
-        if checkTypeId: 
+
+        checkTypeId = type(idBacklog) == int
+
+        if checkTypeId:
             found = clsSprint.query.filter_by(S_idBacklog = idBacklog).all()
             return found
-        return([]) 
+        return([])
 
     def userHistoryAsociatedToProduct(self, idBacklog):
         ''' Permite obtener una lista de los historias de usuario asociadas a una pila de Producto'''

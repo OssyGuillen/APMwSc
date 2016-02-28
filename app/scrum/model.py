@@ -39,7 +39,7 @@ class clsBacklog(db.Model):
     BL_refObjective = db.relationship('clsObjective', backref='backlog', lazy='dynamic', cascade="all, delete, delete-orphan")
     BL_refActor     = db.relationship('clsActor', backref='backlog', lazy='dynamic', cascade="all, delete, delete-orphan")
     BL_refAccion    = db.relationship('clsAccion', backref='backlog', lazy='dynamic', cascade="all, delete, delete-orphan")
-    BL_refSprint    = db.relationship('clsSprint',backref = 'backlog',lazy = 'dynamic',cascade = "all, delete, delete-orphan")  
+    BL_refSprint    = db.relationship('clsSprint',backref = 'backlog',lazy = 'dynamic',cascade = "all, delete, delete-orphan")
     BL_refUserHist  = db.relationship('clsUserHistory', backref='backlog', lazy='dynamic', cascade="all, delete, delete-orphan")
     BL_refArchivos  = db.relationship('clsArchivos', backref='backlog', lazy='dynamic', cascade="all, delete, delete-orphan")
 
@@ -117,7 +117,7 @@ class clsUser(db.Model):
         self.U_password = password
         self.U_email    = email
         self.U_idActor  = idActor
-
+   
     def __repr__(self):
         '''Representacion en string del modelo Usuario'''
         return '<fullname %r, username %r, email %r>' % (self.U_fullname, self.U_username, self.U_email)
@@ -265,7 +265,7 @@ class clsCategory(db.Model):
 
 class clsSprint(db.Model):
     '''Clase que define el modelo de la tabla Sprint'''
-    
+
     __tablename__ = 'sprint'
     S_idSprint          = db.Column(db.Integer, primary_key = True, index = True)
     S_numero            = db.Column(db.Integer)
