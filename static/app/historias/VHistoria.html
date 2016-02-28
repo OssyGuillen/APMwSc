@@ -13,20 +13,23 @@
         <div class="collapse navbar-collapse" id="contenido-plegable">
             <ul class="nav navbar-nav navbar-left">
 <li><a ng-click="VCrearTarea5(idHistoria)"
-       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
-  +tarea</a></li>
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || false">
+  +Tarea</a></li>
 <li><a ng-click="VCrearActor6(idPila)"
        ng-show="actor=='duenoProducto' || false">
-  +actor</a></li>
+  +Actor</a></li>
 <li><a ng-click="VCrearAccion7(idPila)"
        ng-show="actor=='duenoProducto' || false">
-  +accion</a></li>
+  +Accion</a></li>
 <li><a ng-click="VCrearObjetivo8(idPila)"
        ng-show="actor=='duenoProducto' || false">
-  +objetivo</a></li>
+  +Objetivo</a></li>
 <li><a ng-click="AElimHistoria9(idHistoria)"
+       ng-show="actor=='duenoProducto' || false">
+  -Historia</a></li>
+<li><a ng-click="VDesempeno10(idHistoria)"
        ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
-  -historia</a></li>
+  Desempeño</a></li>
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -58,8 +61,8 @@
     </form>
     <hr /><h3>Tareas <span class="badge" ng-bind="numTareas"></span></h3>        <table ng-table="tableParams2" template-pagination="pager.html" class="table">
             <tr ng-repeat="row in $data">
-                <td data-title="'Descripción'" ng-bind="row['descripcion']"></td>
-                <td ng-show="row['idTarea']"><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VTarea2(row['idTarea'])">detalles</a></td>
+                <td data-title="'Descripción'">{{row['descripcion']}}</td>
+                <td><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VTarea2(row['idTarea'])">Detalles</a></td>
             </tr>
         </table>
 

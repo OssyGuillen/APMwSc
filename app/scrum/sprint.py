@@ -9,19 +9,17 @@ sprint = Blueprint('sprint', __name__)
 @sprint.route('/sprint/ACrearSprint', methods=['POST'])
 def ACrearSprint():
     #POST/PUT parameters
-    params = request.get_json()
-    results = [{'label':'/VSprints', 'msg':['Sprint creado']}, {'label':'/VSprint', 'msg':['Error al crear Sprint']}, ]
-    print(session, file=sys.stderr)
-    res = results[1]
-    #Action code goes here, res should be a list with a label and a message
-    
+    params   = request.get_json()
+    results = [{'label':'/VSprints', 'msg':['Sprint creado']}, {'label':'/VCrearSprint', 'msg':['Error al crear Sprint']}, ]
+    res     = results[1]
+
     # Obtenemos el id del producto
     idPila  = int(session['idPila'])
 
     if request.method == 'POST':
         # Extraemos los parámetros
-        newNumero       = params['numero'] 
-        newDescription  = params['descripcion']
+        newNumero      = params['numero'] 
+        newDescription = params['descripcion']
         
         oSprint = sprints()
         result  = oSprint.insertSprint(newNumero, newDescription, idPila)
@@ -31,7 +29,6 @@ def ACrearSprint():
 
     res['label'] = res['label'] + '/' + str(idPila)
 
-    #Action code ends here
     if "actor" in res:
         if res['actor'] is None:
             session.pop("actor", None)
@@ -44,9 +41,9 @@ def ACrearSprint():
 @sprint.route('/sprint/AElimSprint')
 def AElimSprint():
     #POST/PUT parameters
-    params = request.get_json()
+    params  = request.get_json()
     results = [{'label':'/VSprints', 'msg':['Sprint eliminado']}, {'label':'/VSprint', 'msg':['Error al eliminar Sptrint']}, ]
-    res = results[1]
+    res     = results[1]
     
     # Obtenemos el id del producto
     idPila       = int(session['idPila'])
@@ -65,7 +62,7 @@ def AElimSprint():
     if deleted:
             res = results[0]  
 
-    res['label'] = res['label'] + '/' + str(idPila)
+    res['label'] = res['label'] + '/' + str(idSprint)
 
     #Action code ends here
     if "actor" in res:
@@ -85,21 +82,19 @@ def AModifSprint():
     results = [{'label':'/VSprints', 'msg':['Sprint modificado']}, {'label':'/VSprints', 'msg':['Error al guardar Sprint']}, ]
     res = results[0]
 
-    idPila = int(session['idPila'])
-    idSprint = int(params['idSprint'])
+    idPila   = int(session['idPila'])
+    idSprint = int(session['idSprint'])
     newSprintNumber = int(params['numero'])
-    newDescription = str(params['descripcion'])
-
-    #Action code goes here, res should be a list with a label and a message
+    newDescription  = str(params['descripcion'])
 
     res['label'] = res['label'] + '/' + str(idPila)
-    print(idSprint, idPila, file = sys.stderr )
     oSprint = sprints()
-    result = oSprint.updateSprint(idSprint, idPila, newSprintNumber, newDescription)
+    result  = oSprint.updateSprint(idSprint, idPila, newSprintNumber, newDescription)
+    
     if not result:
         res = results[1]        
         res['label'] = res['label'] + '/' + str(idPila)
-    #Action code ends here
+
     if "actor" in res:
         if res['actor'] is None:
             session.pop("actor", None)
@@ -116,23 +111,21 @@ def AModifSprint():
 @sprint.route('/sprint/VCrearSprint')
 def VCrearSprint():
     #GET parameter
-
-    #idPila = request.args['idPila']
-    idPila = request.args.get('idPila',1)
-
     res = {}
+
+    idPila = request.args.get('idPila',1)
+        
     if "actor" in session:
         res['actor']=session['actor']
-    #Action code goes here, res should be a JSON structure
 
     if 'usuario' not in session:
       res['logout'] = '/'
       return json.dumps(res)
-    res['usuario'] = session['usuario']
-    
-    res['fSprint'] = {'idPila':idPila}
 
-    #Action code ends here
+    res['fSprint'] = {'idPila':idPila}
+    res['usuario'] = session['usuario']
+    res['idPila']  = idPila
+
     return json.dumps(res)
 
 
@@ -140,17 +133,14 @@ def VCrearSprint():
 @sprint.route('/sprint/VSprint')
 def VSprint():
     #GET parameter
-
     res = {}
 
     # Obtenemos el id del producto y del sprint
-    idPila  = int(session['idPila'])
-    idSprint = int(request.args['idSprint'])
+    idPila   = int(session['idPila'])
+    idSprint = int(request.args.get('idSprint',1))
     
-
     if "actor" in session:
         res['actor']=session['actor']
-    #Action code goes here, res should be a JSON structure
 
     if 'usuario' not in session:
       res['logout'] = '/'
@@ -159,25 +149,24 @@ def VSprint():
 
     # Buscamos el actor actual
     oSprint = sprints()
-    result = oSprint.searchIdSprint(idSprint,idPila)
-    print(idSprint)
+    result  = oSprint.searchIdSprint(idSprint,idPila)
+    
     res['fSprint'] = {'idSprint':idSprint, 'numero':result[0].S_numero, 'descripcion':result[0].S_sprintDescription}    
 
-    res['idPila'] = idPila
     session['idSprint'] = idSprint
+    res['idPila'] = idPila
 
-    #Action code ends here
     return json.dumps(res)
     
 
 @sprint.route('/sprint/VSprints')
 def VSprints():
     #GET parameter
-
-    idPila = int(request.args['idPila'])
-    print(">>>>", file=sys.stderr)
-    print(idPila, file=sys.stderr)
     res = {}
+    
+    # Obtenemos el id del producto.
+    idPila = int(request.args.get('idPila',1)) 
+
     if "actor" in session:
         res['actor']=session['actor']
 
@@ -186,12 +175,15 @@ def VSprints():
       return json.dumps(res)
 
     res['usuario'] = session['usuario']
-    res['idPila'] = idPila
 
     oBacklog   = backlog()
     sprintList = oBacklog.sprintsAsociatedToProduct(idPila)
     res['data1'] = [{'numero':spr.S_numero, 'descripcion':spr.S_sprintDescription } for spr in sprintList]
 
+
+    session['idPila'] = idPila
+    res['idPila']     = idPila 
+ 
     return json.dumps(res)
 
 

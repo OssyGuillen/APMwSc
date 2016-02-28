@@ -6,8 +6,8 @@ scrumModule.config(['$routeProvider', function ($routeProvider) {
 }]);
 
 scrumModule.controller('VAnexoController', 
-   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngTableParams', 'anexoService', 'prodService',
-    function ($scope, $location, $route, $timeout, flash, $routeParams, ngTableParams, anexoService, prodService) {
+   ['$window', '$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngTableParams', 'anexoService', 'prodService',
+    function ($window, $scope, $location, $route, $timeout, flash, $routeParams, ngTableParams, anexoService, prodService) {
       $scope.msg = '';
       $scope.fAnexo = {};
 
@@ -21,17 +21,17 @@ scrumModule.controller('VAnexoController',
         }
 
 
-              var AElimAnexo1Data = $scope.res.data1;
-              if(typeof AElimAnexo1Data === 'undefined') AElimAnexo1Data=[];
-              $scope.tableParams1 = new ngTableParams({
-                  page: 1,            // show first page
-                  count: 10           // count per page
-              }, {
-                  total: AElimAnexo1Data.length, // length of data
-                  getData: function($defer, params) {
-                      $defer.resolve(AElimAnexo1Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-                  }
-              });            
+      var AElimAnexo1Data = $scope.res.data1;
+      if(typeof AElimAnexo1Data === 'undefined') AElimAnexo1Data=[];
+      $scope.tableParams1 = new ngTableParams({
+          page: 1,            // show first page
+          count: 10           // count per page
+      }, {
+          total: AElimAnexo1Data.length, // length of data
+          getData: function($defer, params) {
+              $defer.resolve(AElimAnexo1Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+          }
+      });            
 
 
       });
@@ -43,18 +43,17 @@ scrumModule.controller('VAnexoController',
       $scope.AAnexo2 = function(isValid) {
         $scope.fAnexoSubmitted = true;
         if (isValid) {
-          
-          anexoService.AAnexo($scope.fAnexo).then(function (object) {
+          anexoService.AAnexo($scope.fAnexo, $scope.myFile, $routeParams.idPila).then(function (object) {
               var msg = object.data["msg"];
               if (msg) flash(msg);
               var label = object.data["label"];
               $location.path(label);
-              $route.reload();
+              $route.reload();              
           });
         }
       };
 
-      $scope.AElimAnexo1 = function(id) {
+      $scope.AElimAnexo1 = function(id, idBacklog) {
           var tableFields = [["idAnexo","id"], ['nombre','Nombre']];
           var arg = {};
           arg[tableFields[0][1]] = ((typeof id === 'object')?JSON.stringify(id):id);
@@ -62,9 +61,13 @@ scrumModule.controller('VAnexoController',
               var msg = object.data["msg"];
               if (msg) flash(msg);
               var label = object.data["label"];
-              $location.path(label);
+              $location.path(label+'/'+idBacklog);
               $route.reload();
           });
+      };
+
+      $scope.downloadFile = function (url) {
+        $window.location = '/anexo/ADescargar/' + url;
       };
 
     }]);

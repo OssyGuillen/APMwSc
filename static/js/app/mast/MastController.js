@@ -1,13 +1,13 @@
-scrumModule.config(['$routeProvider', function ($routeProvider) {
+scrumModule.config(function ($routeProvider) {
     $routeProvider.when('/VMaestroScrum', {
                 controller: 'VMaestroScrumController',
                 templateUrl: 'app/mast/VMaestroScrum.html'
             });
-}]);
+});
 
 scrumModule.controller('VMaestroScrumController', 
-   ['$scope', '$location', '$route', '$timeout', 'flash', 'identService', 'mastService',
-    function ($scope, $location, $route, $timeout, flash, identService, mastService) {
+   ['$scope', '$location', '$route', 'flash', 'identService', 'mastService',
+    function ($scope, $location, $route, flash, identService, mastService) {
       $scope.msg = '';
       mastService.VMaestroScrum().then(function (object) {
         $scope.res = object.data;
@@ -17,8 +17,6 @@ scrumModule.controller('VMaestroScrumController',
         if ($scope.logout) {
             $location.path('/');
         }
-
-
       });
       $scope.VLogin0 = function() {
         $location.path('/VLogin');

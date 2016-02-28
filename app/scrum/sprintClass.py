@@ -17,10 +17,8 @@ MAX_SPRINT_NUMBER = 1000
 class sprints(object):
 	'''Clase que permite manejar los sprints de manera persistente'''
 
-	def insertSprint(self, sprintNumber, sprintDescription, idBacklog):
-
+	def insertSprint(self, sprintNumber, sprintDescription, idBacklog): 
 		'''Permite insertar una Sprint asociado a un producto'''   
-		
 		checkTypeDescription = type(sprintDescription) == str
 		checkTypeId          = type(idBacklog) == int
 		checkTypeNumber      = type(sprintNumber) == int
@@ -52,14 +50,13 @@ class sprints(object):
 
 	def updateSprint(self, idSprint, idBacklog, newSprintNumber,newDescription):
 		'''Permite actualizar la descripcion de una sprint'''   
-		
-		checkTypeId    = type(idSprint) == int
+		checkTypeId              = type(idSprint) == int
 		checkTypeNewSprintNumber = type(newSprintNumber) == int
-		checkTypeNewdescription = type(newDescription) == str
+		checkTypeNewdescription  = type(newDescription) == str
 		
 		if checkTypeId and checkTypeNewdescription and checkTypeNewSprintNumber:
-			checkLongNewDescription    = MIN_SPRINT_DESCRIPTION <= len(newDescription) <= MAX_SPRINT_DESCRIPTION
-			foundSprint = self.searchIdSprint(idSprint, idBacklog)
+			checkLongNewDescription = MIN_SPRINT_DESCRIPTION <= len(newDescription) <= MAX_SPRINT_DESCRIPTION
+			foundSprint             = self.searchIdSprint(idSprint, idBacklog)
 			if foundSprint != [] and checkLongNewDescription:
 				if foundSprint[0].S_numero != newSprintNumber:
 					for num in clsSprint.query.filter_by(S_idBacklog = idBacklog).all():
@@ -78,7 +75,7 @@ class sprints(object):
 		foundSprint       = []
 
 		if checkTypeIdSprint and checkTypeBacklog:
-			foundSprint = clsSprint.query.filter_by(S_numero  = sprintNumber).filter_by(S_idBacklog = backlog).all()
+			foundSprint = clsSprint.query.filter_by(S_numero=sprintNumber,S_idBacklog =backlog).all()
 		return foundSprint
 
 	def deleteSprint(self,sprintNumber,idBacklog):
@@ -91,7 +88,7 @@ class sprints(object):
 			checkLongIdBacklog   = MIN_ID <= idBacklog
 
 			if checkLenSprintNumber and checkLongIdBacklog:
-				foundSprint = clsSprint.query.filter_by(S_numero = sprintNumber,S_idBacklog = idBacklog).all()
+				foundSprint = clsSprint.query.filter_by(S_numero=sprintNumber,S_idBacklog=idBacklog).all()
 				if foundSprint != []:
 					for i in foundSprint:
 						db.session.delete(i)

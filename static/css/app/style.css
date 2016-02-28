@@ -34,3 +34,22 @@
   font-family: inherit;
   font-size: 100%;
 }
+
+#filesTable tr td {
+    text-align: center;
+}
+
+.file-name {
+    text-decoration: underline;
+    color: blue
+}
+
+
+.file-name:hover {
+    cursor: pointer;
+    color: rgba(15, 15, 128, 0.95)
+}
+
+a {
+    cursor: pointer;
+} 

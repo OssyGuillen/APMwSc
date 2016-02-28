@@ -15,19 +15,19 @@ def ACrearAccion():
     params  = request.get_json()
     results = [{'label':'/VProducto', 'msg':['Acción creada']}, {'label':'/VCrearAccion', 'msg':['Error al crear acción']}, ]
     res     = results[1]
-    
+
     # Obtenemos el id del producto
     idPila  = int(session['idPila'])
 
-    
-    if params != {}:           
+
+    if params != {}:
         # Extraemos los parámetros
         newDescription = params['descripcion']
-        
+
         if request.method == 'POST':
             oAccion  = accions()
             inserted = oAccion.insertAccion(newDescription,idPila)
-            
+
             if inserted:
                 res = results[0]
 
@@ -38,7 +38,7 @@ def ACrearAccion():
             session.pop("actor", None)
         else:
             session['actor'] = res['actor']
-            
+
     return json.dumps(res)
 
 
@@ -48,25 +48,25 @@ def AElimAccion():
     #GET parameter
     results = [{'label':'/VProducto', 'msg':['Accion eliminada']}, {'label':'/VProducto', 'msg':['No se pudo eliminar esta acción']}, ]
     res     = results[1]
-  
+
     # Obtenemos el id del producto y de la acción
     idPila   = int(session['idPila'])
     idAccion = int(session['idAccion'])
 
-    # Conseguimos la acción a eliminar 
+    # Conseguimos la acción a eliminar
     oAccion = accions()
     found   = oAccion.searchIdAccion(idAccion)
-    
+
     oAccionUserHist = userHistory()
     result  = oAccionUserHist.searchidUserHistoryIdAccion(idAccion)
-  
-    # Verificamos si la acción está asociado a una historia   
+
+    # Verificamos si la acción está asociado a una historia
     if (result == []):
         deleted = oAccion.deleteAccion(found[0].AC_accionDescription, idPila)
-        
+
         if deleted:
             res = results[0]
-            
+
     res['label'] = res['label'] + '/' + str(idPila)
 
     if "actor" in res:
@@ -83,22 +83,22 @@ def AModifAccion():
     #POST/PUT parameters
     params  = request.get_json()
     results = [{'label':'/VProducto', 'msg':['Acción actualizada']}, {'label':'/VProducto', 'msg':['Error al modificar acción']}, ]
-    res     = results[1] 
-    
+    res     = results[1]
+
     # Obtenemos el id del producto
     idPila  = int(session['idPila'])
 
     # Extraemos los parámetros
     newDescription = params['descripcion']
-    idAccion       = int(params['idAccion']) 
+    idAccion       = int(params['idAccion'])
 
     oAccion = accions()
     found   = oAccion.searchIdAccion(idAccion)
-    result  = oAccion.updateAccion(found[0].AC_accionDescription, newDescription,idPila)     
-    
+    result  = oAccion.updateAccion(found[0].AC_accionDescription, newDescription,idPila)
+
     if result:
         res = results[0]
-        
+
     res['label'] = res['label'] + '/' + str(idPila)
 
     if "actor" in res:
@@ -106,7 +106,7 @@ def AModifAccion():
             session.pop("actor", None)
         else:
             session['actor'] = res['actor']
-            
+
     return json.dumps(res)
 
 
@@ -115,14 +115,14 @@ def AModifAccion():
 def VAccion():
     #GET parameter
     res = {}
-    
+
     # Obtenemos el id del producto y de la acción
     idPila   = int(session['idPila'])
     idAccion = int(request.args.get('idAccion'))
 
     if "actor" in session:
         res['actor']=session['actor']
-    
+
     if 'usuario' not in session:
       res['logout'] = '/'
       return json.dumps(res)
@@ -131,7 +131,7 @@ def VAccion():
     # Buscamos la accion actual.
     oAccion = accions()
     result  =  oAccion.searchIdAccion(idAccion)
-    
+
     res['fAccion'] = {'idAccion':idAccion, 'descripcion':result[0].AC_accionDescription}
     res['idPila']  = idPila
     session['idAccion'] = idAccion
@@ -144,7 +144,7 @@ def VAccion():
 def VCrearAccion():
     #GET parameter
     res = {}
-    
+
     # Obtenemos el id del producto
     idPila = request.args.get('idPila',1)
 
@@ -155,7 +155,7 @@ def VCrearAccion():
       res['logout'] = '/'
       return json.dumps(res)
     res['usuario'] = session['usuario']
-    
+
     res['idPila'] = idPila
 
     return json.dumps(res)

@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-. 
- 
+# -*- coding: utf-8 -*-.
+
 import unittest
 
 from testAccions                import *
@@ -13,6 +13,7 @@ from testObjectivesUserHistory  import *
 from testRole                   import *
 from testTask                   import *
 from testUser                   import *
+from testArchivo                import *
 
 if __name__ == '__main__':
     runner = unittest.TextTestRunner()

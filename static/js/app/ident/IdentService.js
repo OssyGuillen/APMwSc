@@ -6,20 +6,7 @@ scrumModule.service('identService', ['$q', '$http', function($q, $http) {
           data: fLogin,
           method: 'POST',
         });
-    //    var labels = ["/VProductos", "/VMaestroScrum", "/VDesarrollador", "/VLogin", ];
-    //    var res = labels[0];
-    //    var deferred = $q.defer();
-    //    deferred.resolve(res);
-    //    return deferred.promise;
-    };
-
-    this.ARegistrar = function(fUsuario) {
-        return  $http({
-          url: "ident/ARegistrar",
-          data: fUsuario,
-          method: 'POST',
-        });
-    //    var labels = ["/VLogin", "/VRegistro", ];
+    //    var labels = ["/VProductos", "/VProductos", "/VProductos", "/VLogin", ];
     //    var res = labels[0];
     //    var deferred = $q.defer();
     //    deferred.resolve(res);
@@ -34,6 +21,19 @@ scrumModule.service('identService', ['$q', '$http', function($q, $http) {
           params: args
         });
     //    var res = {};
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+
+    this.ARegistrar = function(fUsuario) {
+        return  $http({
+          url: "ident/ARegistrar",
+          data: fUsuario,
+          method: 'POST',
+        });
+    //    var labels = ["/VLogin", "/VRegistro", ];
+    //    var res = labels[0];
     //    var deferred = $q.defer();
     //    deferred.resolve(res);
     //    return deferred.promise;
