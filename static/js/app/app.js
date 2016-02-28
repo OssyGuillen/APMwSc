@@ -1,15 +1,15 @@
 // Creación del módulo de la aplicación
-var scrumModule = angular.module('scrum', ['ngRoute', 'ngAnimate', 'ngTable', 'textAngular', 'ngSanitize', 'flash']);
-scrumModule.config(['$routeProvider', function ($routeProvider) {
+var scrumModule = angular.module('scrum', ['ngRoute', 'ngAnimate', 'ngTable', 'textAngular', 'flash']);
+scrumModule.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
                 controller: 'VLoginController',
                 templateUrl: 'app/ident/VLogin.html'
             });
-}]);
+});
 scrumModule.controller('scrumController_',  ['$scope', '$http', '$location',
 function($scope) {
-    $scope.title = "Aplicación";
+    $scope.title = "APMwSc:\nA supporting tool the process of\nAgile Project Management with Scrum";
 }]);
 scrumModule.directive('sameAs', [function () {
     return {
@@ -34,18 +34,19 @@ scrumModule.directive('sameAs', [function () {
         }
     };
 }]);
-scrumModule.directive('file', function () {
+
+scrumModule.directive('fileModel', ['$parse', function ($parse) {
     return {
         restrict: 'A',
-        scope: {
-            file: '='
-        },
-        link: function (scope, el, attrs) {
-            el.bind('change', function (event) {
-                var file = event.target.files[0];
-                scope.file = file ? file : undefined;
-                scope.$apply();
+        link: function(scope, element, attrs) {
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
+            
+            element.bind('change', function(){
+                scope.$apply(function(){
+                    modelSetter(scope, element[0].files[0]);
+                });
             });
         }
     };
-});
+}]);

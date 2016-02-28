@@ -1,4 +1,4 @@
-scrumModule.config(['$routeProvider', function ($routeProvider) {
+scrumModule.config(function ($routeProvider) {
     $routeProvider.when('/VLogin', {
                 controller: 'VLoginController',
                 templateUrl: 'app/ident/VLogin.html'
@@ -6,11 +6,11 @@ scrumModule.config(['$routeProvider', function ($routeProvider) {
                 controller: 'VRegistroController',
                 templateUrl: 'app/ident/VRegistro.html'
             });
-}]);
+});
 
 scrumModule.controller('VLoginController', 
-   ['$scope', '$location', '$route', '$timeout', 'flash', 'devService', 'identService', 'mastService', 'prodService',
-    function ($scope, $location, $route, $timeout, flash, devService, identService, mastService, prodService) {
+   ['$scope', '$location', '$route', 'flash', 'identService', 'prodService',
+    function ($scope, $location, $route, flash, identService, prodService) {
       $scope.msg = '';
       $scope.fLogin = {};
 
@@ -22,8 +22,6 @@ scrumModule.controller('VLoginController',
         if ($scope.logout) {
             $location.path('/');
         }
-
-
       });
       $scope.VRegistro1 = function() {
         $location.path('/VRegistro');
@@ -46,8 +44,8 @@ scrumModule.controller('VLoginController',
 
     }]);
 scrumModule.controller('VRegistroController', 
-   ['$scope', '$location', '$route', '$timeout', 'flash', 'devService', 'identService', 'mastService', 'prodService',
-    function ($scope, $location, $route, $timeout, flash, devService, identService, mastService, prodService) {
+   ['$scope', '$location', '$route', 'flash', 'identService', 'prodService',
+    function ($scope, $location, $route, flash, identService, prodService) {
       $scope.msg = '';
       $scope.fUsuario = {};
 
@@ -59,8 +57,6 @@ scrumModule.controller('VRegistroController',
         if ($scope.logout) {
             $location.path('/');
         }
-
-
       });
       $scope.VLogin1 = function() {
         $location.path('/VLogin');

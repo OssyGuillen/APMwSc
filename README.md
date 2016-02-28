@@ -1,2 +1,3 @@
 # APMwSc
-Aplicación web de soporte para procesos de gerencia de proyectos ágiles con Scrum.
+A supporting tool the process of Agile Project Management with Scrum.
+>>>>>>> aldrix/master

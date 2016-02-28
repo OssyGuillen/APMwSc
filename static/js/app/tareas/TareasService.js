@@ -13,32 +13,6 @@ scrumModule.service('tareasService', ['$q', '$http', function($q, $http) {
     //    return deferred.promise;
     };
 
-    this.AElimTarea = function(args) {
-        if(typeof args == 'undefined') args={};
-        return $http({
-          url: 'tareas/AElimTarea',
-          method: 'GET',
-          params: args
-        });
-    //    var labels = ["/VHistoria", "/VTarea", ];
-    //    var res = labels[0];
-    //    var deferred = $q.defer();
-    //    deferred.resolve(res);
-    //    return deferred.promise;
-    };
-    this.AModifTarea = function(fTarea) {
-        return  $http({
-          url: "tareas/AModifTarea",
-          data: fTarea,
-          method: 'POST',
-        });
-    //    var labels = ["/VHistoria", "/VCrearTarea", ];
-    //    var res = labels[0];
-    //    var deferred = $q.defer();
-    //    deferred.resolve(res);
-    //    return deferred.promise;
-    };
-
     this.VCrearTarea = function(args) {
         if(typeof args == 'undefined') args={};
         return $http({
@@ -47,6 +21,19 @@ scrumModule.service('tareasService', ['$q', '$http', function($q, $http) {
           params: args
         });
     //    var res = {};
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+
+    this.AModifTarea = function(fTarea) {
+        return  $http({
+          url: "tareas/AModifTarea",
+          data: fTarea,
+          method: 'POST',
+        });
+    //    var labels = ["/VHistoria", "/VCrearTarea", ];
+    //    var res = labels[0];
     //    var deferred = $q.defer();
     //    deferred.resolve(res);
     //    return deferred.promise;
@@ -65,4 +52,17 @@ scrumModule.service('tareasService', ['$q', '$http', function($q, $http) {
     //    return deferred.promise;
     };
 
+    this.AElimTarea = function(args) {
+        if(typeof args == 'undefined') args={};
+        return $http({
+          url: 'tareas/AElimTarea',
+          method: 'GET',
+          params: args
+        });
+    //    var labels = ["/VHistoria", "/VTarea", ];
+    //    var res = labels[0];
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
 }]);

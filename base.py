@@ -1,7 +1,7 @@
-from flask import Flask, session
+from flask            import Flask, request, session
 from flask.ext.script import Manager, Server
-from random import SystemRandom
-from datetime import timedelta
+from random           import SystemRandom
+from datetime         import timedelta
 
 app = Flask(__name__, static_url_path='')
 manager = Manager(app)
@@ -48,7 +48,8 @@ from app.scrum.cates import cates
 app.register_blueprint(cates)
 from app.scrum.equipo import equipo
 app.register_blueprint(equipo)
-
+from app.scrum.anexo import anexo
+app.register_blueprint(anexo)
 
 if __name__ == '__main__':
     app.config.update(

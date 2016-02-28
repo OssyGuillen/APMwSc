@@ -1,4 +1,4 @@
-scrumModule.config(['$routeProvider', function ($routeProvider) {
+scrumModule.config(function ($routeProvider) {
     $routeProvider.when('/VCrearTarea/:idHistoria', {
                 controller: 'VCrearTareaController',
                 templateUrl: 'app/tareas/VCrearTarea.html'
@@ -6,11 +6,11 @@ scrumModule.config(['$routeProvider', function ($routeProvider) {
                 controller: 'VTareaController',
                 templateUrl: 'app/tareas/VTarea.html'
             });
-}]);
+});
 
 scrumModule.controller('VCrearTareaController', 
-   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'historiasService', 'identService', 'tareasService',
-    function ($scope, $location, $route, $timeout, flash, $routeParams, historiasService, identService, tareasService) {
+   ['$scope', '$location', '$route', 'flash', '$routeParams', 'historiasService', 'identService', 'tareasService',
+    function ($scope, $location, $route, flash, $routeParams, historiasService, identService, tareasService) {
       $scope.msg = '';
       $scope.fTarea = {};
 
@@ -22,8 +22,6 @@ scrumModule.controller('VCrearTareaController',
         if ($scope.logout) {
             $location.path('/');
         }
-
-
       });
       $scope.VHistoria1 = function(idHistoria) {
         $location.path('/VHistoria/'+idHistoria);
@@ -47,10 +45,21 @@ scrumModule.controller('VCrearTareaController',
         }
       };
 
+$scope.$watch('fTarea.categoria', function(newV,oldV) {
+  var tabla = $scope.fTarea_opcionesCategoria;
+  if (tabla) {
+    for (var i=0; i<tabla.length;i++) {
+      if(tabla[i].key==newV) {
+        $scope.fTarea.peso = tabla[i].peso;
+        break;
+      }
+    }
+  }
+});
     }]);
 scrumModule.controller('VTareaController', 
-   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'historiasService', 'identService', 'tareasService',
-    function ($scope, $location, $route, $timeout, flash, $routeParams, historiasService, identService, tareasService) {
+   ['$scope', '$location', '$route', 'flash', '$routeParams', 'historiasService', 'identService', 'tareasService',
+    function ($scope, $location, $route, flash, $routeParams, historiasService, identService, tareasService) {
       $scope.msg = '';
       $scope.fTarea = {};
 
@@ -62,8 +71,6 @@ scrumModule.controller('VTareaController',
         if ($scope.logout) {
             $location.path('/');
         }
-
-
       });
       $scope.VHistoria1 = function(idHistoria) {
         $location.path('/VHistoria/'+idHistoria);
@@ -96,4 +103,15 @@ scrumModule.controller('VTareaController',
         }
       };
 
+$scope.$watch('fTarea.categoria', function(newV,oldV) {
+  var tabla = $scope.fTarea_opcionesCategoria;
+  if (tabla) {
+    for (var i=0; i<tabla.length;i++) {
+      if(tabla[i].key==newV) {
+        $scope.fTarea.peso = tabla[i].peso;
+        break;
+      }
+    }
+  }
+});
     }]);

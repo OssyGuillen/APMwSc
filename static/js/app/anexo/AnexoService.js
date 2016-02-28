@@ -1,13 +1,14 @@
 scrumModule.service('anexoService', ['$q', '$http', function($q, $http) {
 
-    this.AAnexo = function(fAnexo) {
+    this.AAnexo = function(fAnexo, myFile, idPila) {
         return  $http({
-          url: "anexo/AAnexo",
+          url: "anexo/AAnexo/"+idPila,
           data: fAnexo,
           method: 'POST',
           headers: { 'Content-Type': 'multipart/form-data' },
           transformRequest: function (data, headersGetter) {
                 var formData = new FormData();
+                formData.append('contenido',myFile);
                 angular.forEach(data, function (value, key) {
                     formData.append(key, value);
                 });
