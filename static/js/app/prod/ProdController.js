@@ -114,7 +114,7 @@ scrumModule.controller('VProductoController',
                   getData: function($defer, params) {
                       $defer.resolve(VFiles9Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                   }
-              });                           
+              });
 
 
       });
@@ -139,6 +139,14 @@ scrumModule.controller('VProductoController',
       $scope.VAnexo13 = function(idPila) {
         $location.path('/VAnexo/'+idPila);
       };
+      $scope.VSprints14 = function(idPila) {
+        $location.path('/VSprints/'+idPila);
+      };
+      $scope.VEquipo15 = function(idPila) {
+        $location.path('/VEquipo/'+idPila);
+      };
+
+
 
       $scope.fPilaSubmitted = false;
       $scope.AModifProducto0 = function(isValid) {
