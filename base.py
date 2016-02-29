@@ -8,7 +8,7 @@ manager = Manager(app)
 manager.add_command("runserver", Server(
     use_debugger = True,
     use_reloader = True,
-    host = '0.0.0.0')
+    host = '0.0.0.0', port = 8080)
 )
 
 @app.before_request
@@ -46,6 +46,8 @@ from app.scrum.tareas import tareas
 app.register_blueprint(tareas)
 from app.scrum.cates import cates
 app.register_blueprint(cates)
+from app.scrum.equipo import equipo
+app.register_blueprint(equipo)
 from app.scrum.anexo import anexo
 app.register_blueprint(anexo)
 from app.scrum.sprint import sprint

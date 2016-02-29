@@ -10,7 +10,7 @@ from flask.ext.script     import Manager
 from sqlalchemy           import DateTime
 
 # Conexion con la base de datos.
-basedir                 = os.path.abspath(os.path.dirname(__file__))
+basedir = os.path.abspath(os.path.dirname(__file__))
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'apl.db')
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 
@@ -23,10 +23,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] =\
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 
 # Instancia de la base de datos.
+
 db = SQLAlchemy(app)
 
 # Definicion de la Base de Datos.
-
 
 class clsBacklog(db.Model):
     '''Clase que define el modelo Backlog'''
@@ -82,12 +82,14 @@ class clsActor(db.Model):
     '''Clase que define el modelo Actor'''
 
     __tablename__ = 'actors'
-    A_idActor           = db.Column(db.Integer, primary_key=True)
-    A_nameActor         = db.Column(db.String(50))
-    A_actorDescription  = db.Column(db.String(140))
-    A_idBacklog         = db.Column(db.Integer, db.ForeignKey('backlog.BL_idBacklog'))
-    A_refUser           = db.relationship('clsUser', backref='actors', lazy='dynamic', cascade="all, delete, delete-orphan")
-    A_refActorsUserHist = db.relationship('clsActorsUserHistory', backref='actors', lazy='dynamic', cascade="all, delete, delete-orphan")
+    A_idActor = db.Column(db.Integer, primary_key=True)
+    A_nameActor = db.Column(db.String(50))
+    A_actorDescription = db.Column(db.String(140))
+    A_idBacklog = db.Column(db.Integer, db.ForeignKey('backlog.BL_idBacklog'))
+    A_refUser = db.relationship(
+        'clsUser', backref='actors', lazy='dynamic', cascade="all, delete, delete-orphan")
+    A_refActorsUserHist = db.relationship(
+        'clsActorsUserHistory', backref='actors', lazy='dynamic', cascade="all, delete, delete-orphan")
 
     def __init__(self, nameActor, actorDescription, idBacklog):
         '''Constructor del modelo Actor'''
@@ -98,7 +100,6 @@ class clsActor(db.Model):
     def __repr__(self):
         '''Respresentacion en string del modelo Actor'''
         return '<IdActor %r, Nombre %r, Descripcion %r, IdBacklog %r>' % (self.A_idActor, self.A_nameActor, self.A_actorDescription, self.A_idBacklog)
-
 
 class clsUser(db.Model):
     '''Clase que define el modelo Usuario'''
@@ -122,6 +123,25 @@ class clsUser(db.Model):
         '''Representacion en string del modelo Usuario'''
         return '<fullname %r, username %r, email %r>' % (self.U_fullname, self.U_username, self.U_email)
 
+
+class clsEquipo(db.Model):
+    '''Clase que define el modelo Equipo'''
+
+    __tablename__ = 'equipo'
+    EQ_idEquipo         = db.Column(db.Integer, primary_key = True)
+    EQ_username         = db.Column(db.String(16), db.ForeignKey('user.U_username'))
+    EQ_rol              = db.Column(db.String(140))
+    EQ_idBacklog         = db.Column(db.Integer,db.ForeignKey('backlog.BL_idBacklog'))
+
+    def __init__(self, username,rol,idBacklog):
+        '''Constructor del modelo Equipo'''
+        self.EQ_username        = username
+        self.EQ_rol             = rol
+        self.EQ_idBacklog       = idBacklog
+
+    def __repr__(self):
+        '''Respresentacion en string del modelo Equipo'''
+        return '<IdEquipo %r, Nombre de Usuario %r, Rol %r, IdBacklog %r>' %(self.EQ_idEquipo, self.EQ_username , self.EQ_rol, self.EQ_idBacklog)
 
 class clsObjective(db.Model):
     '''Clase que define el modelo Objective'''
@@ -285,4 +305,4 @@ migrate = Migrate(app, db)
 manager = Manager(app)
 
 manager.add_command('db', MigrateCommand)
-db.create_all() # Creamos la base de datos
+db.create_all()  # Creamos la base de datos

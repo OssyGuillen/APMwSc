@@ -1,17 +1,27 @@
 from flask import request, session, Blueprint, json
+from app.scrum.backLog import *
+from app.scrum.user import *
+from app.scrum.Team import *
 
 equipo = Blueprint('equipo', __name__)
-
 
 @equipo.route('/equipo/AActualizarEquipo', methods=['POST'])
 def AActualizarEquipo():
     #POST/PUT parameters
     params = request.get_json()
     results = [{'label':'/VEquipo', 'msg':['Equipo actualizado']}, {'label':'/VEquipo', 'msg':['Error al actualizar el equipo']}, ]
-    res = results[0]
+    res = results[1]
     #Action code goes here, res should be a list with a label and a message
 
-    print(params['lista'])
+    idPila  = int(session['idPila'])
+    lista = params['lista']
+    
+    oTeam = team()
+    exito = oTeam.actualizar(lista,idPila)
+
+    if exito:
+    	res = results[0]
+
     res['label'] = res['label'] + '/' + repr(1)
 
     #Action code ends here
@@ -36,32 +46,27 @@ def VEquipo():
     if 'usuario' not in session:
       res['logout'] = '/'
       return json.dumps(res)
+
+    idPila   = int(session['idPila'])
+   
+    oTeam = team()
+    teamList = oTeam.getTeam(idPila)
+    oUser = user()
+    userList = oUser.getAllUsers()
+
+    res['fEquipo'] = {'lista':[{'miembro':team.EQ_username, 'rol': team.EQ_rol} for team in teamList]}
     res['usuario'] = session['usuario']
-    res['idPila'] = 1
-    res['fEquipo'] = {'lista':[
-        {'miembro':1, 'rol':1},
-        {'miembro':2, 'rol':2},
-        {'miembro':3, 'rol':3},
-      ]}
+    res['idPila'] = idPila
+
     res['fEquipo_opcionesRol'] =[
-        {'key':1, 'value':'Desarrollador'},
-        {'key':2, 'value':'Scrum master'},
-        {'key':3, 'value':'Product owner'},
+        {'key':'Desarrollador', 'value':'Desarrollador'},
+        {'key':'Scrum master', 'value':'Scrum master'},
       ]
-    res['fEquipo_opcionesMiembros'] =[
-        {'key':1, 'value':'Mia'},
-        {'key':2, 'value':'Mara'},
-        {'key':3, 'value':'Marcos'},
-        {'key':4, 'value':'Julia'},
-        {'key':5, 'value':'Roberto'},
-      ]
-    
+
+    res['fEquipo_opcionesMiembros'] =[{'key':user.U_username,'value': user.U_username} for user in userList]
 
     #Action code ends here
     return json.dumps(res)
-
-
-
 
 
 #Use case code starts here

@@ -1,5 +1,9 @@
 /**
+<<<<<<< HEAD
+ * @license AngularJS v1.3.16
+=======
  * @license AngularJS v1.2.19
+>>>>>>> aldrix/master
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -22,12 +26,20 @@
  */
  /* global -ngRouteModule */
 var ngRouteModule = angular.module('ngRoute', ['ng']).
+<<<<<<< HEAD
+                        provider('$route', $RouteProvider),
+    $routeMinErr = angular.$$minErr('ngRoute');
+=======
                         provider('$route', $RouteProvider);
+>>>>>>> aldrix/master
 
 /**
  * @ngdoc provider
  * @name $routeProvider
+<<<<<<< HEAD
+=======
  * @kind function
+>>>>>>> aldrix/master
  *
  * @description
  *
@@ -39,9 +51,15 @@ var ngRouteModule = angular.module('ngRoute', ['ng']).
  * ## Dependencies
  * Requires the {@link ngRoute `ngRoute`} module to be installed.
  */
+<<<<<<< HEAD
+function $RouteProvider() {
+  function inherit(parent, extra) {
+    return angular.extend(Object.create(parent), extra);
+=======
 function $RouteProvider(){
   function inherit(parent, extra) {
     return angular.extend(new (angular.extend(function() {}, {prototype:parent}))(), extra);
+>>>>>>> aldrix/master
   }
 
   var routes = {};
@@ -146,14 +164,37 @@ function $RouteProvider(){
    * Adds a new route definition to the `$route` service.
    */
   this.when = function(path, route) {
+<<<<<<< HEAD
+    //copy original route object to preserve params inherited from proto chain
+    var routeCopy = angular.copy(route);
+    if (angular.isUndefined(routeCopy.reloadOnSearch)) {
+      routeCopy.reloadOnSearch = true;
+    }
+    if (angular.isUndefined(routeCopy.caseInsensitiveMatch)) {
+      routeCopy.caseInsensitiveMatch = this.caseInsensitiveMatch;
+    }
+    routes[path] = angular.extend(
+      routeCopy,
+      path && pathRegExp(path, routeCopy)
+=======
     routes[path] = angular.extend(
       {reloadOnSearch: true},
       route,
       path && pathRegExp(path, route)
+>>>>>>> aldrix/master
     );
 
     // create redirection for trailing slashes
     if (path) {
+<<<<<<< HEAD
+      var redirectPath = (path[path.length - 1] == '/')
+            ? path.substr(0, path.length - 1)
+            : path + '/';
+
+      routes[redirectPath] = angular.extend(
+        {redirectTo: path},
+        pathRegExp(redirectPath, routeCopy)
+=======
       var redirectPath = (path[path.length-1] == '/')
             ? path.substr(0, path.length-1)
             : path +'/';
@@ -161,12 +202,27 @@ function $RouteProvider(){
       routes[redirectPath] = angular.extend(
         {redirectTo: path},
         pathRegExp(redirectPath, route)
+>>>>>>> aldrix/master
       );
     }
 
     return this;
   };
 
+<<<<<<< HEAD
+  /**
+   * @ngdoc property
+   * @name $routeProvider#caseInsensitiveMatch
+   * @description
+   *
+   * A boolean property indicating if routes defined
+   * using this provider should be matched using a case insensitive
+   * algorithm. Defaults to `false`.
+   */
+  this.caseInsensitiveMatch = false;
+
+=======
+>>>>>>> aldrix/master
    /**
     * @param path {string} path
     * @param opts {Object} options
@@ -188,7 +244,11 @@ function $RouteProvider(){
 
     path = path
       .replace(/([().])/g, '\\$1')
+<<<<<<< HEAD
+      .replace(/(\/)?:(\w+)([\?\*])?/g, function(_, slash, key, option) {
+=======
       .replace(/(\/)?:(\w+)([\?\*])?/g, function(_, slash, key, option){
+>>>>>>> aldrix/master
         var optional = option === '?' ? option : null;
         var star = option === '*' ? option : null;
         keys.push({ name: key, optional: !!optional });
@@ -216,10 +276,21 @@ function $RouteProvider(){
    * Sets route definition that will be used on route change when no other route definition
    * is matched.
    *
+<<<<<<< HEAD
+   * @param {Object|string} params Mapping information to be assigned to `$route.current`.
+   * If called with a string, the value maps to `redirectTo`.
+   * @returns {Object} self
+   */
+  this.otherwise = function(params) {
+    if (typeof params === 'string') {
+      params = {redirectTo: params};
+    }
+=======
    * @param {Object} params Mapping information to be assigned to `$route.current`.
    * @returns {Object} self
    */
   this.otherwise = function(params) {
+>>>>>>> aldrix/master
     this.when(null, params);
     return this;
   };
@@ -230,10 +301,16 @@ function $RouteProvider(){
                '$routeParams',
                '$q',
                '$injector',
+<<<<<<< HEAD
+               '$templateRequest',
+               '$sce',
+      function($rootScope, $location, $routeParams, $q, $injector, $templateRequest, $sce) {
+=======
                '$http',
                '$templateCache',
                '$sce',
       function($rootScope, $location, $routeParams, $q, $injector, $http, $templateCache, $sce) {
+>>>>>>> aldrix/master
 
     /**
      * @ngdoc service
@@ -270,9 +347,12 @@ function $RouteProvider(){
      * This example shows how changing the URL hash causes the `$route` to match a route against the
      * URL, and the `ngView` pulls in the partial.
      *
+<<<<<<< HEAD
+=======
      * Note that this example is using {@link ng.directive:script inlined templates}
      * to get it working on jsfiddle as well.
      *
+>>>>>>> aldrix/master
      * <example name="$route-service" module="ngRouteExample"
      *          deps="angular-route.js" fixBase="true">
      *   <file name="index.html">
@@ -380,6 +460,13 @@ function $RouteProvider(){
      * defined in `resolve` route property. Once  all of the dependencies are resolved
      * `$routeChangeSuccess` is fired.
      *
+<<<<<<< HEAD
+     * The route change (and the `$location` change that triggered it) can be prevented
+     * by calling `preventDefault` method of the event. See {@link ng.$rootScope.Scope#$on}
+     * for more details about event object.
+     *
+=======
+>>>>>>> aldrix/master
      * @param {Object} angularEvent Synthetic event object.
      * @param {Route} next Future route information.
      * @param {Route} current Current route information.
@@ -418,12 +505,25 @@ function $RouteProvider(){
      * @name $route#$routeUpdate
      * @eventType broadcast on root scope
      * @description
+<<<<<<< HEAD
+     * The `reloadOnSearch` property has been set to false, and we are reusing the same
+     * instance of the Controller.
+     *
+     * @param {Object} angularEvent Synthetic event object
+     * @param {Route} current Current/previous route information.
+     */
+
+    var forceReload = false,
+        preparedRoute,
+        preparedRouteIsUpdateOnly,
+=======
      *
      * The `reloadOnSearch` property has been set to false, and we are reusing the same
      * instance of the Controller.
      */
 
     var forceReload = false,
+>>>>>>> aldrix/master
         $route = {
           routes: routes,
 
@@ -436,6 +536,46 @@ function $RouteProvider(){
            * {@link ng.$location $location} hasn't changed.
            *
            * As a result of that, {@link ngRoute.directive:ngView ngView}
+<<<<<<< HEAD
+           * creates new scope and reinstantiates the controller.
+           */
+          reload: function() {
+            forceReload = true;
+            $rootScope.$evalAsync(function() {
+              // Don't support cancellation of a reload for now...
+              prepareRoute();
+              commitRoute();
+            });
+          },
+
+          /**
+           * @ngdoc method
+           * @name $route#updateParams
+           *
+           * @description
+           * Causes `$route` service to update the current URL, replacing
+           * current route parameters with those specified in `newParams`.
+           * Provided property names that match the route's path segment
+           * definitions will be interpolated into the location's path, while
+           * remaining properties will be treated as query params.
+           *
+           * @param {!Object<string, string>} newParams mapping of URL parameter names to values
+           */
+          updateParams: function(newParams) {
+            if (this.current && this.current.$$route) {
+              newParams = angular.extend({}, this.current.params, newParams);
+              $location.path(interpolate(this.current.$$route.originalPath, newParams));
+              // interpolate modifies newParams, only query params are left
+              $location.search(newParams);
+            } else {
+              throw $routeMinErr('norout', 'Tried updating route when with no current route');
+            }
+          }
+        };
+
+    $rootScope.$on('$locationChangeStart', prepareRoute);
+    $rootScope.$on('$locationChangeSuccess', commitRoute);
+=======
            * creates new scope, reinstantiates the controller.
            */
           reload: function() {
@@ -445,6 +585,7 @@ function $RouteProvider(){
         };
 
     $rootScope.$on('$locationChangeSuccess', updateRoute);
+>>>>>>> aldrix/master
 
     return $route;
 
@@ -473,9 +614,13 @@ function $RouteProvider(){
       for (var i = 1, len = m.length; i < len; ++i) {
         var key = keys[i - 1];
 
+<<<<<<< HEAD
+        var val = m[i];
+=======
         var val = 'string' == typeof m[i]
               ? decodeURIComponent(m[i])
               : m[i];
+>>>>>>> aldrix/master
 
         if (key && val) {
           params[key.name] = val;
@@ -484,6 +629,43 @@ function $RouteProvider(){
       return params;
     }
 
+<<<<<<< HEAD
+    function prepareRoute($locationEvent) {
+      var lastRoute = $route.current;
+
+      preparedRoute = parseRoute();
+      preparedRouteIsUpdateOnly = preparedRoute && lastRoute && preparedRoute.$$route === lastRoute.$$route
+          && angular.equals(preparedRoute.pathParams, lastRoute.pathParams)
+          && !preparedRoute.reloadOnSearch && !forceReload;
+
+      if (!preparedRouteIsUpdateOnly && (lastRoute || preparedRoute)) {
+        if ($rootScope.$broadcast('$routeChangeStart', preparedRoute, lastRoute).defaultPrevented) {
+          if ($locationEvent) {
+            $locationEvent.preventDefault();
+          }
+        }
+      }
+    }
+
+    function commitRoute() {
+      var lastRoute = $route.current;
+      var nextRoute = preparedRoute;
+
+      if (preparedRouteIsUpdateOnly) {
+        lastRoute.params = nextRoute.params;
+        angular.copy(lastRoute.params, $routeParams);
+        $rootScope.$broadcast('$routeUpdate', lastRoute);
+      } else if (nextRoute || lastRoute) {
+        forceReload = false;
+        $route.current = nextRoute;
+        if (nextRoute) {
+          if (nextRoute.redirectTo) {
+            if (angular.isString(nextRoute.redirectTo)) {
+              $location.path(interpolate(nextRoute.redirectTo, nextRoute.params)).search(nextRoute.params)
+                       .replace();
+            } else {
+              $location.url(nextRoute.redirectTo(nextRoute.pathParams, $location.path(), $location.search()))
+=======
     function updateRoute() {
       var next = parseRoute(),
           last = $route.current;
@@ -505,19 +687,44 @@ function $RouteProvider(){
                        .replace();
             } else {
               $location.url(next.redirectTo(next.pathParams, $location.path(), $location.search()))
+>>>>>>> aldrix/master
                        .replace();
             }
           }
         }
 
+<<<<<<< HEAD
+        $q.when(nextRoute).
+          then(function() {
+            if (nextRoute) {
+              var locals = angular.extend({}, nextRoute.resolve),
+=======
         $q.when(next).
           then(function() {
             if (next) {
               var locals = angular.extend({}, next.resolve),
+>>>>>>> aldrix/master
                   template, templateUrl;
 
               angular.forEach(locals, function(value, key) {
                 locals[key] = angular.isString(value) ?
+<<<<<<< HEAD
+                    $injector.get(value) : $injector.invoke(value, null, null, key);
+              });
+
+              if (angular.isDefined(template = nextRoute.template)) {
+                if (angular.isFunction(template)) {
+                  template = template(nextRoute.params);
+                }
+              } else if (angular.isDefined(templateUrl = nextRoute.templateUrl)) {
+                if (angular.isFunction(templateUrl)) {
+                  templateUrl = templateUrl(nextRoute.params);
+                }
+                templateUrl = $sce.getTrustedResourceUrl(templateUrl);
+                if (angular.isDefined(templateUrl)) {
+                  nextRoute.loadedTemplateUrl = templateUrl;
+                  template = $templateRequest(templateUrl);
+=======
                     $injector.get(value) : $injector.invoke(value);
               });
 
@@ -534,6 +741,7 @@ function $RouteProvider(){
                   next.loadedTemplateUrl = templateUrl;
                   template = $http.get(templateUrl, {cache: $templateCache}).
                       then(function(response) { return response.data; });
+>>>>>>> aldrix/master
                 }
               }
               if (angular.isDefined(template)) {
@@ -544,6 +752,18 @@ function $RouteProvider(){
           }).
           // after route change
           then(function(locals) {
+<<<<<<< HEAD
+            if (nextRoute == $route.current) {
+              if (nextRoute) {
+                nextRoute.locals = locals;
+                angular.copy(nextRoute.params, $routeParams);
+              }
+              $rootScope.$broadcast('$routeChangeSuccess', nextRoute, lastRoute);
+            }
+          }, function(error) {
+            if (nextRoute == $route.current) {
+              $rootScope.$broadcast('$routeChangeError', nextRoute, lastRoute, error);
+=======
             if (next == $route.current) {
               if (next) {
                 next.locals = locals;
@@ -554,6 +774,7 @@ function $RouteProvider(){
           }, function(error) {
             if (next == $route.current) {
               $rootScope.$broadcast('$routeChangeError', next, last, error);
+>>>>>>> aldrix/master
             }
           });
       }
@@ -583,11 +804,19 @@ function $RouteProvider(){
      */
     function interpolate(string, params) {
       var result = [];
+<<<<<<< HEAD
+      angular.forEach((string || '').split(':'), function(segment, i) {
+        if (i === 0) {
+          result.push(segment);
+        } else {
+          var segmentMatch = segment.match(/(\w+)(?:[?*])?(.*)/);
+=======
       angular.forEach((string||'').split(':'), function(segment, i) {
         if (i === 0) {
           result.push(segment);
         } else {
           var segmentMatch = segment.match(/(\w+)(.*)/);
+>>>>>>> aldrix/master
           var key = segmentMatch[1];
           result.push(params[key]);
           result.push(segmentMatch[2] || '');
@@ -695,7 +924,10 @@ ngRouteModule.directive('ngView', ngViewFillContentFactory);
           <pre>$location.path() = {{main.$location.path()}}</pre>
           <pre>$route.current.templateUrl = {{main.$route.current.templateUrl}}</pre>
           <pre>$route.current.params = {{main.$route.current.params}}</pre>
+<<<<<<< HEAD
+=======
           <pre>$route.current.scope.name = {{main.$route.current.scope.name}}</pre>
+>>>>>>> aldrix/master
           <pre>$routeParams = {{main.$routeParams}}</pre>
         </div>
       </file>
@@ -719,7 +951,10 @@ ngRouteModule.directive('ngView', ngViewFillContentFactory);
         .view-animate-container {
           position:relative;
           height:100px!important;
+<<<<<<< HEAD
+=======
           position:relative;
+>>>>>>> aldrix/master
           background:white;
           border:1px solid black;
           height:40px;
@@ -773,7 +1008,10 @@ ngRouteModule.directive('ngView', ngViewFillContentFactory);
                   controllerAs: 'chapter'
                 });
 
+<<<<<<< HEAD
+=======
               // configure html5 to get links working on jsfiddle
+>>>>>>> aldrix/master
               $locationProvider.html5Mode(true);
           }])
           .controller('MainCtrl', ['$route', '$routeParams', '$location',
@@ -820,7 +1058,11 @@ ngRouteModule.directive('ngView', ngViewFillContentFactory);
  * Emitted every time the ngView content is reloaded.
  */
 ngViewFactory.$inject = ['$route', '$anchorScroll', '$animate'];
+<<<<<<< HEAD
+function ngViewFactory($route, $anchorScroll, $animate) {
+=======
 function ngViewFactory(   $route,   $anchorScroll,   $animate) {
+>>>>>>> aldrix/master
   return {
     restrict: 'ECA',
     terminal: true,
@@ -829,7 +1071,11 @@ function ngViewFactory(   $route,   $anchorScroll,   $animate) {
     link: function(scope, $element, attr, ctrl, $transclude) {
         var currentScope,
             currentElement,
+<<<<<<< HEAD
+            previousLeaveAnimation,
+=======
             previousElement,
+>>>>>>> aldrix/master
             autoScrollExp = attr.autoscroll,
             onloadExp = attr.onload || '';
 
@@ -837,6 +1083,22 @@ function ngViewFactory(   $route,   $anchorScroll,   $animate) {
         update();
 
         function cleanupLastView() {
+<<<<<<< HEAD
+          if (previousLeaveAnimation) {
+            $animate.cancel(previousLeaveAnimation);
+            previousLeaveAnimation = null;
+          }
+
+          if (currentScope) {
+            currentScope.$destroy();
+            currentScope = null;
+          }
+          if (currentElement) {
+            previousLeaveAnimation = $animate.leave(currentElement);
+            previousLeaveAnimation.then(function() {
+              previousLeaveAnimation = null;
+            });
+=======
           if(previousElement) {
             previousElement.remove();
             previousElement = null;
@@ -850,6 +1112,7 @@ function ngViewFactory(   $route,   $anchorScroll,   $animate) {
               previousElement = null;
             });
             previousElement = currentElement;
+>>>>>>> aldrix/master
             currentElement = null;
           }
         }
@@ -869,7 +1132,11 @@ function ngViewFactory(   $route,   $anchorScroll,   $animate) {
             // function is called before linking the content, which would apply child
             // directives to non existing elements.
             var clone = $transclude(newScope, function(clone) {
+<<<<<<< HEAD
+              $animate.enter(clone, null, currentElement || $element).then(function onNgViewEnter() {
+=======
               $animate.enter(clone, null, currentElement || $element, function onNgViewEnter () {
+>>>>>>> aldrix/master
                 if (angular.isDefined(autoScrollExp)
                   && (!autoScrollExp || scope.$eval(autoScrollExp))) {
                   $anchorScroll();

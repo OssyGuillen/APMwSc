@@ -38,6 +38,7 @@ Long. mínima: <code>1</code>.
      <li>
       <p>resultado:</p>
       <ul>
+       <li>label:'/VProductos',</li>
        <li>label:'/VMaestroScrum',</li>
        <li> msg:"Bienvenido Maestro Scrum".</li>
       </ul>
@@ -46,6 +47,7 @@ Long. mínima: <code>1</code>.
      <li>
       <p>resultado:</p>
       <ul>
+       <li>label:'/VProductos',</li>
        <li>label:'/VDesarrollador',</li>
        <li> msg:"Bienvenido Desarrollador".</li>
       </ul>
@@ -61,6 +63,13 @@ Long. mínima: <code>1</code>.
 
     </ol>
    </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/ident/VLogin'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+   <li>Roles: Sin restricción de rol
   </ul>
  </li> <li>
   <p></p>
@@ -128,7 +137,67 @@ Requerido.
  <li>
   <p></p>
   <ul>
+   <li>URL: '/prod/VProductos'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/prod/AModifProducto'</li>
    <li>URL: '/prod/ACrearProducto'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>nombre -  
+Requerido. 
+     </li>     <li>descripcion -  
+Requerido. 
+     </li>     <li>idPila -  
+Opcional. 
+     </li>     <li>opcionesEscala -  
+Opcional. 
+     </li>     <li>escala -  
+Requerido. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: duenoProducto </li>
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VProductos',</li>
+       <li> msg:"Producto actualizado".</li>
+       <li> msg:"Producto creado".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VCrearProducto',</li>
+       <li> msg:"Error al crear producto".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/prod/VProducto'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idPila
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/prod/ACrearProducto'</li>
+   <li>URL: '/prod/AModifProducto'</li>
    <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
 <li>Parámetros POST:
     <ul>     <li>nombre -  
@@ -161,40 +230,6 @@ Requerido.
       <ul>
        <li>label:'/VCrearProducto',</li>
        <li> msg:"Error al crear producto".</li>
-      </ul>
-     </li>
-
-    </ol>
-   </li>
-  </ul>
- </li> <li>
-  <p></p>
-  <ul>
-   <li>URL: '/prod/AModifProducto'</li>
-   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
-<li>Parámetros POST:
-    <ul>     <li>nombre -  
-Requerido. 
-     </li>     <li>descripcion -  
-Requerido. 
-     </li>     <li>idPila -  
-Opcional. 
-     </li>     <li>opcionesEscala -  
-Opcional. 
-     </li>     <li>escala -  
-Requerido. 
-     </li>
-    </ul>
-   </li>
-   <li>Roles: duenoProducto </li>
-   <li>Requisitos: No disponible
-   <li>
-    <p><strong>Cursos posibles</strong></p>
-    <ol>
-     <li>
-      <p>resultado:</p>
-      <ul>
-       <li>label:'/VProductos',</li>
        <li> msg:"Producto actualizado".</li>
       </ul>
      </li>
@@ -256,6 +291,7 @@ Parámetros GET: idPila
  <li>
   <p></p>
   <ul>
+   <li>URL: '/actor/AModifActor'</li>
    <li>URL: '/actor/ACrearActor'</li>
    <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
 <li>Parámetros POST:
@@ -279,12 +315,15 @@ Opcional.
       <p>resultado:</p>
       <ul>
        <li>label:'/VProducto',</li>
+       <li> msg:"Actor actualizado".</li>
        <li> msg:"Actor creado".</li>
       </ul>
      </li>
      <li>
       <p>resultado:</p>
       <ul>
+       <li>label:'/VActor',</li>
+       <li> msg:"Error al modificar actor".</li>
        <li>label:'/VCrearActor',</li>
        <li> msg:"Error al crear actor".</li>
       </ul>
@@ -296,6 +335,10 @@ Opcional.
  </li> <li>
   <p></p>
   <ul>
+   <li>URL: '/actor/VActor'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idActor
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
    <li>URL: '/actor/AElimActor'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
 Parámetros GET: idActor
@@ -325,6 +368,7 @@ Parámetros GET: idActor
  </li> <li>
   <p></p>
   <ul>
+   <li>URL: '/actor/ACrearActor'</li>
    <li>URL: '/actor/AModifActor'</li>
    <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
 <li>Parámetros POST:
@@ -348,12 +392,15 @@ Opcional.
       <p>resultado:</p>
       <ul>
        <li>label:'/VProducto',</li>
+       <li> msg:"Actor creado".</li>
        <li> msg:"Actor actualizado".</li>
       </ul>
      </li>
      <li>
       <p>resultado:</p>
       <ul>
+       <li>label:'/VCrearActor',</li>
+       <li> msg:"Error al crear actor".</li>
        <li>label:'/VActor',</li>
        <li> msg:"Error al modificar actor".</li>
       </ul>
@@ -365,6 +412,10 @@ Opcional.
  </li> <li>
   <p></p>
   <ul>
+   <li>URL: '/actor/VCrearActor'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idPila
+   <li>Roles: duenoProducto </li>
    <li>URL: '/actor/VActor'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
 Parámetros GET: idActor
@@ -373,6 +424,31 @@ Parámetros GET: idActor
  </li> <li>
   <p></p>
   <ul>
+   <li>URL: '/actor/AElimActor'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idActor
+   <li>Roles: duenoProducto </li>
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VProducto',</li>
+       <li> msg:"Actor eliminado".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VActor',</li>
+       <li> msg:"No se pudo eliminar este actor".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
    <li>URL: '/actor/VCrearActor'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
 Parámetros GET: idPila
@@ -386,6 +462,7 @@ Parámetros GET: idPila
  <li>
   <p></p>
   <ul>
+   <li>URL: '/objetivo/AModifObjetivo'</li>
    <li>URL: '/objetivo/ACrearObjetivo'</li>
    <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
 <li>Parámetros POST:
@@ -411,12 +488,15 @@ Requerido.
       <p>resultado:</p>
       <ul>
        <li>label:'/VProducto',</li>
+       <li> msg:"Objetivo actualizado".</li>
        <li> msg:"Actor creado".</li>
       </ul>
      </li>
      <li>
       <p>resultado:</p>
       <ul>
+       <li>label:'/VObjetivo',</li>
+       <li> msg:"Error al modificar objetivo".</li>
        <li>label:'/VCrearObjetivo',</li>
        <li> msg:"Error al crear objetivo".</li>
       </ul>
@@ -428,6 +508,10 @@ Requerido.
  </li> <li>
   <p></p>
   <ul>
+   <li>URL: '/objetivo/VObjetivo'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idObjetiv
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
    <li>URL: '/objetivo/AElimObjetivo'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
 Parámetros GET: idObjetivo
@@ -457,6 +541,7 @@ Parámetros GET: idObjetivo
  </li> <li>
   <p></p>
   <ul>
+   <li>URL: '/objetivo/ACrearObjetivo'</li>
    <li>URL: '/objetivo/AModifObjetivo'</li>
    <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
 <li>Parámetros POST:
@@ -482,12 +567,15 @@ Requerido.
       <p>resultado:</p>
       <ul>
        <li>label:'/VProducto',</li>
+       <li> msg:"Actor creado".</li>
        <li> msg:"Objetivo actualizado".</li>
       </ul>
      </li>
      <li>
       <p>resultado:</p>
       <ul>
+       <li>label:'/VCrearObjetivo',</li>
+       <li> msg:"Error al crear objetivo".</li>
        <li>label:'/VObjetivo',</li>
        <li> msg:"Error al modificar objetivo".</li>
       </ul>
@@ -507,6 +595,31 @@ Parámetros GET: idPila
  </li> <li>
   <p></p>
   <ul>
+   <li>URL: '/objetivo/AElimObjetivo'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idObjetivo
+   <li>Roles: duenoProducto </li>
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VProducto',</li>
+       <li> msg:"Objetivo eliminado".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VObjetivo',</li>
+       <li> msg:"No se pudo eliminar este objetivo".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
    <li>URL: '/objetivo/VObjetivo'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
 Parámetros GET: idObjetivo
@@ -520,6 +633,7 @@ Parámetros GET: idObjetivo
  <li>
   <p></p>
   <ul>
+   <li>URL: '/accion/AModifAccion'</li>
    <li>URL: '/accion/ACrearAccion'</li>
    <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
 <li>Parámetros POST:
@@ -541,12 +655,15 @@ Opcional.
       <p>resultado:</p>
       <ul>
        <li>label:'/VProducto',</li>
+       <li> msg:"Acción actualizada".</li>
        <li> msg:"Acción creada".</li>
       </ul>
      </li>
      <li>
       <p>resultado:</p>
       <ul>
+       <li>label:'/VAccion',</li>
+       <li> msg:"Error al modificar acción".</li>
        <li>label:'/VCrearAccion',</li>
        <li> msg:"Error al crear acción".</li>
       </ul>
@@ -558,6 +675,18 @@ Opcional.
  </li> <li>
   <p></p>
   <ul>
+   <li>URL: '/accion/VAccion'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idAccion
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/accion/AElimAccion'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idAccion
+   <li>Roles: duenoProducto </li>
    <li>URL: '/accion/AElimAccion'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
 Parámetros GET: idAccion
@@ -587,6 +716,15 @@ Parámetros GET: idAccion
  </li> <li>
   <p></p>
   <ul>
+   <li>URL: '/accion/VCrearAccion'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idPila
+   <li>Roles: duenoProducto </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/accion/ACrearAccion'</li>
    <li>URL: '/accion/AModifAccion'</li>
    <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
 <li>Parámetros POST:
@@ -608,12 +746,15 @@ Opcional.
       <p>resultado:</p>
       <ul>
        <li>label:'/VProducto',</li>
+       <li> msg:"Acción creada".</li>
        <li> msg:"Acción actualizada".</li>
       </ul>
      </li>
      <li>
       <p>resultado:</p>
       <ul>
+       <li>label:'/VCrearAccion',</li>
+       <li> msg:"Error al crear acción".</li>
        <li>label:'/VAccion',</li>
        <li> msg:"Error al modificar acción".</li>
       </ul>
@@ -622,6 +763,17 @@ Opcional.
     </ol>
    </li>
   </ul>
+ </li>
+</ol>
+<h2>Historias</h2>
+<p></p>
+<ol>
+ <li>
+  <p></p>
+  <ul>
+   <li>URL: '/historias/VHistorias'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idPila
  </li> <li>
   <p></p>
   <ul>
@@ -633,6 +785,13 @@ Parámetros GET: idAccion
  </li> <li>
   <p></p>
   <ul>
+   <li>URL: '/historias/ACrearHistoria'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>opcionesActores -  
+Opcional. 
+     </li>     <li>opcionesTiposHistoria -  
+Opcional. 
    <li>URL: '/accion/VCrearAccion'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
 Parámetros GET: idPila
@@ -717,11 +876,12 @@ Requerido.
      </li>
     </ul>
    </li>
+   <li>Roles: duenoProducto </li>
    <li>Roles: desarrollador duenoProducto maestroScrum </li>
    <li>Requisitos: No disponible
    <li>
     <p><strong>Cursos posibles</strong></p>
-    <ol>
+    
      <li>
       <p>resultado:</p>
       <ul>
@@ -742,7 +902,7 @@ Requerido.
   </ul>
  </li> <li>
   <p></p>
-  <ul>
+  <
    <li>URL: '/historias/AElimHistoria'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
 Parámetros GET: idHistoria
@@ -771,7 +931,7 @@ Parámetros GET: idHistoria
   </ul>
  </li> <li>
   <p></p>
-  <ul>
+  <
    <li>URL: '/historias/AModifHistoria'</li>
    <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
 <li>Parámetros POST:
@@ -807,8 +967,9 @@ Opcional.
 Requerido. 
      </li>
     </ul>
-   </li>
-   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+   </
+   <li>Roles: duenoProducto </
+   <li>Roles: desarrollador duenoProducto maestroScrum </
    <li>Requisitos: No disponible
    <li>
     <p><strong>Cursos posibles</strong></p>
@@ -833,7 +994,40 @@ Requerido.
   </ul>
  </li> <li>
   <p></p>
+  <u>
+   <li>URL: '/historias/VCrearHistoria'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idPila
+   <li>Roles: duenoProducto </li>
+  </ul>
+ </li> <li>
+  <p></p>
   <ul>
+   <li>URL: '/historias/VHistoria'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idHistoria
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/historias/ACambiarPrioridades'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>opcionesPrioridad -  
+Opcional. 
+     </li>     <li>idPila -  
+Opcional. 
+     </li>     <li>lista -  
+Opcional. 
+     </li>     <li>idHistoria -  
+Opcional. 
+     </li>     <li>prioridad -  
+Requerido. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: duenoProducto </li>
    <li>URL: '/historias/APrelaciones'</li>
    <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
 <li>Parámetros POST:
@@ -854,14 +1048,16 @@ Opcional.
      </li>
     </ul>
    </li>
-   <li>Roles: Sin restricción de rol
+   <li>Roles: Sin restricción de ro
    <li>Requisitos: No disponible
    <li>
     <p><strong>Cursos posibles</strong></p>
     <ol>
      <li>
       <p>resultado:</p>
-      <ul>
+      <ul
+       <li>label:'/VHistorias',</li>
+       <li> msg:"Prioridades reasignadas".</li>
        <li>label:'/VPrelaciones',</li>
        <li> msg:"Cambios almacenados".</li>
       </ul>
@@ -880,6 +1076,31 @@ Opcional.
  </li> <li>
   <p></p>
   <ul>
+   <li>URL: '/historias/AElimHistoria'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idHistoria
+   <li>Roles: duenoProducto </li>
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VHistorias',</li>
+       <li> msg:"Historia eliminada".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VHistoria',</li>
+       <li> msg:"No se pudo eliminar esta historia".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
    <li>URL: '/historias/VCrearHistoria'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
 Parámetros GET: idPila
@@ -915,6 +1136,7 @@ Parámetros GET: idPila
    <li>URL: '/historias/VPrioridades'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
 Parámetros GET: idPila
+   <li>Roles: duenoProducto </li>
    <li>Roles: desarrollador duenoProducto maestroScrum </li>
   </ul>
  </li>
@@ -934,6 +1156,17 @@ Opcional.
 Opcional. 
      </li>     <li>descripcion -  
 Requerido. 
+     </li>     <li>opcionesCategoria -  
+Opcional. 
+     </li>     <li>categoria -  
+Opcional. 
+     </li>     <li>peso -  
+Opcional. 
+Valor mínimo: <code></code>. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: desarrollador duenoProducto </li>
      </li>
     </ul>
    </li>
@@ -963,6 +1196,10 @@ Requerido.
  </li> <li>
   <p></p>
   <ul>
+   <li>URL: '/tareas/VCrearTarea'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idHistoria
+   <li>Roles: desarrollador duenoProducto </li>
    <li>URL: '/tareas/AElimTarea'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
    <li>Roles: desarrollador duenoProducto maestroScrum </li>
@@ -1000,6 +1237,17 @@ Opcional.
 Opcional. 
      </li>     <li>descripcion -  
 Requerido. 
+     </li>     <li>opcionesCategoria -  
+Opcional. 
+     </li>     <li>categoria -  
+Opcional. 
+     </li>     <li>peso -  
+Opcional. 
+Valor mínimo: <code></code>. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: desarrollador duenoProducto </li>
      </li>
     </ul>
    </li>
@@ -1042,6 +1290,12 @@ Parámetros GET: idHistoria
 Parámetros GET: idTarea
    <li>Roles: desarrollador duenoProducto maestroScrum </li>
   </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/tareas/AElimTarea'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+   <li>Roles: desarrollador duenoProducto </li>
  </li>
 </ol>
 <h2>Anexos</h2>
@@ -1098,6 +1352,8 @@ Requerido.
      <li>
       <p>resultado:</p>
       <ul>
+       <li>label:'/VHistoria',</li>
+       <li> msg:"Tarea borrada".</li>
        <li>label:'/VAnexo',</li>
        <li> msg:"Anexo eliminado".</li>
       </ul>
@@ -1105,6 +1361,8 @@ Requerido.
      <li>
       <p>resultado:</p>
       <ul>
+       <li>label:'/VTarea',</li>
+       <li> msg:"No se pudo eliminar esta tarea".</li>
        <li>label:'/VAnexo',</li>
        <li> msg:"Error al eliminar anexo".</li>
       </ul>
@@ -1113,6 +1371,9 @@ Requerido.
     </ol>
    </li>
   </ul>
+ </li>
+</ol>
+<h2>Categorías</h2>
  </li> <li>
   <p></p>
   <ul>
@@ -1129,6 +1390,20 @@ Parámetros GET: idPila
  <li>
   <p></p>
   <ul>
+   <li>URL: '/cates/ACrearCategoria'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>idCategoria -  
+Opcional. 
+     </li>     <li>nombre -  
+Requerido. 
+     </li>     <li>peso -  
+Requerido. 
+Valor mínimo: <code></code>. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: maestroScrum </li>
    <li>URL: '/sprint/ACrearSprint'</li>
    <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
 <li>Parámetros POST:
@@ -1149,6 +1424,8 @@ Requerido.
      <li>
       <p>resultado:</p>
       <ul>
+       <li>label:'/VCategorias',</li>
+       <li> msg:"Categoría creada.".</li>
        <li>label:'/VSprints',</li>
        <li> msg:"Sprint creado".</li>
       </ul>
@@ -1156,6 +1433,8 @@ Requerido.
      <li>
       <p>resultado:</p>
       <ul>
+       <li>label:'/VCategorias',</li>
+       <li> msg:"Error al intentar crear categoría.".</li>
        <li>label:'/VSprint',</li>
        <li> msg:"Error al crear Sprint".</li>
       </ul>
@@ -1167,6 +1446,17 @@ Requerido.
  </li> <li>
   <p></p>
   <ul>
+   <li>URL: '/cates/VCategorias'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/cates/AElimCategoria'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idCategoria
+   <li>Roles: maestroScrum </li>
    <li>URL: '/sprint/AElimSprint'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
    <li>Roles: Sin restricción de rol
@@ -1177,6 +1467,8 @@ Requerido.
      <li>
       <p>resultado:</p>
       <ul>
+       <li>label:'/VCategorias',</li>
+       <li> msg:"Categoría eliminada.".</li>
        <li>label:'/VSprints',</li>
        <li> msg:"Sprint eliminado".</li>
       </ul>
@@ -1184,6 +1476,8 @@ Requerido.
      <li>
       <p>resultado:</p>
       <ul>
+       <li>label:'/VCategorias',</li>
+       <li> msg:"Error al intentar eliminar categoría.".</li>
        <li>label:'/VSprint',</li>
        <li> msg:"Error al eliminar Sptrint".</li>
       </ul>
@@ -1195,6 +1489,20 @@ Requerido.
  </li> <li>
   <p></p>
   <ul>
+   <li>URL: '/cates/AModifCategoria'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>idCategoria -  
+Opcional. 
+     </li>     <li>nombre - 
+Requerido. 
+     </li>     <li>peso -  
+Requerido. 
+Valor mínimo: <code></code>. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: maestroScrum </li>
    <li>URL: '/sprint/AModifSprint'</li>
    <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
 <li>Parámetros POST:
@@ -1215,15 +1523,25 @@ Requerido.
      <li>
       <p>resultado:</p>
       <ul>
+
+       <li>label:'/VCategorias',</li>
+       <li> msg:"Categoría actualizada.".</li>
+
        <li>label:'/VSprints',</li>
        <li> msg:"Sprint modificado".</li>
+
       </ul>
      </li>
      <li>
       <p>resultado:</p>
       <ul>
+
+       <li>label:'/VCategorias',</li>
+       <li> msg:"Error al intentar modificar categoría.".</li>
+
        <li>label:'/VSprint',</li>
        <li> msg:"Error al guardar Spront".</li>
+
       </ul>
      </li>
 
@@ -1233,6 +1551,15 @@ Requerido.
  </li> <li>
   <p></p>
   <ul>
+
+   <li>URL: '/cates/VCategoria'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idCategoria
+   <li>Roles: maestroScrum </li>
+  </ul>
+ </li>
+</ol>
+
    <li>URL: '/sprint/VCrearSprint'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
 Parámetros GET: idPila

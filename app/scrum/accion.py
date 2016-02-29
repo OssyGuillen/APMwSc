@@ -53,6 +53,20 @@ def AElimAccion():
     idPila   = int(session['idPila'])
     idAccion = int(session['idAccion'])
 
+    # Conseguimos la acción a eliminar 
+    oAccion = accions()
+    found   = oAccion.searchIdAccion(idAccion)
+    
+    oAccionUserHist = userHistory()
+    result  = oAccionUserHist.searchidUserHistoryIdAccion(idAccion)
+  
+    # Verificamos si la acción está asociado a una historia   
+    if (result == []):
+        deleted = oAccion.deleteAccion(found[0].AC_accionDescription, idPila)
+        
+        if deleted:
+            res = results[0]
+            
     # Conseguimos la acción a eliminar
     oAccion = accions()
     found   = oAccion.searchIdAccion(idAccion)
@@ -83,6 +97,7 @@ def AModifAccion():
     #POST/PUT parameters
     params  = request.get_json()
     results = [{'label':'/VProducto', 'msg':['Acción actualizada']}, {'label':'/VProducto', 'msg':['Error al modificar acción']}, ]
+
     res     = results[1]
 
     # Obtenemos el id del producto
@@ -90,6 +105,7 @@ def AModifAccion():
 
     # Extraemos los parámetros
     newDescription = params['descripcion']
+
     idAccion       = int(params['idAccion'])
 
     oAccion = accions()
@@ -163,6 +179,7 @@ def VCrearAccion():
 
 
 #Use case code starts here
+
 
 
 #Use case code ends here

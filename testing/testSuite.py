@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-.
+# -*- coding: utf-8 -*-. 
 
 import unittest
 
@@ -13,9 +13,10 @@ from testObjectivesUserHistory  import *
 from testRole                   import *
 from testTask                   import *
 from testUser                   import *
+from testTeam					import *
 from testArchivo                import *
 
 if __name__ == '__main__':
     runner = unittest.TextTestRunner()
     test_suite = unittest.TestSuite()
-    runner.run (test_suite) 
+    runner.run (test_suite)
