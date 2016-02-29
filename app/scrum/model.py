@@ -301,6 +301,28 @@ class clsSprint(db.Model):
         '''Representacion en string del Sprint'''
         return '<S_idSprint %r, S_numero %r, S_sprintDescription %r, S_idBacklog %r>' % (self.S_idSprint, self.S_numero, self.S_sprintDescription, self.S_idBacklog)
 
+
+class clsSprintMeeting(db.Model):
+    '''Clase que define el modelo de las reuniones diarias'''
+    __tablename__ = 'meeting'
+    SM_idSprintMeeting  = db.Column(db.Integer, primary_key = True, index = True)
+    SM_meetingDate      = db.Column(db.DateTime, default=datetime.datetime.now())
+    SM_activities       = db.Column(db.String(300))
+    SM_suggestions      = db.Column(db.String(300))
+    SM_challenges       = db.Column(db.String(300))
+    SM_idSprint         = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
+
+    def __init__(self, meetingDate, activities, idSprint):
+        self.SM_meetingDate     = meetingDate
+        self.SM_activities      = activities
+        self.SM_suggestions     = suggestions
+        self.SM_challenges      = challenges
+        self.SM_idSprint        = idSprint
+
+    def __repr__(self):
+        '''Representacion en string del Meeting'''
+        return '<SM_idSprintMeeting %r, SM_meetingDate %r,  SM_activities %r, SM_idSprint %r>' % (self.SM_idSprintMeeting, self.SM_meetingDate, self.SM_activities, self.SM_idSprint)
+
 migrate = Migrate(app, db)
 manager = Manager(app)
 
