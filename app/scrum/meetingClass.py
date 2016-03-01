@@ -28,7 +28,7 @@ class meeting(object):
 
     def getMeetings(self,idSprint):
         '''Entrega la lista de reuniones diarias de un sprint'''
-        aMeeting = clsSprintMeeting.query.filter_by(SM_idSprintMeeting = idSprint).all()
+        aMeeting = clsSprintMeeting.query.filter_by(SM_idSprint = idSprint).all()
         return (aMeeting)
 
 	def insertMeeting(self, date, activities, suggestions, challenges, idSprint): 
@@ -68,10 +68,50 @@ class meeting(object):
 
 		return False
 
+	def updateMeeting(self, newDate, newActivities, newSuggestions, newChallenges, idSprint):
+		'''Permite actualizar los datos de una reunión diaria'''   
+		#checkTypeDate 			= type(date) == DateTime
+		checkTypeNewActivities     = type(newActivities) == str
+		checkTypeNewSuggestions    = type(newSuggestions) == str
+		checkTypeNewChallenges     = type(newChallenges) == str
+		checkTypeIdSprint      	   = type(idSprint) == int
+		
+		if checkTypeNewActivities and checkTypeNewSuggestions and checkTypeNewChallenges and checkSprintId:
 
 
+		return False
+
+	def searchMeeting(self, date, idSprint):
+		'''Permite buscar reuniones por su fecha'''
+		#checkTypeDate = type(date) == DateTime
+		checkTypeIdSprint = type(idSprint) == int
+		foundMeeting       = []
+
+		if checkTypeIdSprint:
+			foundMeeting = clsSprintMeeting.query.filter_by(SM_meetingDate = date, SM_idSprint = idSprint).all()
+		return foundMeeting
 
 
+	def deleteMeeting(self,date,idSprint):
+		'''Permite eliminar una reunión de un sprint segun la fecha'''
+		#checkTypeDate = type(date) == DateTime
+		checkTypeIdSprint = type(idSprint) == int
+
+		if checkTypeIdSprint:
+			checkSprintId = MIN_ID <= idSprint
+
+			if checkSprintId:
+				foundMeeting = searchIdMeeting(date,idSprint)
+				
+				if foundMeeting != []:
+					for m in foundMeeting:
+						db.session.delete(m)
+					db.session.commit()
+					return True
+
+		return False
+
+# Fin Clase meeting
 
 
 
