@@ -312,7 +312,7 @@ class clsSprintMeeting(db.Model):
     SM_challenges       = db.Column(db.String(300))
     SM_idSprint         = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
 
-    def __init__(self, meetingDate, activities, idSprint):
+    def __init__(self, meetingDate, activities, suggestions, challenges, idSprint):
         self.SM_meetingDate     = meetingDate
         self.SM_activities      = activities
         self.SM_suggestions     = suggestions
