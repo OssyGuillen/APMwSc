@@ -100,7 +100,8 @@ class meeting(object):
 				foundMeeting[0].SM_activities  = newActivities
 				foundMeeting[0].SM_suggestions = newSuggestions
 				foundMeeting[0].SM_challenges  = newChallenges
-
+				return True 
+				
 		return False
 
 	def searchMeeting(self, date, idSprint):
