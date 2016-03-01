@@ -31,6 +31,16 @@ class meeting(object):
         aMeeting = clsSprintMeeting.query.filter_by(SM_idSprint = idSprint).all()
         return (aMeeting)
 
+	def searchMeeting(self, date, idSprint):
+		'''Retorna la lista de reuniones con un fecha y sprint determinado'''
+		#checkTypeDate = type(date) == DateTime
+		checkTypeIdSprint = type(idSprint) == int
+		foundMeeting       = []
+
+		if checkTypeIdSprint:
+			foundMeeting = clsSprintMeeting.query.filter_by(SM_meetingDate = date, SM_idSprint = idSprint).all()
+		return foundMeeting
+
 	def insertMeeting(self, date, activities, suggestions, challenges, idSprint): 
 		'''Permite insertar una reunión diaria a un sprint'''   
 		#checkTypeDate 			= type(date) == DateTime
@@ -44,7 +54,7 @@ class meeting(object):
 			checkActivityLong = MIN_MEETING_ACTIVITIES <= len(activities) <= MAX_MEETING_ACTIVITIES
 			checkSusggestionLong = MIN_MEETING_SUGGESTIONS <= len(suggestions) <= MAX_MEETING_SUGGESTIONS
 			checkChallengeLong = MIN_MEETING_CHALLENGES <= len(challenges) <= MAX_MEETING_CHALLENGES
-			checkSprintId = MIN_ID <= idSprint
+			checkSprintId = MIN_ID_SPRINT <= idSprint
 
 			# Si todas las longitudes son correctas
 			if checkActivityLong and checkSusggestionLong and checkChallengeLong and checkSprintId:
@@ -52,19 +62,17 @@ class meeting(object):
 				# Verifico que el sprint exista
 				foundSprint = clsSprint.query.filter_by(S_idSprint = idSprint)
 				
-				# Verifico que la fecha no se repita
+				# Si el sprint existe. Verifico que la fecha no se repita
 				if foundSprint != []:
-					foundDate = clsSprintMeeting.query.filter_by(SM_meetingDate = date).all()
 
-					for d in foundDate:
-						if d.SM_meetingDate  == date:
-							return False
+					foundMeeting = self.searchMeeting(date,idSprint)
 
-					# Si la fecha no se repite
-					newMeeting = clsSprintMeeting(date,activities,suggestions,challenges,idSprint)
-					db.session.add(newMeeting)
-					db.session.commit()
-					return True
+					if foundMeeting == []
+						# Si la fecha no se repite
+						newMeeting = clsSprintMeeting(date,activities,suggestions,challenges,idSprint)
+						db.session.add(newMeeting)
+						db.session.commit()
+						return True
 
 		return False
 
@@ -78,41 +86,29 @@ class meeting(object):
 		checkTypeIdSprint      	   = type(idSprint) == int
 		
 		# Verifica la longitud de los campos
-		if checkTypeNewActivities and checkTypeNewSuggestions and checkTypeNewChallenges and checkSprintId:
-			checkNewActivityLong    = MIN_MEETING_ACTIVITIES <= len(NewActivities) <= MAX_MEETING_ACTIVITIES
-			checkNewSusggestionLong = MIN_MEETING_SUGGESTIONS <= len(NewSuggestions) <= MAX_MEETING_SUGGESTIONS
-			checkNewChallengeLong   = MIN_MEETING_CHALLENGES <= len(NewChallenges) <= MAX_MEETING_CHALLENGES
-			checkSprintId 			= MIN_ID <= idSprint
+		if checkTypeNewActivities and checkTypeNewSuggestions and checkTypeNewChallenges and checkTypeIdSprint:
+			checkNewActivityLong    = MIN_MEETING_ACTIVITIES <= len(newActivities) <= MAX_MEETING_ACTIVITIES
+			checkNewSusggestionLong = MIN_MEETING_SUGGESTIONS <= len(newSuggestions) <= MAX_MEETING_SUGGESTIONS
+			checkNewChallengeLong   = MIN_MEETING_CHALLENGES <= len(newChallenges) <= MAX_MEETING_CHALLENGES
+			checkSprintId 			= MIN_ID_SPRINT <= idSprint
 
-			# Busca las reuniones que tengan la fecha original
-			foundMeeting = self.searchMeeting(date,idSprint)
+			#Si las longitudes son correctas
+			if checkNewActivityLong and checkNewSusggestionLong and checkNewChallengeLong and checkSprintId:
+				
+				# Busca las reuniones que tengan la nueva fecha
+				foundMeeting = self.searchMeeting(newDate,idSprint)
 
-			if foundMeeting != [] and checkNewActivityLong and checkNewSusggestionLong and checkNewChallengeLong and checkSprintId:
-				# Si las fechas son distintas (si el usuario cambió la fecha)
-				if foundMeeting[0].SM_meetingDate != newDate:
-					# Verifico que no se repitan
-					for d in clsSprintMeeting.que.filter_by(SM_meetingDate = newDate).all()
-						if d.SM_meetingDate == newDate:
-							return False
-
-					foundMeeting[0].SM_meetingDate = newDate
-
+				# Si hay reuniones con la nueva fecha, el mismo sprint y date != de newDate (cambió la fecha)
+				if  foundMeeting != [] and foundMeeting[0].SM_idSprint != idSprint and date != newDate:
+					return False
+					
+				foundMeeting[0].SM_meetingDate = newDate
 				foundMeeting[0].SM_activities  = newActivities
 				foundMeeting[0].SM_suggestions = newSuggestions
 				foundMeeting[0].SM_challenges  = newChallenges
-				return True 
-				
+				return True
+
 		return False
-
-	def searchMeeting(self, date, idSprint):
-		'''Permite buscar reuniones por su fecha'''
-		#checkTypeDate = type(date) == DateTime
-		checkTypeIdSprint = type(idSprint) == int
-		foundMeeting       = []
-
-		if checkTypeIdSprint:
-			foundMeeting = clsSprintMeeting.query.filter_by(SM_meetingDate = date, SM_idSprint = idSprint).all()
-		return foundMeeting
 
 
 	def deleteMeeting(self,date,idSprint):
@@ -121,7 +117,7 @@ class meeting(object):
 		checkTypeIdSprint = type(idSprint) == int
 
 		if checkTypeIdSprint:
-			checkSprintId = MIN_ID <= idSprint
+			checkSprintId = MIN_ID_SPRINT <= idSprint
 
 			# Si encuentra una reunion con esa fecha en ese sprint
 			if checkSprintId:
