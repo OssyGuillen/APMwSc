@@ -9,8 +9,8 @@ scrumModule.config(function ($routeProvider) {
 });
 
 scrumModule.controller('VCrearTareaController', 
-   ['$scope', '$location', '$route', 'flash', '$routeParams', 'historiasService', 'identService', 'tareasService',
-    function ($scope, $location, $route, flash, $routeParams, historiasService, identService, tareasService) {
+   ['$scope', '$location', '$route', 'flash', '$routeParams', 'asignacionTareaService', 'historiasService', 'identService', 'tareasService',
+    function ($scope, $location, $route, flash, $routeParams, asignacionTareaService, historiasService, identService, tareasService) {
       $scope.msg = '';
       $scope.fTarea = {};
 
@@ -58,8 +58,8 @@ $scope.$watch('fTarea.categoria', function(newV,oldV) {
 });
     }]);
 scrumModule.controller('VTareaController', 
-   ['$scope', '$location', '$route', 'flash', '$routeParams', 'historiasService', 'identService', 'tareasService',
-    function ($scope, $location, $route, flash, $routeParams, historiasService, identService, tareasService) {
+   ['$scope', '$location', '$route', 'flash', '$routeParams', 'asignacionTareaService', 'historiasService', 'identService', 'tareasService',
+    function ($scope, $location, $route, flash, $routeParams, asignacionTareaService, historiasService, identService, tareasService) {
       $scope.msg = '';
       $scope.fTarea = {};
 
@@ -86,6 +86,9 @@ scrumModule.controller('VTareaController',
         });};
       $scope.VLogin3 = function() {
         $location.path('/VLogin');
+      };
+      $scope.VAsignacionTarea4 = function(idTarea) {
+        $location.path('/VAsignacionTarea/'+idTarea);
       };
 
       $scope.fTareaSubmitted = false;

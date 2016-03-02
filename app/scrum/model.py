@@ -254,6 +254,7 @@ class clsTask(db.Model):
     HW_weight        = db.Column(db.Integer)
     HW_idCategory    = db.Column(db.Integer, db.ForeignKey('category.C_idCategory'))
     HW_idUserHistory = db.Column(db.Integer, db.ForeignKey('userHistory.UH_idUserHistory'))
+    HW_idEquipo   = db.Column(db.Integer, db.ForeignKey('equipo.EQ_idEquipo'))
 
     def __init__(self, description, idCategory, weight, idUserHistory):
         self.HW_description   = description
@@ -263,7 +264,7 @@ class clsTask(db.Model):
 
     def __repr__(self):
         '''Representacion en string de la Tarea'''
-        return '<HW_ idTask  %r,HW_idCategory %r, HW_weight %r ,HW_idUserHistory %r>' % (self.HW_idTask, self.HW_idCategory, self.HW_weight, self.HW_idUserHistory)
+        return '<HW_ idTask  %r,HW_idCategory %r, HW_weight %r ,HW_idUserHistory %r, HW_idEquipo %r>' % (self.HW_idTask, self.HW_idCategory, self.HW_weight, self.HW_idUserHistory, self.HW_idEquipo)
 
 
 class clsCategory(db.Model):

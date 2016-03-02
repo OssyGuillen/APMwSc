@@ -1,0 +1,42 @@
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" 
+                    data-toggle="collapse" 
+                    data-target="#contenido-plegable">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand" >Asignación de la Tarea</span>
+        </div>
+        <div class="collapse navbar-collapse" id="contenido-plegable">
+            <ul class="nav navbar-nav navbar-left">
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+<li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
+<li><a ng-click="VTarea1(idTarea)"
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+    Regresar</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+<span>{{idTarea}}</span>
+
+    <form name="fAsignacionTareaForm" ng-submit="AActuralizarAsignacionTarea0(fAsignacionTareaForm.$valid)" novalidate>
+            <input id="fAsignacionTarea_idProyecto" type="hidden" name="idProyecto" ng-model="fAsignacionTarea.idProyecto" />
+            <input id="fAsignacionTarea_idTarea" type="hidden" name="idTarea" ng-model="fAsignacionTarea.idTarea" />
+            <div ng-repeat="item_fAsignacionTarea in fAsignacionTarea.lista"><ng-form name="fAsignacionTarea_lista_form">
+            <div class="form-group" ng-class="{ 'has-error' :  fAsignacionTareaSubmitted && fAsignacionTareaForm.miembro.$invalid && fAsignacionTareaForm.miembro.$pristine && fAsignacionTareaSubmitted}"><label for="fAsignacionTarea_miembro">Miembro</label>:&nbsp;<select id="fAsignacionTarea_miembro" ng-model="item_fAsignacionTarea.miembro" required ng-options="item.key as item.value for item in fAsignacionTarea_opcionesMiembros"></select><p ng-show="fAsignacionTareaSubmitted && fAsignacionTareaForm.miembro.$invalid" class="help-block">Error en campo Miembro.</p></div>
+            <a ng-click="elimMiembro($index)" class="btn btn-primary">-Miembro</a></ng-form></div>
+            <a ng-click="agrMiembro()" class="btn btn-primary">+Miembro</a>
+        <button type="submit" class="btn btn-perso btn-lg btn-block">
+            <span class="glyphicon glyphicon-flash"></span>Actualizar
+        </button>
+    </form>
+    <hr />
+
+
+<div id="right"></div>
