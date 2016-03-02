@@ -306,7 +306,7 @@ class clsSprintMeeting(db.Model):
     '''Clase que define el modelo de las reuniones diarias'''
     __tablename__ = 'meeting'
     SM_idSprintMeeting  = db.Column(db.Integer, primary_key = True, index = True)
-    SM_meetingDate      = db.Column(db.DateTime, default=datetime.datetime.now())
+    SM_meetingDate      = db.Column(db.Date, default=datetime.date.today())
     SM_activities       = db.Column(db.String(300))
     SM_suggestions      = db.Column(db.String(300))
     SM_challenges       = db.Column(db.String(300))
