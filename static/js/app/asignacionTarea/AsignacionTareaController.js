@@ -10,6 +10,7 @@ scrumModule.controller('VAsignacionTareaController',
     function ($scope, $location, $route, $timeout, flash, $routeParams, asignacionTareaService, tareasService) {
       $scope.msg = '';
       $scope.fAsignacionTarea = {};
+      console.log($scope.idTarea);
 
       asignacionTareaService.VAsignacionTarea({"idTarea":$routeParams.idTarea}).then(function (object) {
         $scope.res = object.data;
@@ -20,14 +21,18 @@ scrumModule.controller('VAsignacionTareaController',
             $location.path('/');
         }
 
-$scope.agrMiembro = function () {
-  $scope.fAsignacionTarea.lista.push({miembro:null})
-}
-$scope.elimMiembro = function (index) {
-  $scope.fAsignacionTarea.lista.splice(index, 1);
-}
+        //  temporal rewriting of variable while harcoding on /pp/scrum/asignacionTarea.py is removed
+        $scope.idTarea = $routeParams.idTarea;
+
+        $scope.agrMiembro = function () {
+          $scope.fAsignacionTarea.lista.push({miembro:null});
+        };
+        $scope.elimMiembro = function (index) {
+          $scope.fAsignacionTarea.lista.splice(index, 1);
+        };
 
       });
+
       $scope.VTarea1 = function(idTarea) {
         $location.path('/VTarea/'+idTarea);
       };

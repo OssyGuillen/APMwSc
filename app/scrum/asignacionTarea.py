@@ -9,9 +9,9 @@ def AActuralizarAsignacionTarea():
     params = request.get_json()
     results = [{'label':'/VAsignacionTarea', 'msg':['Asignación actualizada']}, {'label':'/VAsignacionTarea', 'msg':['Error al actualizar la asignacion de la tarea']}, ]
     res = results[0]
-    res['idTarea'] = 1
     #Action code goes here, res should be a list with a label and a message
-
+    idTarea  = int(session['idTarea'])
+    res['label'] = res['label'] + '/' + str(idTarea)
 
     #Action code ends here
     if "actor" in res:
@@ -36,6 +36,7 @@ def VAsignacionTarea():
       res['logout'] = '/'
       return json.dumps(res)
 
+    # temporal harcoding of response
     res['usuario'] = session['usuario']
     res['idPila'] = 1
     res['idTarea'] = 1
