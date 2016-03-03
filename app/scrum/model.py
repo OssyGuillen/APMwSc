@@ -75,7 +75,7 @@ class clsActor(db.Model):
     def __repr__(self):
         '''Respresentacion en string del modelo Actor'''
         return '<IdActor %r, Nombre %r, Descripcion %r, IdBacklog %r>' % (
-        self.A_idActor, self.A_nameActor, self.A_actorDescription, self.A_idBacklog)
+            self.A_idActor, self.A_nameActor, self.A_actorDescription, self.A_idBacklog)
 
 
 class clsUser(db.Model):
@@ -121,7 +121,7 @@ class clsObjective(db.Model):
     def __repr__(self):
         '''Respresentación en string del modelo Objective'''
         return '<IdObjetivo %r, Descripcion %r, IdBacklog %r>' % (
-        self.O_idObjective, self.O_descObjective, self.O_idBacklog)
+            self.O_idObjective, self.O_descObjective, self.O_idBacklog)
 
 
 class clsAccion(db.Model):
@@ -142,7 +142,7 @@ class clsAccion(db.Model):
     def __repr__(self):
         '''Respresentación en string del modelo accion'''
         return '<IdAccion %r, Descripcion %r, IdBacklog %r>' % (
-        self.AC_idAccion, self.AC_accionDescription, self.AC_idBacklog)
+            self.AC_idAccion, self.AC_accionDescription, self.AC_idBacklog)
 
 
 class clsUserHistory(db.Model):
@@ -174,7 +174,7 @@ class clsUserHistory(db.Model):
         def __repr__(self):
             '''Representacion en string de la Historia de Usuario'''
             return '<idUserHistory %r, codeUserHistory %r, idSuperHistory %r, scale %r>' % (
-            self.UH_idUserHistory, self.UH_codeUserHistory, self.UH_idSuperHistory, self.UH_scale)
+                self.UH_idUserHistory, self.UH_codeUserHistory, self.UH_idSuperHistory, self.UH_scale)
 
 
 class clsActorsUserHistory(db.Model):
@@ -230,7 +230,7 @@ class clsTask(db.Model):
     def __repr__(self):
         '''Representacion en string de la Tarea'''
         return '<HW_ idTask  %r,HW_idCategory %r, HW_weight %r ,HW_idUserHistory %r>' % (
-        self.HW_idTask, self.HW_idCategory, self.HW_weight, self.HW_idUserHistory)
+            self.HW_idTask, self.HW_idCategory, self.HW_weight, self.HW_idUserHistory)
 
 
 class clsCategory(db.Model):
@@ -269,7 +269,7 @@ class clsPrecedence(db.Model):
     def __repr__(self):
         '''Representacion en string de la Categoria'''
         return '<P_idPrecedence  %r, P_idFirstTask %r, P_idSecondTask %r>' % (
-        self.P_idPrecedence, self.P_idFirstTask, self.P_idSecondTask)
+            self.P_idPrecedence, self.P_idFirstTask, self.P_idSecondTask)
 
 
 class clsTaskDoc(db.Model):
@@ -286,6 +286,12 @@ class clsTaskDoc(db.Model):
         self.HWD_docName = docName
         self.HWD_docDescription = docDescription
 
+    def getName(self):
+        return self.HWD_docName
+
+    def getDescription(self):
+        return self.HWD_docDescription
+
     def save(self):
         db.session.add(self)
         db.session.commit()
@@ -293,9 +299,11 @@ class clsTaskDoc(db.Model):
     def __repr__(self):
         '''Representacion en string del documento de la Tarea'''
         return '<HWD_ idTaskDoc  %r,HWD_idTask %r, HWD_docName %r ,HWD_docDescription %r>' % (
-        self.HWD_idTaskDoc, self.HWD_idTask, self.HWD_docName, self.HWD_docDescription)
+            self.HWD_idTaskDoc, self.HWD_idTask, self.HWD_docName, self.HWD_docDescription)
 
 
+def taskDocs_by_taskId(taskID):
+    return clsTaskDoc.query.filter(clsTaskDoc.HWD_idTask == taskID).all()
 
 
 migrate = Migrate(app, db)

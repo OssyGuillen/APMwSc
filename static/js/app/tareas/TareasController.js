@@ -64,6 +64,9 @@ scrumModule.controller('VTareaController',
       $scope.fTarea = {};
 
       tareasService.VTarea({"idTarea":$routeParams.idTarea}).then(function (object) {
+          if(object.data['documentos'] != undefined){
+            $scope.documentos= object.data['documentos'];
+          }
         $scope.res = object.data;
         for (var key in object.data) {
             $scope[key] = object.data[key];
@@ -75,6 +78,7 @@ scrumModule.controller('VTareaController',
       $scope.VHistoria1 = function(idHistoria) {
         $location.path('/VHistoria/'+idHistoria);
       };
+
       $scope.AElimTarea2 = function() {
           
         tareasService.AElimTarea().then(function (object) {
@@ -84,6 +88,7 @@ scrumModule.controller('VTareaController',
           $location.path(label);
           $route.reload();
         });};
+
       $scope.VLogin3 = function() {
         $location.path('/VLogin');
       };

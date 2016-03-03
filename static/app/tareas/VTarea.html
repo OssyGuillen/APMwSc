@@ -57,6 +57,19 @@
         <button class="btn btn-lg btn-primary btn-block" type="submit">Subir</button>
         </form>
 
+        <div >
+            <table style="border: solid 1px">
+                <tr ng-repeat="documento in documentos"  style="border: solid 1px">
+                    <td>
+                        <a href="{{documento.url}}">{{documento.name}}</a>
+                    </td>
+                    <td>
+                        {{documento.descripcion}}
+                    </td>
+                </tr>
+            </table>
+
+        </div>
 
 
 

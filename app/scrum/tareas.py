@@ -4,10 +4,11 @@ from flask                 import request, session, Blueprint, json, render_temp
 from app.scrum.backLog     import *
 from app.scrum.userHistory import *
 from app.scrum.task        import *
+from app.scrum.model      import taskDocs_by_taskId
 from werkzeug import secure_filename
 
 tareas = Blueprint('tareas', __name__)
-basedir = os.path.abspath(os.path.dirname(__file__))
+basedir=os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))+"/static"
 
 
 @tareas.route('/tareas/ACrearTarea', methods=['POST'])
@@ -186,6 +187,16 @@ def VTarea():
     session['idTarea'] = idTarea
     res['idTarea']     = idTarea
     res['idHistoria']  = idHistoria
+
+    documentos = taskDocs_by_taskId(idTarea)
+    if documentos is None:
+        print("documentos esta vacio")
+        res = {'msg':'No hay documentos para adjuntos a esta tarea'}
+    else:
+        docsJson = []
+        for documento in documentos:
+            docsJson.append({'name': documento.getName(), 'descripcion': documento.getDescription(), 'url':'TaskDocuments/'+idTarea+'/'+documento.getName()})
+        res['documentos']=docsJson
 
     return json.dumps(res)
 
