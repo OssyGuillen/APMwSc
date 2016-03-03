@@ -11,10 +11,22 @@ def ACrearReunionSprint():
     #POST/PUT parameters
     params = request.get_json()
     results = [{'label':'/VSprint', 'msg':['Reunion creada']}, {'label':'/VCrearReunionSprint', 'msg':['Error creando reunion']}, ]
-    res = results[0]
+    res = results[1]
     #Action code goes here, res should be a list with a label and a message
 
-    idSprint = 1
+    idPila  = int(session['idPila'])
+    idSprint = int(session['idSprint'])
+    fecha = params['Fecha']
+    actividades = params['Actividades']
+    sugerencias = params['Sugerencias']
+    retos = params['Retos']
+
+    oMeeting = meeting()
+    exito = oMeeting.insertMeeting(fecha,actividades,sugerencias,retos,idSprint)
+
+    if exito:
+        res = results[0]
+
     res['label'] = res['label'] + '/' + str(idSprint)
 
     #Action code ends here
@@ -98,8 +110,21 @@ def AModifReunionSprint():
     #POST/PUT parameters
     params = request.get_json()
     results = [{'label':'/VReunion', 'msg':['Reunión de sprint modificada'], "actor":"desarrollador"}, {'label':'/VReunion', 'msg':['Error al modificar reunión'], "actor":"desarrollador"}, ]
-    res = results[0]
+    res = results[1]
     #Action code goes here, res should be a list with a label and a message
+
+    idPila  = int(session['idPila'])
+    idSprint = int(session['idSprint'])
+    fecha = params['Fecha']
+    actividades = params['Actividades']
+    sugerencias = params['Sugerencias']
+    retos = params['Retos']
+
+    oMeeting = meeting()
+    exito = oMeeting.updateMeeting(fecha,fecha,actividades,sugerencias,retos,idSprint)
+
+    if exito:
+        res = results[0]
 
     if 'usuario' not in session:
       res['logout'] = '/'
@@ -154,8 +179,10 @@ def AModifSprint():
 @sprint.route('/sprint/VCrearReunionSprint')
 def VCrearReunionSprint():
     #GET parameter
-    idSprint = request.args['idSprint']
     res = {}
+
+    idPila = request.args.get('idPila',1)
+
     if "actor" in session:
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
@@ -163,9 +190,10 @@ def VCrearReunionSprint():
     if 'usuario' not in session:
       res['logout'] = '/'
       return json.dumps(res)
+
     res['usuario'] = session['usuario']
-    #Datos de prueba
-    res['idSprint'] = 1
+    res['idPila']  = idPila
+    res['idSprint'] = session['idSprint']
 
     #Action code ends here
     return json.dumps(res)
@@ -232,7 +260,10 @@ def VSprint():
     
     res['fSprint'] = {'idSprint':idSprint, 'numero':result[0].S_numero, 'descripcion':result[0].S_sprintDescription} 
 
-    res['data1'] = [{'id':1, 'fecha':'hola', 'actividades':'holaq' }]   
+    oMeeting = meeting()
+    result  = oMeeting.getMeetings(idSprint)
+
+    res['data2'] = [{'id':res.SM_idSprintMeeting, 'fecha':res.SM_meetingDate, 'actividades':res.SM_activities } for res in result]  
 
     session['idSprint'] = idSprint
     res['idPila'] = idPila
