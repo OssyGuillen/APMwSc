@@ -19,6 +19,8 @@ MAX_MEETING_SUGGESTIONS = 300
 MIN_MEETING_CHALLENGES = 1
 MAX_MEETING_CHALLENGES = 300
 
+MAX_DATE_MEETING = datetime.date.today()
+
 class meeting(object):
 	'''Clase que permite manejar las Reuniones Diarias de un Sprin'''
 
@@ -56,13 +58,14 @@ class meeting(object):
 
 		# Verifica que la longitud de los campos sea correcta
 		if checkTypeDate and checkTypeActivities and checkTypeSuggestions and checkTypeChallenges and checkTypeIdSprint:
+			checkDate = date <= MAX_DATE_MEETING
 			checkActivityLong = MIN_MEETING_ACTIVITIES <= len(activities) <= MAX_MEETING_ACTIVITIES
 			checkSusggestionLong = MIN_MEETING_SUGGESTIONS <= len(suggestions) <= MAX_MEETING_SUGGESTIONS
 			checkChallengeLong = MIN_MEETING_CHALLENGES <= len(challenges) <= MAX_MEETING_CHALLENGES
 			checkSprintId = MIN_ID_SPRINT <= idSprint
 
 			# Si todas las longitudes son correctas
-			if checkActivityLong and checkSusggestionLong and checkChallengeLong and checkSprintId:
+			if checkDate and checkActivityLong and checkSusggestionLong and checkChallengeLong and checkSprintId:
 				
 				# Verifico que el sprint exista
 				foundSprint = clsSprint.query.filter_by(S_idSprint = idSprint)
@@ -92,13 +95,14 @@ class meeting(object):
 		
 		# Verifica la longitud de los campos
 		if checkTypeDate and checkTypeNewDate and checkTypeNewActivities and checkTypeNewSuggestions and checkTypeNewChallenges and checkTypeIdSprint:
+			checkDate = newDate <= MAX_DATE_MEETING
 			checkNewActivityLong    = MIN_MEETING_ACTIVITIES <= len(newActivities) <= MAX_MEETING_ACTIVITIES
 			checkNewSusggestionLong = MIN_MEETING_SUGGESTIONS <= len(newSuggestions) <= MAX_MEETING_SUGGESTIONS
 			checkNewChallengeLong   = MIN_MEETING_CHALLENGES <= len(newChallenges) <= MAX_MEETING_CHALLENGES
 			checkSprintId 			= MIN_ID_SPRINT <= idSprint
 
 			#Si las longitudes son correctas
-			if checkNewActivityLong and checkNewSusggestionLong and checkNewChallengeLong and checkSprintId:
+			if checkDate and checkNewActivityLong and checkNewSusggestionLong and checkNewChallengeLong and checkSprintId:
 				
 				# Busco las reuniones que tengan la nueva fecha
 				foundMeeting = self.searchMeeting(newDate, idSprint)
