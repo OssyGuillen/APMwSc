@@ -4,20 +4,18 @@ from task import *
 asignacionTarea = Blueprint('asignacionTarea', __name__)
 
 
-@asignacionTarea.route('/asignacionTarea/AActuralizarAsignacionTarea', methods=['POST'])
-def AActuralizarAsignacionTarea():
+@asignacionTarea.route('/asignacionTarea/AActuralizarAsignacionTarea/<path:idGrupo>', methods=['POST'])
+def AActuralizarAsignacionTarea(idGrupo):
     #POST/PUT parameters
     params = request.get_json()
-    results = [{'label':'/VAsignacionTarea', 'msg':['Asignación actualizada']}, {'label':'/VAsignacionTarea', 'msg':['Error al actualizar la asignacion de la tarea']}, ]
+    results = [{'label':'/VTarea', 'msg':['Asignación actualizada']}, {'label':'/VTarea', 'msg':['Error al actualizar la asignacion de la tarea']}, ]
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
     idTarea  = int(session['idTarea'])
     res['label'] = res['label'] + '/' + str(idTarea)
 
     c = task()
-
-    # TODO remove hardcoded idGrupo
-    c.insertUserTask(idTarea, 4)
+    c.insertUserTask(idTarea, idGrupo)
 
     #Action code ends here
     if "actor" in res:

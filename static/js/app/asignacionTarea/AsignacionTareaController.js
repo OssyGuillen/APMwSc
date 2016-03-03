@@ -16,6 +16,7 @@ scrumModule.controller('VAsignacionTareaController',
         for (var key in object.data) {
             $scope[key] = object.data[key];
         }
+
         if ($scope.logout) {
             $location.path('/');
         }
@@ -25,6 +26,7 @@ scrumModule.controller('VAsignacionTareaController',
             for (var key in object.data) {
                 $scope[key] = object.data[key];
             }
+            $scope.fEquipo_lista = $scope.fEquipo.lista;
         });         
 
         //  temporal rewriting of variable while harcoding on /pp/scrum/asignacionTarea.py is removed
@@ -47,8 +49,7 @@ scrumModule.controller('VAsignacionTareaController',
       $scope.AActuralizarAsignacionTarea0 = function(isValid) {
         $scope.fAsignacionTareaSubmitted = true;
         if (isValid) {
-          
-          asignacionTareaService.AActuralizarAsignacionTarea($scope.fAsignacionTarea).then(function (object) {
+          asignacionTareaService.AActuralizarAsignacionTarea($scope.fAsignacionTarea,$scope.item_fAsignacionTarea.miembro).then(function (object) {
               var msg = object.data["msg"];
               if (msg) flash(msg);
               var label = object.data["label"];

@@ -1,8 +1,8 @@
 scrumModule.service('asignacionTareaService', ['$q', '$http', function($q, $http) {
 
-    this.AActuralizarAsignacionTarea = function(fAsignacionTarea) {
+    this.AActuralizarAsignacionTarea = function(fAsignacionTarea, miembro) {
         return  $http({
-          url: "asignacionTarea/AActuralizarAsignacionTarea",
+          url: "asignacionTarea/AActuralizarAsignacionTarea/" + miembro.id,
           data: fAsignacionTarea,
           method: 'POST',
         });
