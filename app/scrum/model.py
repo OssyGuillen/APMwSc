@@ -241,6 +241,26 @@ class clsCategory(db.Model):
 		'''Representacion en string de la Categoria'''
 		return '<C_idCategory  %r, C_nameCate %r, C_weight %r>' % (self.C_idCategory,self.C_nameCate,self.C_weight)
 
+class clsPrecedence(db.Model):
+	'''Clase que define el modelo de la tabla Precedence'''
+
+	__tablename__ = 'precedence'
+	P_idPrecedence      = db.Column(db.Integer, primary_key = True, index = True)
+	P_idFirstTask     = db.Column(db.Integer, db.ForeignKey('task.HW_idTask'))
+	P_idSecondTask    = db.Column(db.Integer, db.ForeignKey('task.HW_idTask'))
+	P_idPila          = db.Column(db.Integer, db.ForeignKey('backlog.BL_idBacklog'))
+
+
+	def __init__(self, firstTask, secondTask, idPila):
+		self.P_idFirstTask = firstTask
+		self.P_idSecondTask = secondTask
+		self.P_idPila = idPila
+
+	def __repr__(self):
+		'''Representacion en string de la Categoria'''
+		return '<P_idPrecedence  %r, P_idFirstTask %r, P_idSecondTask %r>' % (self.P_idPrecedence,self.P_idFirstTask,self.P_idSecondTask)
+		
+
 migrate = Migrate(app, db)
 manager = Manager(app)
 
