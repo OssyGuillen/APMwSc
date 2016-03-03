@@ -40,6 +40,28 @@
             <span class="glyphicon glyphicon-flash"></span>Modificar
         </button>
     </form>
+
+        <center>
+            <h2 class="form-signin-heading">Subir Documento</h2>
+        </center>
+    <form action="tareas/upload" method="post" enctype="multipart/form-data">
+        <input id="idTarea" type="hidden" name="idTarea" ng-model="fTarea.idTarea" value="{{fTarea.idTarea}}" />
+        <input type="file" class="form-control mid-input" name="file">
+            <div class="form-group">
+                <label for="fTareaDoc_descripcion">Descripción</label>
+                <textarea id="fTareaDoc_descripcion" name="docDescription" class="form-control" ng-model="fTareaDoc.descripcion" placeholder="Descripción" required></textarea>
+                <p ng-show="fTareaDocSubmitted && fTareaDocForm.descripcion.$invalid" class="help-block">Error en campo Descripción.</p>
+            </div>
+
+        <input type="text" class="form-control mid-input hidden"  name="id" ng-model="$parent.id">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Subir</button>
+        </form>
+
+
+
+
+
+
     <hr />
 
 
