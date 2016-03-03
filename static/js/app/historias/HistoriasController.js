@@ -116,6 +116,7 @@ scrumModule.controller('VHistoriaController',
 
       historiasService.VHistoria({"idHistoria":$routeParams.idHistoria}).then(function (object) {
         $scope.res = object.data;
+        $scope.idHistoria = $routeParams.idHistoria;
         for (var key in object.data) {
             $scope[key] = object.data[key];
         }
@@ -182,8 +183,8 @@ scrumModule.controller('VHistoriaController',
         }
       };
 
-      $scope.VTarea2 = function(idTarea) {
-        $location.path('/VTarea/'+((typeof idTarea === 'object')?JSON.stringify(idTarea):idTarea));
+      $scope.VTarea2 = function(idTarea, idHistoria) {
+        $location.path('/VTarea/'+((typeof idTarea === 'object')?JSON.stringify(idTarea):idTarea)+'/'+((typeof idHistoria === 'object')?JSON.stringify(idHistoria):idHistoria));
       };
 
     }]);

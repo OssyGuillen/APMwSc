@@ -1,5 +1,5 @@
 scrumModule.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/VAsignacionTarea/:idTarea/', {
+    $routeProvider.when('/VAsignacionTarea/:idTarea/:idHistoria', {
                 controller: 'VAsignacionTareaController',
                 templateUrl: 'app/asignacionTarea/VAsignacionTarea.html'
             });
@@ -48,8 +48,9 @@ scrumModule.controller('VAsignacionTareaController',
       $scope.fAsignacionTareaSubmitted = false;
       $scope.AActuralizarAsignacionTarea0 = function(isValid) {
         $scope.fAsignacionTareaSubmitted = true;
+        console.log($routeParams);
         if (isValid) {
-          asignacionTareaService.AActuralizarAsignacionTarea($scope.fAsignacionTarea,$scope.item_fAsignacionTarea.miembro).then(function (object) {
+          asignacionTareaService.AActuralizarAsignacionTarea($scope.fAsignacionTarea,$scope.item_fAsignacionTarea.miembro, $routeParams.idHistoria).then(function (object) {
               var msg = object.data["msg"];
               if (msg) flash(msg);
               var label = object.data["label"];

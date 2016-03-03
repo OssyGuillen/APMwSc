@@ -155,7 +155,7 @@ def VTarea():
     
     # Obtenemos el id de la historia y de la tarea
     idTarea    = int(request.args['idTarea'])
-    idHistoria = int(session['idHistoria'])
+    idHistoria    = int(request.args['idHistoria'])
 
     found = clsUserHistory.query.filter_by(UH_idUserHistory = idHistoria).first()
     codHistoria = found.UH_codeUserHistory
@@ -178,7 +178,7 @@ def VTarea():
     res['fTarea_opcionesCategoria'] = [
       {'key':cat.C_idCategory ,'value':cat.C_nameCate+" ("+str(cat.C_weight)+")",'peso':result.HW_weight}for cat in categoryList]
 
-    res['fTarea'] = {'idHistoria':idHistoria,'idTarea': idTarea,'descripcion': result.HW_description, 'categoria': result.HW_idCategory, 'peso':result.HW_weight}
+    res['fTarea'] = {'idHistoria':idHistoria,'idTarea': idTarea,'descripcion': result.HW_description, 'categoria': result.HW_idCategory, 'peso':result.HW_weight, 'asignado': result.HW_idEquipo}
 
 
     session['idTarea'] = idTarea
