@@ -9,6 +9,7 @@ from app.scrum.objective             import *
 from app.scrum.objectivesUserHistory import *
 from app.scrum.actorsUserHistory     import * 
 from app.scrum.task                  import *
+from app.scrum.precedence            import *
 from sqlalchemy.ext.baked            import Result
 
 historias = Blueprint('historias', __name__)
@@ -424,7 +425,7 @@ def VHistorias():
     oObjUserHIst      = objectivesUserHistory()
         
     # Obtenemos las historias asociadas al producto idPila.
-    userHistoriesList = oBacklog.userHistoryAsociatedToProduct(idPila)  
+    userHistoriesList = oBacklog.userHistoryAsociatedToProduct(idPila)
     pesos          = []         
     userHistories  = []
     options        = {1:'podria ',2:'puede '}
@@ -558,7 +559,25 @@ def APrelaciones():
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
 
-    print(params['lista'])
+    oPrecedence = precedence()
+    # Obtenemos prelaciones ya existentes en el producto
+    previous = oPrecedence.getAllPrecedences(session['idPila'])
+    # Buscamos que precedencias fueron eliminadas y agregadas por el usuario e ignoramos las que no fueron cambiadas
+    for object in previous:
+        esta = False
+        for i in params['lista']:
+            if (object.P_idFirstTask == int(i['antecedente']) and object.P_idSecondTask == int(i['consecuente'])):
+                esta = True
+                params['lista'].remove(i)
+        if not esta: # Fue eliminada
+            oPrecedence.deletePrecedence(object.P_idFirstTask, object.P_idSecondTask) #Podria eliminar el objeto directamente, sin el deletePrecedence
+
+    for i in params['lista']: # Los que van a ser agregados
+        if (int(i['antecedente']) == int(i['consecuente'])): # Este if se puede quitar porque se esta haciendo la verficiacion en insertPrecedence
+            print('Error, la historia no debe prelarse a si misma')
+        else:
+            oPrecedence.insertPrecedence(int(i['antecedente']), int(i['consecuente']), session['idPila'])
+
     res['label'] = res['label'] + '/' + repr(1)
 
     #Action code ends here
@@ -581,16 +600,49 @@ def VPrelaciones():
     if 'usuario' not in session:
       res['logout'] = '/'
       return json.dumps(res)
+
     res['usuario'] = session['usuario']
-    res['fPrelaciones'] = {'lista':[
-      {'antecedente':1, 'consecuente':2},
-      {'antecedente':2, 'consecuente':3}]}
-    res['idPila'] = 1
-    res['fPrelaciones_listaTareas'] = [
-      {'key':1,'value':'Cortar el césped'},
-      {'key':2,'value':'Hacer la siesta'},
-      {'key':3,'value':'Almorzar'}
-    ]
+
+    # Obtenemos el id del producto y de la historia.
+    idPila = request.args['idPila']
+
+    oBacklog          = backlog()
+    oUserHistory      = userHistory()
+    oTask             = task()
+    oPrecedence       = precedence()
+
+
+    #Hacer query para obtener las prelaciones que existen ya en este producto y devolverlas en fPrelaciones
+    lista = []
+    precedenceList = oPrecedence.getAllPrecedences(idPila)
+    for object in precedenceList:
+        lista.append({'antecedente':object.P_idFirstTask, 'consecuente':object.P_idSecondTask})
+
+    res['fPrelaciones'] = {'lista':lista}
+
+    #res['fPrelaciones'] = {'lista':[
+    #  {'antecedente':1, 'consecuente':2},
+    #  {'antecedente':2, 'consecuente':3}]}
+
+
+
+    res['idPila'] = idPila
+
+    #Hacer query para obtener las tareas de esta historia y devolverlas con su id y valor en una lista
+    userHistoriesList = oBacklog.userHistoryAsociatedToProduct(int(idPila))
+    taskList = []
+    #tasks = []
+
+    #Se obtienen todas las tareas de las historias de usuarios
+    for hist in userHistoriesList:
+        taskList.extend(oTask.taskAsociatedToUserHistory(hist.UH_idUserHistory))
+
+    #Se transforman las tareas para la vista
+    #for listaT in taskList:
+    #    for tarea in listaT:
+    #    tasks.append(tarea)
+
+    res['fPrelaciones_listaTareas'] = [{'key':tarea.HW_idTask, 'value':tarea.HW_description + ' | historia:' + oUserHistory.getUHCodeFromId(tarea.HW_idUserHistory)}for tarea in taskList]
 
     #Action code ends here
     return json.dumps(res)
