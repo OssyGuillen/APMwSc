@@ -266,6 +266,9 @@ def VSprint():
     res['data2'] = [{'id':res.SM_idSprintMeeting, 'fecha':res.SM_meetingDate, 'actividades':res.SM_activities } for res in result]  
 
     session['idSprint'] = idSprint
+    res['idSprint'] = idSprint
+
+    session['idPila'] = idPila
     res['idPila'] = idPila
 
     
