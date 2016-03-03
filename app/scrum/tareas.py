@@ -4,6 +4,7 @@ from flask                 import request, session, Blueprint, json
 from app.scrum.backLog     import *
 from app.scrum.userHistory import *
 from app.scrum.task        import *
+from app.scrum.Team        import *
 
 tareas = Blueprint('tareas', __name__)
 
@@ -85,6 +86,7 @@ def AModifTarea():
     idTarea         = params['idTarea']
     new_idCategoria = params['categoria']
     new_taskPeso    = params['peso']
+    new_miembro = params['miembro']
   
     # Buscamos la tarea a modificar
     oTarea   = task()
@@ -93,6 +95,11 @@ def AModifTarea():
     # Modificamos la tarea
     modify   = oTarea.updateTask(result.HW_description,new_description,new_idCategoria,new_taskPeso)
     
+    if new_miembro == None or new_miembro < 0:
+        oTarea.deleteUserTask(int(idTarea))
+    else:
+        oTarea.insertUserTask(int(idTarea), int(new_miembro))
+
     if modify:
         res = results[0]
          
@@ -167,6 +174,8 @@ def VTarea():
     idTarea = request.args.get('idTarea')
     result   = clsTask.query.filter_by(HW_idTask = idTarea).first()
     categoryList     = clsCategory.query.all()
+    oTeam = team()
+    miembroList = oTeam.getTeam(found.UH_idBacklog)
     
     if 'usuario' not in session:
       res['logout'] = '/'
@@ -177,9 +186,16 @@ def VTarea():
 
     res['fTarea_opcionesCategoria'] = [
       {'key':cat.C_idCategory ,'value':cat.C_nameCate+" ("+str(cat.C_weight)+")",'peso':result.HW_weight}for cat in categoryList]
+    
+    res['fTarea_opcionesMiembro'] = [{'key':-1,'value':'Sin asignacion'}] + [
+      {'key':miembro.EQ_idEquipo ,'value':miembro.EQ_username} for miembro in miembroList]
 
-    res['fTarea'] = {'idHistoria':idHistoria,'idTarea': idTarea,'descripcion': result.HW_description, 'categoria': result.HW_idCategory, 'peso':result.HW_weight, 'asignado': result.HW_idEquipo}
-
+    res['fTarea'] = {'idHistoria':idHistoria,
+                    'idTarea': idTarea,
+                    'descripcion': result.HW_description,
+                    'categoria': result.HW_idCategory,
+                    'peso':result.HW_weight,
+                    'miembro': result.HW_idEquipo}
 
     session['idTarea'] = idTarea
     res['idTarea']     = idTarea
