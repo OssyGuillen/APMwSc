@@ -1,16 +1,15 @@
 scrumModule.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/VAsignacionTarea/:idTarea', {
+    $routeProvider.when('/VAsignacionTarea/:idTarea/', {
                 controller: 'VAsignacionTareaController',
                 templateUrl: 'app/asignacionTarea/VAsignacionTarea.html'
             });
 }]);
 
 scrumModule.controller('VAsignacionTareaController', 
-   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'asignacionTareaService', 'tareasService',
-    function ($scope, $location, $route, $timeout, flash, $routeParams, asignacionTareaService, tareasService) {
+   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'asignacionTareaService', 'tareasService', 'equipoService',
+    function ($scope, $location, $route, $timeout, flash, $routeParams, asignacionTareaService, tareasService, equipoService) {
       $scope.msg = '';
-      $scope.fAsignacionTarea = {};
-      console.log($scope.idTarea);
+      $scope.fAsignacionTarea = {};     
 
       asignacionTareaService.VAsignacionTarea({"idTarea":$routeParams.idTarea}).then(function (object) {
         $scope.res = object.data;
@@ -20,6 +19,13 @@ scrumModule.controller('VAsignacionTareaController',
         if ($scope.logout) {
             $location.path('/');
         }
+
+        equipoService.VEquipo({"idPila":$scope.idPila}).then(function (object) {
+            $scope.res = object.data;
+            for (var key in object.data) {
+                $scope[key] = object.data[key];
+            }
+        });         
 
         //  temporal rewriting of variable while harcoding on /pp/scrum/asignacionTarea.py is removed
         $scope.idTarea = $routeParams.idTarea;

@@ -27,10 +27,9 @@
     <form name="fAsignacionTareaForm" ng-submit="AActuralizarAsignacionTarea0(fAsignacionTareaForm.$valid)" novalidate>
             <input id="fAsignacionTarea_idProyecto" type="hidden" name="idProyecto" ng-model="fAsignacionTarea.idProyecto" />
             <input id="fAsignacionTarea_idTarea" type="hidden" name="idTarea" ng-model="fAsignacionTarea.idTarea" />
-            <div ng-repeat="item_fAsignacionTarea in fAsignacionTarea.lista"><ng-form name="fAsignacionTarea_lista_form">
-            <div class="form-group" ng-class="{ 'has-error' :  fAsignacionTareaSubmitted && fAsignacionTareaForm.miembro.$invalid && fAsignacionTareaForm.miembro.$pristine && fAsignacionTareaSubmitted}"><label for="fAsignacionTarea_miembro">Miembro</label>:&nbsp;<select id="fAsignacionTarea_miembro" ng-model="item_fAsignacionTarea.miembro" required ng-options="item.key as item.value for item in fAsignacionTarea_opcionesMiembros"></select><p ng-show="fAsignacionTareaSubmitted && fAsignacionTareaForm.miembro.$invalid" class="help-block">Error en campo Miembro.</p></div>
-            <a ng-click="elimMiembro($index)" class="btn btn-primary">-Miembro</a></ng-form></div>
-            <a ng-click="agrMiembro()" class="btn btn-primary">+Miembro</a>
+            <div><ng-form name="fAsignacionTarea_lista_form">
+            <div class="form-group" ng-class="{ 'has-error' :  fAsignacionTareaSubmitted && fAsignacionTareaForm.miembro.$invalid && fAsignacionTareaForm.miembro.$pristine && fAsignacionTareaSubmitted}"><label for="fAsignacionTarea_miembro">Miembro</label>:&nbsp;<select id="fAsignacionTarea_miembro" ng-model="item_fAsignacionTarea.miembro" required ng-options="item.key as item.value for item in fEquipo_opcionesMiembros"></select><p ng-show="fAsignacionTareaSubmitted && fAsignacionTareaForm.miembro.$invalid" class="help-block">Error en campo Miembro.</p></div>
+            </ng-form></div>
         <button type="submit" class="btn btn-perso btn-lg btn-block">
             <span class="glyphicon glyphicon-flash"></span>Actualizar
         </button>

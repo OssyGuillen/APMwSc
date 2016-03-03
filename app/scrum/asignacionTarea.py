@@ -1,4 +1,5 @@
 from flask import request, session, Blueprint, json
+from task import *
 
 asignacionTarea = Blueprint('asignacionTarea', __name__)
 
@@ -13,6 +14,11 @@ def AActuralizarAsignacionTarea():
     idTarea  = int(session['idTarea'])
     res['label'] = res['label'] + '/' + str(idTarea)
 
+    c = task()
+
+    # TODO remove hardcoded idGrupo
+    c.insertUserTask(idTarea, 4)
+
     #Action code ends here
     if "actor" in res:
         if res['actor'] is None:
@@ -20,7 +26,6 @@ def AActuralizarAsignacionTarea():
         else:
             session['actor'] = res['actor']
     return json.dumps(res)
-
 
 
 @asignacionTarea.route('/asignacionTarea/VAsignacionTarea')
@@ -38,20 +43,8 @@ def VAsignacionTarea():
 
     # temporal harcoding of response
     res['usuario'] = session['usuario']
-    res['idPila'] = 1
-    res['idTarea'] = 1
-    res['fAsignacionTarea'] = {'lista':[
-        {'miembro':1},
-        {'miembro':2},
-        {'miembro':3},
-      ]}
-    res['fAsignacionTarea_opcionesMiembros'] =[
-        {'key':1, 'value':'Mia'},
-        {'key':2, 'value':'Mara'},
-        {'key':3, 'value':'Marcos'},
-        {'key':4, 'value':'Julia'},
-        {'key':5, 'value':'Roberto'},
-      ]
+    res['idPila'] = session['idPila']
+    res['idTarea'] = session['idTarea']
     #Action code ends here
     return json.dumps(res)
 
