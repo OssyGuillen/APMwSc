@@ -138,12 +138,12 @@ scrumModule.controller('VReunionController',
     }]);
 
 scrumModule.controller('VSprintController', 
-   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'prodService', 'sprintService',
-    function ($scope, $location, $route, $timeout, flash, $routeParams, prodService, sprintService) {
+   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngTableParams', 'prodService', 'sprintService',
+    function ($scope, $location, $route, $timeout, flash, $routeParams, ngTableParams, prodService, sprintService) {
       $scope.msg = '';
       $scope.fSprint = {};
 
-      sprintService.VSprint({"idSprint":$routeParams.idSprint}).then(function (object) {
+      sprintService.VSprint({"idPila":$routeParams.idPila}).then(function (object) {
         $scope.res = object.data;
         for (var key in object.data) {
             $scope[key] = object.data[key];
@@ -151,7 +151,6 @@ scrumModule.controller('VSprintController',
         if ($scope.logout) {
             $location.path('/');
         }
-
 
               var VReunion4Data = $scope.res.data4;
               if(typeof VReunion4Data === 'undefined') VReunion4Data=[];
