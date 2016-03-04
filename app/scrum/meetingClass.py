@@ -46,10 +46,8 @@ class meeting(object):
 
 		if checkTypeIdSprint:
 			foundMeeting =  self.getMeetings(idSprint)
-			print ("SEARCHMEETING", foundMeeting)
 			for m in foundMeeting:
 				if not(m.SM_meetingDate == date):
-					print ("ELIMINA")
 					foundMeeting.remove(m)
 		return foundMeeting
 
@@ -63,7 +61,6 @@ class meeting(object):
 
 		# Verifica que la longitud de los campos sea correcta
 		if checkTypeDate and checkTypeActivities and checkTypeSuggestions and checkTypeChallenges and checkTypeIdSprint:
-			print('llega1')
 			checkActivityLong = MIN_MEETING_ACTIVITIES <= len(activities) <= MAX_MEETING_ACTIVITIES
 			checkSusggestionLong = MIN_MEETING_SUGGESTIONS <= len(suggestions) <= MAX_MEETING_SUGGESTIONS
 			checkChallengeLong = MIN_MEETING_CHALLENGES <= len(challenges) <= MAX_MEETING_CHALLENGES
@@ -77,7 +74,6 @@ class meeting(object):
 				# Si el sprint existe. Verifico que la fecha no se repita
 				if foundSprint != []:
 					foundMeeting = self.searchMeeting(date,idSprint)
-					print(foundMeeting)
 					if foundMeeting == []:
 						# Si la fecha no se repite
 						newMeeting = clsSprintMeeting(date,activities,suggestions,challenges,idSprint)
@@ -138,11 +134,9 @@ class meeting(object):
 
 		if checkTypeDate and checkTypeIdSprint:
 			checkSprintId = MIN_ID_SPRINT <= idSprint
-			print ("1")
 			# Si encuentra una reunion con esa fecha en ese sprint
 			if checkSprintId:
 				foundMeeting = self.searchMeeting(date,idSprint)
-				print ('PRUEBAAAAAA', foundMeeting)
 				if foundMeeting != []:
 					for m in foundMeeting:
 						db.session.delete(m)
