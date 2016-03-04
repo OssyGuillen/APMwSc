@@ -46,8 +46,10 @@ class meeting(object):
 
 		if checkTypeIdSprint:
 			foundMeeting =  self.getMeetings(idSprint)
+			print ("SEARCHMEETING", foundMeeting)
 			for m in foundMeeting:
-				if not(m.SM_meetingDate is date):
+				if not(m.SM_meetingDate == date):
+					print ("ELIMINA")
 					foundMeeting.remove(m)
 		return foundMeeting
 
@@ -136,11 +138,11 @@ class meeting(object):
 
 		if checkTypeDate and checkTypeIdSprint:
 			checkSprintId = MIN_ID_SPRINT <= idSprint
-
+			print ("1")
 			# Si encuentra una reunion con esa fecha en ese sprint
 			if checkSprintId:
 				foundMeeting = self.searchMeeting(date,idSprint)
-
+				print ('PRUEBAAAAAA', foundMeeting)
 				if foundMeeting != []:
 					for m in foundMeeting:
 						db.session.delete(m)

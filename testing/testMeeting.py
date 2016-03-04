@@ -28,25 +28,36 @@ class TestMeeting(unittest.TestCase):
         aSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
 
         aMeeting = meeting () 
-        print (aMeeting.getMeetings(1))
-        date = datetime.date(2015,8,9)
-        date1 = datetime.date(2018,8,9)
+        date = '01/02/2015'
+        
+        print ("TEST",aMeeting.getMeetings(1))
+        print ("TEST1",aMeeting.searchMeeting(date,1))
+        date1 = '02/02/2015'
         date2 = datetime.date.today()
+        #result = aMeeting.deleteMeeting(date1,1)
         result = aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', 1)
+        result = aMeeting.insertMeeting(date1, 'A1', 'S1', 'C1', 1)
+        #self.assertTrue(result)
+        print ("AGREGO",aMeeting.searchMeeting(date,1))
+        print ("AGRGO",aMeeting.getMeetings(1))
+        #result = aMeeting.updateMeeting(date,date1, 'A1', 'S1', 'C1', 1)
+        #self.assertFalse(result)
+        #result = aMeeting.updateMeeting(date,date2, 'A2', 'S2', 'C2', 1)
+        #self.assertTrue(result)
+        result = aMeeting.deleteMeeting(date,1)
         self.assertTrue(result)
-        print (aMeeting.getMeetings(1))
-        result = aMeeting.updateMeeting(date,date1, 'A1', 'S1', 'C1', 1)
-        self.assertFalse(result)
-        result = aMeeting.updateMeeting(date,date2, 'A2', 'S2', 'C2', 1)
-        self.assertTrue(result)
-        print (aMeeting.getMeetings(1))
         result = aMeeting.deleteMeeting(date1,1)
-        self.assertFalse(result)
+
+        self.assertTrue(result)
         # Eliminamos los datos insertados.
+        print ("ELIMINO", aMeeting.searchMeeting(date,1))
+        print ("ELIMINO",aMeeting.getMeetings(1))
         self.aBacklog.deleteProduct('Bxtyllz')
         aSprint.deleteSprint(1,self.idBacklog)
-        aMeeting.deleteMeeting(date2,1)
-        print (aMeeting.getMeetings(1))
+        #result = aMeeting.deleteMeeting(date1,1)
+        #self.assertTrue(result)
+        #result = aMeeting.deleteMeeting(date1,1)
+        #self.assertTrue(result)
 
 
 if __name__ == '__main__':
