@@ -2,6 +2,7 @@
 
 import sys
 import datetime
+from sqlalchemy import DateTime 
 # Ruta que permite utilizar el módulo backlog.py
 sys.path.append('app/scrum')
 
@@ -19,7 +20,6 @@ MAX_MEETING_SUGGESTIONS = 300
 MIN_MEETING_CHALLENGES = 1
 MAX_MEETING_CHALLENGES = 300
 
-MAX_DATE_MEETING = datetime.date.today()
 
 class meeting(object):
 	'''Clase que permite manejar las Reuniones Diarias de un Sprin'''
@@ -36,21 +36,20 @@ class meeting(object):
 
 	def searchMeeting(self, date, idSprint):
 		'''Retorna la lista de reuniones con un fecha y sprint determinado'''
-		checkTypeDate 		= type(date) == datetime.date
+		checkTypeDate 		= type(date) == str
 		checkTypeIdSprint 	= type(idSprint) == int
 		foundMeeting        = []
 
 		if checkTypeIdSprint:
-			foundMeeting =  self.getMeetings(idSprint)
+			foundMeeting =  []
 			for m in foundMeeting:
-				if m.SM_meetingDate != date:
-					#print (m)
+				if not(m.SM_meetingDate is date):
 					foundMeeting.remove(m)
 		return foundMeeting
 
 	def insertMeeting(self, date, activities, suggestions, challenges, idSprint): 
 		'''Permite insertar una reunión diaria a un sprint'''   
-		checkTypeDate 			= type(date) == datetime.date
+		checkTypeDate 			= type(date) == str
 		checkTypeActivities     = type(activities) == str
 		checkTypeSuggestions    = type(suggestions) == str
 		checkTypeChallenges     = type(challenges) == str
@@ -58,24 +57,25 @@ class meeting(object):
 
 		# Verifica que la longitud de los campos sea correcta
 		if checkTypeDate and checkTypeActivities and checkTypeSuggestions and checkTypeChallenges and checkTypeIdSprint:
-			checkDate = date <= MAX_DATE_MEETING
+			print('llega1')
 			checkActivityLong = MIN_MEETING_ACTIVITIES <= len(activities) <= MAX_MEETING_ACTIVITIES
 			checkSusggestionLong = MIN_MEETING_SUGGESTIONS <= len(suggestions) <= MAX_MEETING_SUGGESTIONS
 			checkChallengeLong = MIN_MEETING_CHALLENGES <= len(challenges) <= MAX_MEETING_CHALLENGES
 			checkSprintId = MIN_ID_SPRINT <= idSprint
 
 			# Si todas las longitudes son correctas
-			if checkDate and checkActivityLong and checkSusggestionLong and checkChallengeLong and checkSprintId:
-				
+			if checkActivityLong and checkSusggestionLong and checkChallengeLong and checkSprintId:
+				print('llega2')
 				# Verifico que el sprint exista
 				foundSprint = clsSprint.query.filter_by(S_idSprint = idSprint)
 				
 				# Si el sprint existe. Verifico que la fecha no se repita
 				if foundSprint != []:
-
+					print('llega3')
 					foundMeeting = self.searchMeeting(date,idSprint)
-
+					print(foundMeeting)
 					if foundMeeting == []:
+						print('llega4')
 						# Si la fecha no se repite
 						newMeeting = clsSprintMeeting(date,activities,suggestions,challenges,idSprint)
 						db.session.add(newMeeting)
@@ -86,23 +86,22 @@ class meeting(object):
 
 	def updateMeeting(self, date, newDate, newActivities, newSuggestions, newChallenges, idSprint):
 		'''Permite actualizar los datos de una reunión diaria'''   
-		checkTypeDate 			   = type(date) == datetime.date
-		checkTypeNewDate 		   = type(newDate) == datetime.date
-		checkTypeNewActivities     = type(newActivities) == str
+		checkTypeDate 			   = type(date) == str
+		checkTypeNewDate 		   = type(newDate) == str
 		checkTypeNewSuggestions    = type(newSuggestions) == str
 		checkTypeNewChallenges     = type(newChallenges) == str
 		checkTypeIdSprint      	   = type(idSprint) == int
 		
 		# Verifica la longitud de los campos
 		if checkTypeDate and checkTypeNewDate and checkTypeNewActivities and checkTypeNewSuggestions and checkTypeNewChallenges and checkTypeIdSprint:
-			checkDate = newDate <= MAX_DATE_MEETING
+			
 			checkNewActivityLong    = MIN_MEETING_ACTIVITIES <= len(newActivities) <= MAX_MEETING_ACTIVITIES
 			checkNewSusggestionLong = MIN_MEETING_SUGGESTIONS <= len(newSuggestions) <= MAX_MEETING_SUGGESTIONS
 			checkNewChallengeLong   = MIN_MEETING_CHALLENGES <= len(newChallenges) <= MAX_MEETING_CHALLENGES
 			checkSprintId 			= MIN_ID_SPRINT <= idSprint
 
 			#Si las longitudes son correctas
-			if checkDate and checkNewActivityLong and checkNewSusggestionLong and checkNewChallengeLong and checkSprintId:
+			if checkNewActivityLong and checkNewSusggestionLong and checkNewChallengeLong and checkSprintId:
 				
 				# Busco las reuniones que tengan la nueva fecha
 				foundMeeting = self.searchMeeting(newDate, idSprint)
@@ -130,7 +129,7 @@ class meeting(object):
 
 	def deleteMeeting(self,date,idSprint):
 		'''Permite eliminar una reunión de un sprint segun la fecha'''
-		checkTypeDate 		= type(date) == datetime.date
+		checkTypeDate 		= type(date) == str
 		checkTypeIdSprint 	= type(idSprint) == int
 
 		if checkTypeDate and checkTypeIdSprint:

@@ -2,6 +2,7 @@ from flask import request, session, Blueprint, json
 from app.scrum.sprintClass       import *
 from app.scrum.meetingClass      import *
 from app.scrum.backLog           import *
+from datetime import datetime
 
 sprint = Blueprint('sprint', __name__)
 
@@ -23,7 +24,7 @@ def ACrearReunionSprint():
 
     oMeeting = meeting()
     exito = oMeeting.insertMeeting(fecha,actividades,sugerencias,retos,idSprint)
-
+    print(fecha)
     if exito:
         res = results[0]
 
@@ -245,7 +246,9 @@ def VSprint():
     # Obtenemos el id del producto y del sprint
     idPila   = int(session['idPila'])
     idSprint = int(request.args.get('idSprint',1))
-    
+    print("viene sprint")
+    print(idSprint)
+
     if "actor" in session:
         res['actor']=session['actor']
 
@@ -262,9 +265,10 @@ def VSprint():
 
     oMeeting = meeting()
     result  = oMeeting.getMeetings(idSprint)
+    
+    res['data4'] = [{'id':res.SM_idSprintMeeting, 'fecha':res.SM_meetingDate, 'actividades':res.SM_activities } for res in result]  
 
-    res['data2'] = [{'id':res.SM_idSprintMeeting, 'fecha':res.SM_meetingDate, 'actividades':res.SM_activities } for res in result]  
-
+    print(res['data4'])
     session['idSprint'] = idSprint
     res['idSprint'] = idSprint
 
