@@ -23,7 +23,9 @@ def ACrearReunionSprint():
     retos = params['Retos']
 
     oMeeting = meeting()
+    print ('IDSPRINT', idSprint)
     exito = oMeeting.insertMeeting(fecha,actividades,sugerencias,retos,idSprint)
+    print(exito)
     print(fecha)
     if exito:
         res = results[0]
@@ -271,15 +273,17 @@ def VSprint():
     # Buscamos el actor actual
     oSprint = sprints()
     result  = oSprint.searchIdSprint(idSprint,idPila)
-    
+    #print (result)
     res['fSprint'] = {'idSprint':idSprint, 'numero':result[0].S_numero, 'descripcion':result[0].S_sprintDescription} 
 
     oMeeting = meeting()
     result  = oMeeting.getMeetings(idSprint)
-    
+    #print(oMeeting.deleteMeeting('03-02-2016',1))
+    #print (result)
+    #print (idSprint)
     res['data4'] = [{'id':res.SM_idSprintMeeting, 'fecha':res.SM_meetingDate, 'actividades':res.SM_activities } for res in result]  
 
-    print(res['data4'])
+    #print(res['data4'])
     session['idSprint'] = idSprint
     res['idSprint'] = idSprint
 

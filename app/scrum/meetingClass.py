@@ -58,30 +58,63 @@ class meeting(object):
 		checkTypeSuggestions    = type(suggestions) == str
 		checkTypeChallenges     = type(challenges) == str
 		checkTypeIdSprint      	= type(idSprint) == int
-
+		#print ("DATE", date)
+		#print ("INSERT1")
 		# Verifica que la longitud de los campos sea correcta
 		if checkTypeDate and checkTypeActivities and checkTypeSuggestions and checkTypeChallenges and checkTypeIdSprint:
 			checkActivityLong = MIN_MEETING_ACTIVITIES <= len(activities) <= MAX_MEETING_ACTIVITIES
 			checkSusggestionLong = MIN_MEETING_SUGGESTIONS <= len(suggestions) <= MAX_MEETING_SUGGESTIONS
 			checkChallengeLong = MIN_MEETING_CHALLENGES <= len(challenges) <= MAX_MEETING_CHALLENGES
 			checkSprintId = MIN_ID_SPRINT <= idSprint
+			#print ("INSERT2")
 
 			# Si todas las longitudes son correctas
 			if checkActivityLong and checkSusggestionLong and checkChallengeLong and checkSprintId:
+				#print ("INSERT3")
 				# Verifico que el sprint exista
 				foundSprint = clsSprint.query.filter_by(S_idSprint = idSprint)
 				
 				# Si el sprint existe. Verifico que la fecha no se repita
 				if foundSprint != []:
+					#print ("INSERT4")
 					foundMeeting = self.searchMeeting(date,idSprint)
-					if foundMeeting == []:
-						# Si la fecha no se repite
+					#print ("FAOUND MEETIGN", foundMeeting)
+					c = True
+					long0 = len(foundMeeting)
+					b = True
+					for i in range(long0):
+						mydate = foundMeeting[i].SM_meetingDate
+						b = True
+						long1 = len (mydate)
+						long2 = len (date)
+						if len(mydate) == len (date):
+							for j  in range (long1):
+								if mydate[j] != date[j]:
+									b = b and True
+									break
+								if j == long1 -1:	
+									b = False
+									break
+
+
+						if not b:
+							#print ( "NOOOO")
+							return False
+						#if (m.SM_meetingDate == date):
+						#	print ("DATE", date)	
+						#	print("BD", m.SM_meetingDate)
+						#	return False
+
+					#if foundMeeting == []:
+					if b:
+						#print ("INSERT5")
+					#	# Si la fecha no se repite
 						newMeeting = clsSprintMeeting(date,activities,suggestions,challenges,idSprint)
 						db.session.add(newMeeting)
 						db.session.commit()
 						return True
 
-		return False
+			return False
 
 	def updateMeeting(self, date, newDate, newActivities, newSuggestions, newChallenges, idSprint):
 		'''Permite actualizar los datos de una reunión diaria'''   
