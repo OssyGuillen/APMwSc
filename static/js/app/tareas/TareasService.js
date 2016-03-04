@@ -65,4 +65,20 @@ scrumModule.service('tareasService', ['$q', '$http', function($q, $http) {
     //    deferred.resolve(res);
     //    return deferred.promise;
     };
+
+    this.AElimDoc = function(args) {
+        if(typeof args == 'undefined') args={};
+        return $http({
+          url: 'tareas/AElimDoc',
+          method: 'GET',
+          params: args
+        });
+    //    var labels = ["/VHistoria", "/VTarea", ];
+    //    var res = labels[0];
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+
+
 }]);

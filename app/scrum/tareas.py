@@ -73,6 +73,36 @@ def AElimTarea():
             session['actor'] = res['actor']
     return json.dumps(res)
 
+@tareas.route('/tareas/AElimDoc')
+def AElimDoc():
+    #POST/PUT parameters
+    params  = request.get_json()
+    results = [{'label':'/VHistoria', 'msg':['Documento borrado']}, {'label':'/VHistoria', 'msg':['No se pudo eliminar el documento']}, ]
+    res     = results[1]
+
+    # Obtenemos los parámetros
+    docName= request.args.get('name')
+    taskId= request.args.get('tarea')
+    docsDir=basedir+"/TaskDocuments"
+    dirName=docsDir+"/"+taskId
+
+    # Eliminamos la tarea
+    oTarea     = task()
+    delete     = oTarea.deleteDoc(taskId,docName)
+    if os.path.exists(dirName+"/"+docName):
+        os.remove(dirName+"/"+docName)
+    if delete:
+        res = results[0]
+
+    res['label'] = res['label'] + '/' + str(taskId)
+
+    if "actor" in res:
+        if res['actor'] is None:
+            session.pop("actor", None)
+        else:
+            session['actor'] = res['actor']
+    return json.dumps(res)
+
 
 
 @tareas.route('/tareas/AModifTarea', methods=['POST'])

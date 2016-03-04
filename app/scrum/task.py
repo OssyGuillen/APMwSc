@@ -76,6 +76,17 @@ class task(object):
                     db.session.commit()
                     return True
         return False
+
+    def deleteDoc(self, taskId, documentName):
+        '''Permite eliminar una documento según su nombre y id de tarea'''
+
+        foundid = clsTaskDoc.query.filter_by(HWD_idTask = taskId, HWD_docName = documentName ).all()
+        if foundid !=[]:
+            for i in foundid:
+                db.session.delete(i)
+            db.session.commit()
+            return True
+        return False
     
     
     def searchTask(self, HW_description):

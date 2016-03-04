@@ -93,6 +93,14 @@ scrumModule.controller('VTareaController',
         $location.path('/VLogin');
       };
 
+        $scope.eliminarDoc3 = function(documento,tarea) {
+        tareasService.AElimDoc({name:documento,tarea:tarea}).then(function (object) {
+          var msg = object.data["msg"];
+          if (msg) flash(msg);
+          $route.reload();
+        });};
+
+
       $scope.fTareaSubmitted = false;
       $scope.AModifTarea0 = function(isValid) {
         $scope.fTareaSubmitted = true;
