@@ -21,7 +21,7 @@ class precedence(object):
         '''Insertar prelacion a la base de datos'''
 
         if (idFirstTask != idSecondTask):
-            if self.doesNotMakeLoops(idFirstTask, idSecondTask):
+            if self.doesNotMakeLoops(idFirstTask, idSecondTask) and not self.existPrecedence(idFirstTask,idSecondTask):
                 newPrecedence = clsPrecedence(idFirstTask, idSecondTask, idPila)
                 db.session.add(newPrecedence)
                 db.session.commit()
@@ -39,6 +39,19 @@ class precedence(object):
             db.session.delete(exists)
             db.session.commit()
         return
+
+    def existPrecedence(self, idFirstTask, idSecondTask):
+        '''Permite saber si existe una precedencia'''
+        
+        typeFirst   = (type(idFirstTask) == int)
+        typeSecond  = (type(idSecondTask) == int)
+
+        if (typeFirst and typeSecond):
+            found = clsPrecedence.query.filter_by(P_idFirstTask = idFirstTask, P_idSecondTask = idSecondTask).first()
+            if found:
+                return True
+            else:
+                return False
 
     def searchTaskByPrec(self, idTask):
         '''Permite obtener la lista de prelaciones donde idTask es antecedente'''
