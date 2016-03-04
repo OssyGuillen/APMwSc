@@ -25,9 +25,22 @@ def ACrearTarea():
     taskPeso    = params['peso']
     oBackLog    = backlog()
     oTask       = task()
+
+    if 'miembro' in params:
+        miembro = params['miembro']
+    else:
+        miembro = None
     
     insert   = oTask.insertTask(taskDesc, idCategoria, taskPeso, idHistory)
+
+    insertedTask = oTask.searchTask(taskDesc)[0]
     
+    if miembro == None or miembro < 0:
+        oTask.deleteUserTask(int(insertedTask.HW_idTask))
+    else:
+        oTask.insertUserTask(int(insertedTask.HW_idTask), int(miembro))
+
+
     if insert:        
         res = results[0]
     else:
@@ -119,7 +132,7 @@ def VCrearTarea():
     res = {}    
     # Obtenemos el id de la historia actual
     idHistory = int(request.args.get('idHistoria'))
-    
+
     if "actor" in session:
         res['actor']=session['actor']
 
@@ -135,8 +148,14 @@ def VCrearTarea():
     res['codHistoria']    = hist[0].UH_codeUserHistory
     
     # Obtenemos una lista con los datos asociados a las categorías
-    cateList  = clsCategory.query.all()        
-    
+    cateList  = clsCategory.query.all()
+
+    idTarea = request.args.get('idTarea')
+    result   = clsTask.query.filter_by(HW_idTask = idTarea).first()
+    cateList     = clsCategory.query.all()
+    oTeam = team()
+    found = clsUserHistory.query.filter_by(UH_idUserHistory = idHistory).first()
+    miembroList = oTeam.getTeam(found.UH_idBacklog)
     # Mostramos los datos en la vista
     ListaCompleta = []
     for i in cateList:
@@ -146,7 +165,10 @@ def VCrearTarea():
     decorated.sort()
 
     res['fTarea_opcionesCategoria'] = [
-     {'key':cat[1][0] ,'value':cat[1][1]+" ("+str(cat[1][2])+")",'peso':cat[1][2]} for cat in decorated]                                 
+     {'key':cat[1][0] ,'value':cat[1][1]+" ("+str(cat[1][2])+")",'peso':cat[1][2]} for cat in decorated]
+
+    res['fTarea_opcionesMiembro'] = [{'key':-1,'value':'Sin asignacion'}] + [
+      {'key':miembro.EQ_idEquipo ,'value':miembro.EQ_username} for miembro in miembroList]
 
     res['fTarea'] = {'idHistoria':idHistory}
 
