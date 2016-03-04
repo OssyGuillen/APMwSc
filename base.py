@@ -54,8 +54,6 @@ from app.scrum.sprint import sprint
 app.register_blueprint(sprint)
 from app.scrum.equipo import equipo
 app.register_blueprint(equipo)
-from app.scrum.asignacionTarea import asignacionTarea
-app.register_blueprint(asignacionTarea)
 
 
 if __name__ == '__main__':
