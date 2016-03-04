@@ -29,6 +29,10 @@ class meeting(object):
 		aMeeting = clsSprintMeeting.query.all()
 		return (aMeeting == [])
 
+	def getMeetingID(self,idMeeting,idSprint):
+		aMeeting = clsSprintMeeting.query.filter_by(SM_idSprint = idSprint, SM_idSprintMeeting = idMeeting).all()
+		return (aMeeting)
+
 	def getMeetings(self,idSprint):
 		'''Entrega la lista de reuniones diarias de un sprint'''
 		aMeeting = clsSprintMeeting.query.filter_by(SM_idSprint = idSprint).all()
@@ -41,7 +45,7 @@ class meeting(object):
 		foundMeeting        = []
 
 		if checkTypeIdSprint:
-			foundMeeting =  []
+			foundMeeting =  self.getMeetings(idSprint)
 			for m in foundMeeting:
 				if not(m.SM_meetingDate is date):
 					foundMeeting.remove(m)
@@ -65,17 +69,14 @@ class meeting(object):
 
 			# Si todas las longitudes son correctas
 			if checkActivityLong and checkSusggestionLong and checkChallengeLong and checkSprintId:
-				print('llega2')
 				# Verifico que el sprint exista
 				foundSprint = clsSprint.query.filter_by(S_idSprint = idSprint)
 				
 				# Si el sprint existe. Verifico que la fecha no se repita
 				if foundSprint != []:
-					print('llega3')
 					foundMeeting = self.searchMeeting(date,idSprint)
 					print(foundMeeting)
 					if foundMeeting == []:
-						print('llega4')
 						# Si la fecha no se repite
 						newMeeting = clsSprintMeeting(date,activities,suggestions,challenges,idSprint)
 						db.session.add(newMeeting)
@@ -89,6 +90,7 @@ class meeting(object):
 		checkTypeDate 			   = type(date) == str
 		checkTypeNewDate 		   = type(newDate) == str
 		checkTypeNewSuggestions    = type(newSuggestions) == str
+		checkTypeNewActivities    = type(newActivities) == str
 		checkTypeNewChallenges     = type(newChallenges) == str
 		checkTypeIdSprint      	   = type(idSprint) == int
 		
@@ -105,9 +107,9 @@ class meeting(object):
 				
 				# Busco las reuniones que tengan la nueva fecha
 				foundMeeting = self.searchMeeting(newDate, idSprint)
+				
 				# Si no cambie la fecha
 				if date == newDate:
-					
 					# Asigno los datos
 					foundMeeting[0].SM_activities  = newActivities
 					foundMeeting[0].SM_suggestions = newSuggestions

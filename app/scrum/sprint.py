@@ -115,6 +115,7 @@ def AModifReunionSprint():
     #Action code goes here, res should be a list with a label and a message
 
     idPila  = int(session['idPila'])
+    idReunion  = params['idReunion']
     idSprint = int(session['idSprint'])
     fecha = params['Fecha']
     actividades = params['Actividades']
@@ -122,7 +123,9 @@ def AModifReunionSprint():
     retos = params['Retos']
 
     oMeeting = meeting()
-    exito = oMeeting.updateMeeting(fecha,fecha,actividades,sugerencias,retos,idSprint)
+    result = oMeeting.getMeetingID(idReunion,idSprint)
+
+    exito = oMeeting.updateMeeting(result[0].SM_meetingDate,result[0].SM_meetingDate,actividades,sugerencias,retos,idSprint)
 
     if exito:
         res = results[0]
@@ -139,6 +142,10 @@ def AModifReunionSprint():
             session.pop("actor", None)
         else:
             session['actor'] = res['actor']
+
+    res['idSprint'] = idSprint
+    session['idReunion'] = idReunion
+
     return json.dumps(res)
 
 
@@ -232,6 +239,12 @@ def VReunion():
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
 
+    idSprint = session['idSprint']
+
+    oMeeting = meeting()
+    result  = oMeeting.getMeetingID(idReunion,idSprint)
+
+    res['fReunion'] = {'idReunion':idReunion,'idSprint':idSprint, 'Fecha':result[0].SM_meetingDate, 'Actividades':result[0].SM_activities, 'Sugerencias':result[0].SM_suggestions,'Retos':result[0].SM_challenges}
 
     #Action code ends here
     return json.dumps(res)
@@ -246,9 +259,7 @@ def VSprint():
     # Obtenemos el id del producto y del sprint
     idPila   = int(session['idPila'])
     idSprint = int(request.args.get('idSprint',1))
-    print("viene sprint")
-    print(idSprint)
-
+    
     if "actor" in session:
         res['actor']=session['actor']
 
