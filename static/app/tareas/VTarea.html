@@ -41,9 +41,8 @@
         </button>
     </form>
 
-        <center>
-            <h2 class="form-signin-heading">Subir Documento</h2>
-        </center>
+    <h2 class="form-signin-heading" align="center">Subir Documento</h2>
+
     <form action="tareas/upload" method="post" enctype="multipart/form-data">
         <input id="idTarea" type="hidden" name="idTarea" ng-model="fTarea.idTarea" value="{{fTarea.idTarea}}" />
         <input type="file" class="form-control mid-input" name="file">
@@ -57,13 +56,20 @@
         <button class="btn btn-lg btn-primary btn-block" type="submit">Subir</button>
         </form>
 
+
+        <h2 class="form-signin-heading" align="center">Documentos</h2>
+
         <div >
-            <table style="border: solid 1px">
+            <table style="border: solid 1px" class="table">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                </tr>
                 <tr ng-repeat="documento in documentos"  style="border: solid 1px">
-                    <td>
+                    <td >
                         <a href="{{documento.url}}">{{documento.name}}</a>
                     </td>
-                    <td>
+                    <td >
                         {{documento.descripcion}}
                     </td>
                 </tr>

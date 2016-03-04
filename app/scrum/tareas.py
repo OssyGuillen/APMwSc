@@ -216,7 +216,13 @@ def upload():
         #verifica si existe la carpeta especifica de la tarea, caso contrario la crea
         if not(os.path.exists(dirName)):
             os.mkdir(dirName)
-
+        if os.path.exists(dirName+"/"+docName):
+            i = 1
+            original = docName
+            while os.path.exists(dirName+"/"+docName):
+                docName = original+"("+str(i)+")"
+                print(docName)
+                i += 1
         file.save(os.path.join(dirName, docName))
         try:
             taskDoc = clsTaskDoc(idTask,docName,docDescription)

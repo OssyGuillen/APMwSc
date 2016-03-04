@@ -1,2 +1,3 @@
 venv3/
 *.pyc
+app/scrum/data.sqlite

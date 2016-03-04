@@ -35,7 +35,7 @@ class precedence(object):
         '''Borrar prelacion de la base de datos'''
 
         exists = clsPrecedence.query.filter_by(P_idFirstTask = idFirstTask, P_idSecondTask = idSecondTask).first()
-        if exists != []:
+        if exists is not None :
             db.session.delete(exists)
             db.session.commit()
         return
