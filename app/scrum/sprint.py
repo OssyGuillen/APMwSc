@@ -278,12 +278,8 @@ def VSprint():
 
     oMeeting = meeting()
     result  = oMeeting.getMeetings(idSprint)
-    #print(oMeeting.deleteMeeting('03-02-2016',1))
-    #print (result)
-    #print (idSprint)
     res['data4'] = [{'id':res.SM_idSprintMeeting, 'fecha':res.SM_meetingDate, 'actividades':res.SM_activities } for res in result]  
 
-    #print(res['data4'])
     session['idSprint'] = idSprint
     res['idSprint'] = idSprint
 

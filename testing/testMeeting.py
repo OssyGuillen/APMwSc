@@ -31,7 +31,7 @@ class TestMeeting(unittest.TestCase):
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
         aMeeting = meeting () 
-        date = '02/02/2015'
+        date = '2015-02-02'
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', idASprint)
         aMeeting.emptyTable()
         # Eliminamos los datos insertados.
@@ -58,7 +58,7 @@ class TestMeeting(unittest.TestCase):
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
         aMeeting = meeting () 
-        date = '02/02/2015'
+        date = '2015-02-02'
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', idASprint)
         self.assertFalse(aMeeting.emptyTable())
         # Eliminamos los datos insertados.
@@ -83,7 +83,7 @@ class TestMeeting(unittest.TestCase):
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
-        date = '02/02/2015'
+        date = '2015-02-02'
         aMeeting = meeting()
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', idASprint)
         aMeeting.searchMeeting(date,idASprint)
@@ -104,7 +104,7 @@ class TestMeeting(unittest.TestCase):
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
-        date = '02/02/2015'
+        date = '2015-02-02'
         aMeeting = meeting()
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', idASprint)
         result = aMeeting.searchMeeting(date,idASprint)
@@ -149,7 +149,7 @@ class TestMeeting(unittest.TestCase):
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
-        date = '02/02/2015'
+        date = '2015-02-02'
         aMeeting = meeting()
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', idASprint)
         result = aMeeting.searchMeeting(date,-1)
@@ -176,7 +176,7 @@ class TestMeeting(unittest.TestCase):
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
-        date = '02/02/2015'
+        date = '2015-02-02'
         aMeeting = meeting()
         aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', idASprint)
         # Eliminamos los datos insertados.
@@ -196,7 +196,7 @@ class TestMeeting(unittest.TestCase):
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
-        date = '02/02/2015'
+        date = '2015-02-02'
         aMeeting = meeting()
         result = aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', idASprint)
         # Eliminamos los datos insertados.
@@ -228,14 +228,14 @@ class TestMeeting(unittest.TestCase):
 
     def testInsertMeetingFalseInvalidSprint(self):
         # Creamos el meeting
-        date = '02/02/2015'
+        date = '2015-02-02'
         aMeeting = meeting()
         result = aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', -1)
         self.assertFalse(result)
 
     def testInsertMeetingFalseInvalidTypes(self):
         # Creamos el meeting
-        date = '02/02/2015'
+        date = '2015-02-02'
         aMeeting = meeting()
         result = aMeeting.insertMeeting(date, 0, 2.5, [], 1)
         self.assertFalse(result)
@@ -257,13 +257,15 @@ class TestMeeting(unittest.TestCase):
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
+        date0 = '2015-02-02'
         date = '02/02/2015'
         date1 = '02/03/2016'
+        date2= '2016-03-02'
         aMeeting = meeting()
-        aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', idASprint)
+        aMeeting.insertMeeting(date0, 'A1', 'S1', 'C1', idASprint)
         aMeeting.updateMeeting(date, date1, 'A1', 'S1', 'C1', idASprint)
         # Eliminamos los datos insertados.
-        aMeeting.deleteMeeting(date1,idASprint)
+        aMeeting.deleteMeeting(date2,idASprint)
         aSprint.deleteSprint(1,self.idBacklog)
         self.aBacklog.deleteProduct('Bxtyllz')
 
@@ -279,13 +281,15 @@ class TestMeeting(unittest.TestCase):
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
+        date0 = '2015-02-02'
         date = '02/02/2015'
-        date1 = '02/06/2015'
+        date1 = '02/03/2016'
+        date2= '2016-03-02'
         aMeeting = meeting()
-        aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', idASprint)
+        aMeeting.insertMeeting(date0, 'A1', 'S1', 'C1', idASprint)
         result = aMeeting.updateMeeting(date, date1, 'A1', 'S1', 'C1', idASprint)
         # Eliminamos los datos insertados.
-        aMeeting.deleteMeeting(date1,idASprint)
+        aMeeting.deleteMeeting(date2,idASprint)
         aSprint.deleteSprint(1,self.idBacklog)
         self.aBacklog.deleteProduct('Bxtyllz')
         self.assertTrue(result)
@@ -325,13 +329,15 @@ class TestMeeting(unittest.TestCase):
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
+        date0 = '2015-02-02'
         date = '02/02/2015'
         date1 = '02/03/2016'
+        date2= '2016-03-02'
         aMeeting = meeting()
-        aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', idASprint)
+        aMeeting.insertMeeting(date0, 'A1', 'S1', 'C1', idASprint)
         result = aMeeting.updateMeeting(date, date1, 'A1', 'S1', 'C1', -1)
         # Eliminamos los datos insertados.
-        aMeeting.deleteMeeting(date1,idASprint)
+        aMeeting.deleteMeeting(date2,idASprint)
         aSprint.deleteSprint(1,self.idBacklog)
         self.aBacklog.deleteProduct('Bxtyllz')
         self.assertFalse(result)
@@ -348,13 +354,15 @@ class TestMeeting(unittest.TestCase):
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
+        date0 = '2015-02-02'
         date = '02/02/2015'
         date1 = '02/03/2016'
+        date2= '2016-03-02'
         aMeeting = meeting()
-        aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', idASprint)
+        aMeeting.insertMeeting(date0, 'A1', 'S1', 'C1', idASprint)
         result = aMeeting.updateMeeting(date, date1, 0, 2.5, [], idASprint)
         # Eliminamos los datos insertados.
-        aMeeting.deleteMeeting(date1,idASprint)
+        aMeeting.deleteMeeting(date2,idASprint)
         aSprint.deleteSprint(1,self.idBacklog)
         self.aBacklog.deleteProduct('Bxtyllz')
         self.assertFalse(result)
@@ -376,12 +384,13 @@ class TestMeeting(unittest.TestCase):
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
+        date0 = '2015-02-02'
         date = '02/02/2015'
         aMeeting = meeting()
-        aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', idASprint)
+        aMeeting.insertMeeting(date0, 'A1', 'S1', 'C1', idASprint)
         aMeeting.getMeetings(idASprint)
         # Eliminamos los datos insertados.
-        aMeeting.deleteMeeting(date,idASprint)
+        aMeeting.deleteMeeting(date0,idASprint)
         aSprint.deleteSprint(1,self.idBacklog)
         self.aBacklog.deleteProduct('Bxtyllz')
 
@@ -416,12 +425,13 @@ class TestMeeting(unittest.TestCase):
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
+        date0 = '2015-02-02'
         date = '02/02/2015'
         aMeeting = meeting()
-        aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', idASprint)
+        aMeeting.insertMeeting(date0, 'A1', 'S1', 'C1', idASprint)
         result = aMeeting.getMeetings(idASprint)
         # Eliminamos los datos insertados.
-        aMeeting.deleteMeeting(date,idASprint)
+        aMeeting.deleteMeeting(date0,idASprint)
         aSprint.deleteSprint(1,self.idBacklog)
         self.aBacklog.deleteProduct('Bxtyllz')
         self.assertTrue(result != [])
@@ -449,11 +459,12 @@ class TestMeeting(unittest.TestCase):
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
+        date0 = '2015-02-02'
         date = '02/02/2015'
         aMeeting = meeting()
-        aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', idASprint)
+        aMeeting.insertMeeting(date0, 'A1', 'S1', 'C1', idASprint)
         # Eliminamos los datos insertados.
-        aMeeting.deleteMeeting(date,idASprint)
+        aMeeting.deleteMeeting(date0,idASprint)
         aSprint.deleteSprint(1,self.idBacklog)
         self.aBacklog.deleteProduct('Bxtyllz')
 
@@ -469,10 +480,11 @@ class TestMeeting(unittest.TestCase):
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
+        date0 = '2015-02-02'
         date = '02/02/2015'
         aMeeting = meeting()
-        aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', idASprint)
-        result = aMeeting.deleteMeeting(date,idASprint)
+        aMeeting.insertMeeting(date0, 'A1', 'S1', 'C1', idASprint)
+        result = aMeeting.deleteMeeting(date0,idASprint)
         # Eliminamos los datos insertados.
         aSprint.deleteSprint(1,self.idBacklog)
         self.aBacklog.deleteProduct('Bxtyllz')
@@ -490,13 +502,15 @@ class TestMeeting(unittest.TestCase):
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         ## Creamos el meeting
+        date0 = '2015-02-02'
         date = '02/02/2015'
         date1 = '02/03/2015'
+        date2 = '2015-02-03'
         aMeeting = meeting()
-        aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', idASprint)
-        result = aMeeting.deleteMeeting(date1,idASprint)
+        aMeeting.insertMeeting(date0, 'A1', 'S1', 'C1', idASprint)
+        result = aMeeting.deleteMeeting(date2,idASprint)
         # Eliminamos los datos insertados.
-        aMeeting.deleteMeeting(date,idASprint)
+        aMeeting.deleteMeeting(date2,idASprint)
         aSprint.deleteSprint(1,self.idBacklog)
         self.aBacklog.deleteProduct('Bxtyllz')
         self.assertFalse(result)
@@ -513,12 +527,13 @@ class TestMeeting(unittest.TestCase):
         findIdSprint = aSprint.searchIdSprint(1, self.idBacklog)
         idASprint = findIdSprint[0].S_idSprint
         # Creamos el meeting
+        date0 = '2015-02-02'
         date = '02/02/2015'
         aMeeting = meeting()
-        aMeeting.insertMeeting(date, 'A1', 'S1', 'C1', idASprint)
+        aMeeting.insertMeeting(date0, 'A1', 'S1', 'C1', idASprint)
         # Eliminamos los datos insertados.
         result = aMeeting.deleteMeeting(date,-1)
-        aMeeting.deleteMeeting(date,idASprint)
+        aMeeting.deleteMeeting(date0,idASprint)
         aSprint.deleteSprint(1,self.idBacklog)
         self.aBacklog.deleteProduct('Bxtyllz')
         self.assertFalse(result)

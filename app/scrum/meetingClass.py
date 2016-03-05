@@ -44,10 +44,14 @@ class meeting(object):
 		checkTypeIdSprint 	= type(idSprint) == int
 		foundMeeting        = []
 
+		date = datetime.datetime.strptime(date,'%Y-%m-%d')
+		date.strftime('%d/%m/%Y')
+		
 		if checkTypeIdSprint:
 			foundMeeting =  self.getMeetings(idSprint)
 			for m in foundMeeting:
-				if not(m.SM_meetingDate == date):
+				dbDate = datetime.datetime.strptime(m.SM_meetingDate,'%d/%m/%Y')
+				if not(date == dbDate):
 					foundMeeting.remove(m)
 		return foundMeeting
 
@@ -58,8 +62,7 @@ class meeting(object):
 		checkTypeSuggestions    = type(suggestions) == str
 		checkTypeChallenges     = type(challenges) == str
 		checkTypeIdSprint      	= type(idSprint) == int
-		#print ("DATE", date)
-		#print ("INSERT1")
+
 		# Verifica que la longitud de los campos sea correcta
 		if checkTypeDate and checkTypeActivities and checkTypeSuggestions and checkTypeChallenges and checkTypeIdSprint:
 			checkActivityLong = MIN_MEETING_ACTIVITIES <= len(activities) <= MAX_MEETING_ACTIVITIES
@@ -70,58 +73,29 @@ class meeting(object):
 
 			# Si todas las longitudes son correctas
 			if checkActivityLong and checkSusggestionLong and checkChallengeLong and checkSprintId:
-				#print ("INSERT3")
+
 				# Verifico que el sprint exista
 				foundSprint = clsSprint.query.filter_by(S_idSprint = idSprint)
-				
+			
 				# Si el sprint existe. Verifico que la fecha no se repita
 				if foundSprint != []:
-					#print ("INSERT4")
 					foundMeeting = self.searchMeeting(date,idSprint)
-					#print ("FAOUND MEETIGN", foundMeeting)
-					c = True
-					long0 = len(foundMeeting)
-					b = True
-					for i in range(long0):
-						mydate = foundMeeting[i].SM_meetingDate
-						b = True
-						long1 = len (mydate)
-						long2 = len (date)
-						if len(mydate) == len (date):
-							for j  in range (long1):
-								if mydate[j] != date[j]:
-									b = b and True
-									break
-								if j == long1 -1:	
-									b = False
-									break
-
-
-						if not b:
-							#print ( "NOOOO")
-							return False
-						#if (m.SM_meetingDate == date):
-						#	print ("DATE", date)	
-						#	print("BD", m.SM_meetingDate)
-						#	return False
-
-					#if foundMeeting == []:
-					if b:
-						#print ("INSERT5")
-					#	# Si la fecha no se repite
+					
+					# Si no hay ninguna reunión en ese sprint con esa fecha
+					if foundMeeting == []:
+						date = datetime.datetime.strptime(date,'%Y-%m-%d').strftime('%d/%m/%Y')
 						newMeeting = clsSprintMeeting(date,activities,suggestions,challenges,idSprint)
 						db.session.add(newMeeting)
 						db.session.commit()
 						return True
-
-			return False
+		return False
 
 	def updateMeeting(self, date, newDate, newActivities, newSuggestions, newChallenges, idSprint):
 		'''Permite actualizar los datos de una reunión diaria'''   
 		checkTypeDate 			   = type(date) == str
 		checkTypeNewDate 		   = type(newDate) == str
 		checkTypeNewSuggestions    = type(newSuggestions) == str
-		checkTypeNewActivities    = type(newActivities) == str
+		checkTypeNewActivities     = type(newActivities) == str
 		checkTypeNewChallenges     = type(newChallenges) == str
 		checkTypeIdSprint      	   = type(idSprint) == int
 		
@@ -137,10 +111,12 @@ class meeting(object):
 			if checkNewActivityLong and checkNewSusggestionLong and checkNewChallengeLong and checkSprintId:
 				
 				# Busco las reuniones que tengan la nueva fecha
-				foundMeeting = self.searchMeeting(newDate, idSprint)
+				date0 = datetime.datetime.strptime(date,'%d/%m/%Y').strftime('%Y-%m-%d')
+				newDate0 = datetime.datetime.strptime(newDate,'%d/%m/%Y').strftime('%Y-%m-%d')
+				foundMeeting = self.searchMeeting(newDate0, idSprint)
 				
 				# Si no cambie la fecha
-				if date == newDate:
+				if date0 == newDate0:
 					# Asigno los datos
 					foundMeeting[0].SM_activities  = newActivities
 					foundMeeting[0].SM_suggestions = newSuggestions
@@ -151,7 +127,7 @@ class meeting(object):
 					# Si la fecha no se repite
 					if foundMeeting == []:
 						# Busco la reunión y asigno los datos
-						foundMeeting = self.searchMeeting(date, idSprint)
+						foundMeeting = self.searchMeeting(date0, idSprint)
 						foundMeeting[0].SM_meetingDate  = newDate
 						foundMeeting[0].SM_activities  = newActivities
 						foundMeeting[0].SM_suggestions = newSuggestions
