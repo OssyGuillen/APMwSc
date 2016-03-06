@@ -197,7 +197,7 @@ class clsUserHistory(db.Model):
     UH_refActorsUserHist = db.relationship('clsActorsUserHistory', backref='userHistory', lazy='dynamic', cascade="all, delete, delete-orphan")
     UH_refTareaUserHist  = db.relationship('clsTask', backref='userHistory', lazy='dynamic', cascade="all, delete, delete-orphan")
     UH_refObjUserHist    = db.relationship('clsObjectivesUserHistory', backref='userHistory', lazy='dynamic', cascade="all, delete, delete-orphan")
-    UH_idSprint          = db.Column(db.Integer, db.ForeignKey('clsSprint.S_idSprint'))
+    UH_idSprint          = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
 
     def __init__(self, codeUserHistory, idSuperHistory, accionType, idAccion, idBacklog, scale):
         self.UH_codeUserHistory = codeUserHistory
@@ -255,7 +255,7 @@ class clsTask(db.Model):
     HW_weight        = db.Column(db.Integer)
     HW_idCategory    = db.Column(db.Integer, db.ForeignKey('category.C_idCategory'))
     HW_idUserHistory = db.Column(db.Integer, db.ForeignKey('userHistory.UH_idUserHistory'))
-    HW_idSprint      = db.Column(db.Integer, db.ForeignKey('clsSprint.S_idSprint'))
+    HW_idSprint      = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
 
     def __init__(self, description, idCategory, weight, idUserHistory):
         self.HW_description   = description

@@ -124,7 +124,6 @@ def ASprintHistoria():
             session['actor'] = res['actor']
     return json.dumps(res)
 
-    res['idPila'] = idPila
 
 @sprint.route('/sprint/ASprintTarea', methods=['POST'])
 def ASprintTarea():
