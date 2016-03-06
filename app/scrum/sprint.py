@@ -106,7 +106,43 @@ def AModifSprint():
 
     return json.dumps(res)
 
+@sprint.route('/sprint/ASprintHistoria', methods=['POST'])
+def ASprintHistoria():
+    #POST/PUT parameters
+    params = request.get_json()
+    results = [{'label':'/VSprint', 'msg':['Historia Asignado']}, {'label':'/VSprint', 'msg':['Error al Asignar Historia']}, ]
+    res = results[0]
+    #Action code goes here, res should be a list with a label and a message
 
+    res['label'] = res['label'] + '/' + repr(1)
+
+    #Action code ends here
+    if "actor" in res:
+        if res['actor'] is None:
+            session.pop("actor", None)
+        else:
+            session['actor'] = res['actor']
+    return json.dumps(res)
+
+    res['idPila'] = idPila
+
+@sprint.route('/sprint/ASprintTarea', methods=['POST'])
+def ASprintTarea():
+    #POST/PUT parameters
+    params = request.get_json()
+    results = [{'label':'/VSprint', 'msg':['Tarea asignada']}, {'label':'/VSprint', 'msg':['Error al asignar tarea']}, ]
+    res = results[0]
+    #Action code goes here, res should be a list with a label and a message
+
+    res['label'] = res['label'] + '/' + repr(1)
+
+    #Action code ends here
+    if "actor" in res:
+        if res['actor'] is None:
+            session.pop("actor", None)
+        else:
+            session['actor'] = res['actor']
+    return json.dumps(res)
 
 @sprint.route('/sprint/VCrearSprint')
 def VCrearSprint():
@@ -153,11 +189,74 @@ def VSprint():
     
     res['fSprint'] = {'idSprint':idSprint, 'numero':result[0].S_numero, 'descripcion':result[0].S_sprintDescription}    
 
-    session['idSprint'] = idSprint
+    res['data5'] = [
+        {'idHistoria':1,'prioridad':'Alta', 'enunciado':'En tanto que cocinero puedo preparar una ratatuya para cenar'},
+        {'idHistoria':2,'prioridad':'Media', 'enunciado':'En tanto que chef puedo hacer que los cocineros prepraren varios platos para cumplir con el munú'}
+    ]
+    res['data7'] = [
+      {'idTarea':1, 'descripcion':'Sacarle jugo a una piedra'},
+      {'idTarea':2, 'descripcion':'Pelar un mango'},
+    ]
+
+    res['idSprint'] = idSprint
     res['idPila'] = idPila
 
+
     return json.dumps(res)
-    
+
+
+
+@sprint.route('/sprint/VSprintHistoria')
+def VSprintHistoria():
+    #GET parameter
+    idSprint = request.args['idSprint']
+    res = {}
+    if "actor" in session:
+        res['actor']=session['actor']
+    #Action code goes here, res should be a JSON structure
+
+    if 'usuario' not in session:
+        res['logout'] = '/'
+        return json.dumps(res)
+    res['usuario'] = session['usuario']
+    res['fSprintHistoria_opcionesHistoria'] = [
+      {'key':1,'value':'Historia1'},
+      {'key':2,'value':'Historia2'},
+      {'key':3,'value':'Historia3'}]
+
+    res['idPila'] = 1
+    res['idSprint']= idSprint
+
+    #Action code ends here
+    return json.dumps(res)
+
+
+
+@sprint.route('/sprint/VSprintTarea')
+def VSprintTarea():
+    #GET parameter
+    idSprint = request.args['idSprint']
+    res = {}
+    if "actor" in session:
+        res['actor']=session['actor']
+    #Action code goes here, res should be a JSON structure
+
+    if 'usuario' not in session:
+        res['logout'] = '/'
+        return json.dumps(res)
+    res['usuario'] = session['usuario']
+    res['fSprintTarea_opcionesTarea'] = [
+      {'key':1,'value':'Tarea1'},
+      {'key':2,'value':'Tarea2'},
+      {'key':3,'value':'Tarea3'}]
+
+    res['idPila'] = 1
+    res['idSprint']= idSprint
+
+    #Action code ends here
+    return json.dumps(res)
+
+
 
 @sprint.route('/sprint/VSprints')
 def VSprints():
