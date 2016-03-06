@@ -6,7 +6,7 @@ sys.path.append('app/scrum')
 
 from backLog import *
 from userHistory import *
-
+from task        import *
 # Declaracion de constantes.
 MIN_ID                 = 1
 MIN_SPRINT_DESCRIPTION = 1
@@ -124,5 +124,61 @@ class sprints(object):
 			return found
 		return []
 
+	#Nuevo metodo Sprint 2
+	def deleteAssignedSprintHistory(self, sprintNumber, idBacklog, idUserHistory):
+		''' Permite la asignacion de una historia asociado a un Sprint dado su id'''
+		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
+		checkidBacklog    = type(idBacklog) == int and MIN_ID <= idBacklog
+		checkidUserHistory = type(idUserHistory) == int and MIN_ID <= idUserHistory
+		if checkSprintNumber and checkidBacklog and checkidUserHistory:
+			print("entrando")
+			oUserHistory = userHistory()
+			history = oUserHistory.searchIdUserHistory(idUserHistory)
+			if history != []:
+				history[0].UH_idSprint = None
+				db.session.commit()
+				return True
+		return False
 
+	#Nuevo metodo Sprint 2
+	def asignSprintTask(self, sprintNumber, idBacklog, idTask):
+		''' Permite asignar a un Sprint una tarea asociado a sus historias'''
+		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
+		checkidBacklog    = type(idBacklog) == int and MIN_ID <= idBacklog
+		checkidTask = type(idTask) == int and MIN_ID <= idTask
+		if checkSprintNumber and checkidBacklog and checkidTask:
+			oTask = task()
+			tarea = oTask.getTaskById(idTask)
+			sprint = self.searchIdSprint(sprintNumber, idBacklog)
+			if tarea and sprint:
+				tarea.HW_idSprint = sprint[0].S_idSprint
+				db.session.commit()
+				return True
+		return False
+
+	# Nuevo metodo Sprint 2
+	def getAssignedSprintTask(self, sprintNumber, idBacklog):
+		'''Permite obtener las Tareas asociados a un determinado Sprint'''
+		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
+		checkidBacklog    = type(idBacklog) == int and MIN_ID <= idBacklog
+		if checkSprintNumber and checkidBacklog:
+			sprint = self.searchIdSprint(sprintNumber, idBacklog)
+			found = clsTask.query.filter_by(HW_idSprint = sprint[0].S_idSprint).all()
+			return found
+		return []
+
+		#Nuevo metodo Sprint 2
+	def deleteAssignedSprintTask(self, sprintNumber, idBacklog, idTask):
+		''' Permite la asignacion de una historia asociado a un Sprint dado su id'''
+		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
+		checkidBacklog    = type(idBacklog) == int and MIN_ID <= idBacklog
+		checkidTask = type(idTask) == int and MIN_ID <= idTask
+		if checkSprintNumber and checkidBacklog and checkidTask:
+			oTask = task()
+			tarea = oTask.getTaskById(idTask)
+			if tarea:
+				tarea.HW_idSprint = None
+				db.session.commit()
+				return True
+		return False
 # Fin Clase Sprint

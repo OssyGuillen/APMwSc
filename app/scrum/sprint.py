@@ -4,6 +4,7 @@ from flask import request, session, Blueprint, json
 from app.scrum.sprintClass       import *
 from app.scrum.backLog           import *
 from app.scrum.userHistory       import *
+from app.scrum.task              import *
 sprint = Blueprint('sprint', __name__)
 
 @sprint.route('/sprint/ACrearSprint', methods=['POST'])
@@ -53,7 +54,7 @@ def AElimSprint():
     idSprint = int(session['idSprint'])
 
     # Conseguimos el sprint a eliminar
-    oSprint  = sprint()
+    oSprint  = sprints()
     found    = oSprint.searchIdSprint(idSprint,idPila)
 
     if (found != []):
@@ -77,13 +78,18 @@ def AElimSprintHistoria():
     #POST/PUT parameters
     params = request.get_json()
     results = [{'label':'/VSprint', 'msg':['Historia Eliminado']}, {'label':'/VSprint', 'msg':['Error al eliminar historia']}, ]
-    res = results[0]
-    #Action code goes here, res should be a list with a label and a message
+    res = results[1]
 
-    res['label'] = res['label'] + '/' + repr(1)
-    idHistoriaEliminar = request.args['id']
+    idSprint = int(session['idSprint'])
+    idPila = int(session['idPila'])
+    idHistoriaEliminar = int(request.args['id'])
 
-    #Action code ends here
+    oSprint  = sprints()
+    if oSprint.deleteAssignedSprintHistory(idSprint,idPila,idHistoriaEliminar):
+        res = results[0]
+
+    res['label'] = res['label'] + '/' + str(idSprint)
+
     if "actor" in res:
         if res['actor'] is None:
             session.pop("actor", None)
@@ -98,10 +104,18 @@ def AElimSprintTarea():
     #POST/PUT parameters
     params = request.get_json()
     results = [{'label':'/VSprint', 'msg':['Tarea eliminada']}, {'label':'/VSprint', 'msg':['Error al eliminar tarea']}, ]
-    res = results[0]
+    res = results[1]
     #Action code goes here, res should be a list with a label and a message
 
-    res['label'] = res['label'] + '/' + repr(1)
+    idSprint = int(session['idSprint'])
+    idPila = int(session['idPila'])
+    idTareaEliminar = int(request.args['id'])
+
+    oSprint  = sprints()
+    if oSprint.deleteAssignedSprintTask(idSprint,idPila,idTareaEliminar):
+        res = results[0]
+
+    res['label'] = res['label'] + '/' + str(idSprint)
 
     #Action code ends here
     if "actor" in res:
@@ -151,9 +165,6 @@ def ASprintHistoria():
     res = results[1]
     #Action code goes here, res should be a list with a label and a message
 
-
-    print(params)
-
     idSprint = int(params['idSprint'])
     idPila = params['idPila']
     idHistoria = params['historia']
@@ -177,11 +188,18 @@ def ASprintTarea():
     #POST/PUT parameters
     params = request.get_json()
     results = [{'label':'/VSprint', 'msg':['Tarea asignada']}, {'label':'/VSprint', 'msg':['Error al asignar tarea']}, ]
-    res = results[0]
+    res = results[1]
     #Action code goes here, res should be a list with a label and a message
 
-    res['label'] = res['label'] + '/' + repr(1)
+    idSprint = int(params['idSprint'])
+    idPila = params['idPila']
+    idTarea = params['tarea']
 
+    oSprint = sprints()
+    if oSprint.asignSprintTask(idSprint,idPila, idTarea):
+        res = results[0]
+
+    res['label'] = res['label'] + '/' + str(idSprint)
     #Action code ends here
     if "actor" in res:
         if res['actor'] is None:
@@ -232,17 +250,18 @@ def VSprint():
     # Buscamos el actor actual
     oSprint = sprints()
     sprint  = oSprint.searchIdSprint(idSprint,idPila)[0]
-    listaHistorias = oSprint.getAssignedSprintHistory(idSprint, idPila)
+    listaHistorias = oSprint.getAssignedSprintHistory(idSprint, idPila) #Obtenes las historias asignadas al sprint
 
     res['fSprint'] = {'idSprint':idSprint, 'numero':sprint.S_numero, 'descripcion':sprint.S_sprintDescription}
 
+    #Lista de Historias
     res['data5'] = [
-        {'idHistoria':historia.UH_codeUserHistory,'prioridad':historia.UH_scale, 'enunciado':historia.UH_codeUserHistory}for historia in listaHistorias
+        {'idHistoria':historia.UH_idUserHistory,'prioridad':historia.UH_scale, 'enunciado':historia.UH_codeUserHistory}for historia in listaHistorias
     ]
-    res['data7'] = [
-      {'idTarea':1, 'descripcion':'Sacarle jugo a una piedra'},
-      {'idTarea':2, 'descripcion':'Pelar un mango'},
-    ]
+
+    listaTareas = oSprint.getAssignedSprintTask(idSprint, idPila) # Tareas asignadas al Sprint
+    #Lista de tareas
+    res['data7'] = [{'idTarea':tarea.HW_idTask, 'descripcion':tarea.HW_description}for tarea in listaTareas]
 
     session['idSprint'] = idSprint
     res['idSprint'] = idSprint
@@ -294,14 +313,25 @@ def VSprintTarea():
     if 'usuario' not in session:
         res['logout'] = '/'
         return json.dumps(res)
-    res['usuario'] = session['usuario']
-    res['fSprintTarea_opcionesTarea'] = [
-      {'key':1,'value':'Tarea1'},
-      {'key':2,'value':'Tarea2'},
-      {'key':3,'value':'Tarea3'}]
+
+    idPila = int(session['idPila'])
+    idSprint = int(request.args['idSprint'])
+    oSprint = sprints()
+    listaHistorias = oSprint.getAssignedSprintHistory(idSprint, idPila) #Obtenemos las historias asignadas al sprint
+    oTask = task()
+
+    #Obtenemos Todas las tareas asociadas a todas nuestras historias
+    listaTareas = []
+    for historia in listaHistorias:
+        tareas = oTask.taskAsociatedToUserHistory(historia.UH_idUserHistory) #Lista de tareas asociada a la historia
+        for tarea in tareas:
+            listaTareas.append(tarea) #Agregamos todas las tareas de la lista de tareas
+
+    res['fSprintTarea_opcionesTarea'] = [{'key':tarea.HW_idTask,'value':tarea.HW_description}for tarea in listaTareas]
+    res['fSprintTarea'] = {'idPila':idPila, 'idSprint':idSprint}
 
     res['idSprint']= idSprint
-
+    res['usuario'] = session['usuario']
     #Action code ends here
     return json.dumps(res)
 

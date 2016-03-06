@@ -169,5 +169,10 @@ class task(object):
                         if tupla[0] == idUserHistory:
                             return tupla[1]
         return ('')
-    
+
+    def getTaskById(self, taskID):
+        ''' Permite obtener una tarea dado su ID'''
+        return clsTask.query.filter_by(HW_idTask = taskID).first()
+
+
 #Fin clase Task
