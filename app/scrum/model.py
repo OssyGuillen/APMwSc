@@ -206,6 +206,7 @@ class clsUserHistory(db.Model):
         self.UH_idAccion        = idAccion
         self.UH_idBacklog       = idBacklog
         self.UH_scale           = scale
+        self.UH_idSprint        = None
 
     def __repr__(self):
         '''Representacion en string de la Historia de Usuario'''
@@ -262,6 +263,7 @@ class clsTask(db.Model):
         self.HW_idCategory    = idCategory
         self.HW_weight        = weight
         self.HW_idUserHistory = idUserHistory
+        self.HW_idSprint      = None
 
     def __repr__(self):
         '''Representacion en string de la Tarea'''

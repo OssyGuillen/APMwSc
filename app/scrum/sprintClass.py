@@ -5,6 +5,7 @@ import sys
 sys.path.append('app/scrum')
 
 from backLog import *
+from userHistory import *
 
 # Declaracion de constantes.
 MIN_ID                 = 1
@@ -95,4 +96,33 @@ class sprints(object):
 					db.session.commit()
 					return True
 		return False
+
+	#Nuevo metodo Sprint 2
+	def asignSprintHistory(self, sprintNumber, idBacklog, idUserHistory):
+		''' Permite asignar a un Sprint una historia de usuario asociado al producto '''
+		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
+		checkidBacklog    = type(idBacklog) == int and MIN_ID <= idBacklog
+		checkidUserHistory = type(idUserHistory) == int and MIN_ID <= idUserHistory
+		if checkSprintNumber and checkidBacklog and checkidUserHistory:
+			oUserHistory = userHistory()
+			history = oUserHistory.searchIdUserHistory(idUserHistory)
+			sprint = self.searchIdSprint(sprintNumber, idBacklog)
+			if history != [] and sprint != []:
+				history[0].UH_idSprint = sprint[0].S_idSprint
+				db.session.commit()
+				return True
+		return False
+
+	#Nuevo metodo Sprint 2
+	def getAssignedSprintHistory(self, sprintNumber, idBacklog):
+		'''Permite obtener las historias asociados a un determinado Sprint'''
+		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
+		checkidBacklog    = type(idBacklog) == int and MIN_ID <= idBacklog
+		if checkSprintNumber and checkidBacklog:
+			sprint = self.searchIdSprint(sprintNumber, idBacklog)
+			found = clsUserHistory.query.filter_by(UH_idSprint = sprint[0].S_idSprint).all()
+			return found
+		return []
+
+
 # Fin Clase Sprint

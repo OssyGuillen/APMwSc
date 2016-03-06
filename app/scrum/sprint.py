@@ -3,7 +3,7 @@
 from flask import request, session, Blueprint, json
 from app.scrum.sprintClass       import *
 from app.scrum.backLog           import *
-
+from app.scrum.userHistory       import *
 sprint = Blueprint('sprint', __name__)
 
 @sprint.route('/sprint/ACrearSprint', methods=['POST'])
@@ -72,7 +72,44 @@ def AElimSprint():
             session['actor'] = res['actor']
     return json.dumps(res)
 
+@sprint.route('/sprint/AElimSprintHistoria')
+def AElimSprintHistoria():
+    #POST/PUT parameters
+    params = request.get_json()
+    results = [{'label':'/VSprint', 'msg':['Historia Eliminado']}, {'label':'/VSprint', 'msg':['Error al eliminar historia']}, ]
+    res = results[0]
+    #Action code goes here, res should be a list with a label and a message
 
+    res['label'] = res['label'] + '/' + repr(1)
+    idHistoriaEliminar = request.args['id']
+
+    #Action code ends here
+    if "actor" in res:
+        if res['actor'] is None:
+            session.pop("actor", None)
+        else:
+            session['actor'] = res['actor']
+
+    return json.dumps(res)
+
+
+@sprint.route('/sprint/AElimSprintTarea')
+def AElimSprintTarea():
+    #POST/PUT parameters
+    params = request.get_json()
+    results = [{'label':'/VSprint', 'msg':['Tarea eliminada']}, {'label':'/VSprint', 'msg':['Error al eliminar tarea']}, ]
+    res = results[0]
+    #Action code goes here, res should be a list with a label and a message
+
+    res['label'] = res['label'] + '/' + repr(1)
+
+    #Action code ends here
+    if "actor" in res:
+        if res['actor'] is None:
+            session.pop("actor", None)
+        else:
+            session['actor'] = res['actor']
+    return json.dumps(res)
 
 @sprint.route('/sprint/AModifSprint', methods=['POST'])
 def AModifSprint():
@@ -111,11 +148,21 @@ def ASprintHistoria():
     #POST/PUT parameters
     params = request.get_json()
     results = [{'label':'/VSprint', 'msg':['Historia Asignado']}, {'label':'/VSprint', 'msg':['Error al Asignar Historia']}, ]
-    res = results[0]
+    res = results[1]
     #Action code goes here, res should be a list with a label and a message
 
-    res['label'] = res['label'] + '/' + repr(1)
 
+    print(params)
+
+    idSprint = int(params['idSprint'])
+    idPila = params['idPila']
+    idHistoria = params['historia']
+
+    oSprint = sprints()
+    if oSprint.asignSprintHistory(idSprint,idPila, idHistoria):
+        res = results[0]
+
+    res['label'] = res['label'] + '/' + str(idSprint)
     #Action code ends here
     if "actor" in res:
         if res['actor'] is None:
@@ -184,19 +231,20 @@ def VSprint():
 
     # Buscamos el actor actual
     oSprint = sprints()
-    result  = oSprint.searchIdSprint(idSprint,idPila)
-    
-    res['fSprint'] = {'idSprint':idSprint, 'numero':result[0].S_numero, 'descripcion':result[0].S_sprintDescription}    
+    sprint  = oSprint.searchIdSprint(idSprint,idPila)[0]
+    listaHistorias = oSprint.getAssignedSprintHistory(idSprint, idPila)
+
+    res['fSprint'] = {'idSprint':idSprint, 'numero':sprint.S_numero, 'descripcion':sprint.S_sprintDescription}
 
     res['data5'] = [
-        {'idHistoria':1,'prioridad':'Alta', 'enunciado':'En tanto que cocinero puedo preparar una ratatuya para cenar'},
-        {'idHistoria':2,'prioridad':'Media', 'enunciado':'En tanto que chef puedo hacer que los cocineros prepraren varios platos para cumplir con el munú'}
+        {'idHistoria':historia.UH_codeUserHistory,'prioridad':historia.UH_scale, 'enunciado':historia.UH_codeUserHistory}for historia in listaHistorias
     ]
     res['data7'] = [
       {'idTarea':1, 'descripcion':'Sacarle jugo a una piedra'},
       {'idTarea':2, 'descripcion':'Pelar un mango'},
     ]
 
+    session['idSprint'] = idSprint
     res['idSprint'] = idSprint
     res['idPila'] = idPila
 
@@ -213,18 +261,21 @@ def VSprintHistoria():
     if "actor" in session:
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
-
     if 'usuario' not in session:
         res['logout'] = '/'
         return json.dumps(res)
     res['usuario'] = session['usuario']
-    res['fSprintHistoria_opcionesHistoria'] = [
-      {'key':1,'value':'Historia1'},
-      {'key':2,'value':'Historia2'},
-      {'key':3,'value':'Historia3'}]
 
-    res['idPila'] = 1
+    idPila = int(session['idPila'])
+
+    oUserHistory = userHistory()
+    historiasProducto = oUserHistory.getAllUserHistoryId(idPila)
+    res['fSprintHistoria_opcionesHistoria'] = [
+        {'key':historia.UH_idUserHistory,'value':historia.UH_codeUserHistory} for historia in historiasProducto
+    ]
+
     res['idSprint']= idSprint
+    res['fSprintHistoria'] = {'idPila':idPila, 'idSprint':idSprint}
 
     #Action code ends here
     return json.dumps(res)
@@ -249,7 +300,6 @@ def VSprintTarea():
       {'key':2,'value':'Tarea2'},
       {'key':3,'value':'Tarea3'}]
 
-    res['idPila'] = 1
     res['idSprint']= idSprint
 
     #Action code ends here
