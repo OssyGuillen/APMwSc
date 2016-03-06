@@ -85,7 +85,23 @@ def AElimSprintHistoria():
     idHistoriaEliminar = int(request.args['id'])
 
     oSprint  = sprints()
+    oUserHistory = userHistory()
+    oTask = task()
+    deletedHistoryID=[]
     if oSprint.deleteAssignedSprintHistory(idSprint,idPila,idHistoriaEliminar):
+        # Chequeamos si es epica, si lo es eliminamos sus hijos
+        deletedHistoryID.append(idHistoriaEliminar)
+        if oUserHistory.isEpic(idHistoriaEliminar):
+            for idHistoria in oUserHistory.historySuccesors(idHistoriaEliminar):
+                oSprint.deleteAssignedSprintHistory(idSprint,idPila, idHistoria)
+                deletedHistoryID.append(idHistoria)
+
+        # Eliminamos sus tareas
+        for idHistoria in deletedHistoryID:
+            tareas = oTask.taskAsociatedToUserHistory(idHistoria)
+            for tarea in tareas:
+                oSprint.deleteAssignedSprintTask(idSprint, idPila, tarea.HW_idTask)
+
         res = results[0]
 
     res['label'] = res['label'] + '/' + str(idSprint)
@@ -170,7 +186,13 @@ def ASprintHistoria():
     idHistoria = params['historia']
 
     oSprint = sprints()
+    oUserHistory = userHistory()
     if oSprint.asignSprintHistory(idSprint,idPila, idHistoria):
+        # Chequeamos si es epica, si lo es agregamos las sub-historias
+        if oUserHistory.isEpic(idHistoria):
+            for idHistoria in oUserHistory.historySuccesors(idHistoria):
+                oSprint.asignSprintHistory(idSprint,idPila, idHistoria)
+
         res = results[0]
 
     res['label'] = res['label'] + '/' + str(idSprint)
@@ -279,7 +301,7 @@ def VSprintHistoria():
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
-    #Action code goes here, res should be a JSON structure
+
     if 'usuario' not in session:
         res['logout'] = '/'
         return json.dumps(res)
@@ -296,7 +318,6 @@ def VSprintHistoria():
     res['idSprint']= idSprint
     res['fSprintHistoria'] = {'idPila':idPila, 'idSprint':idSprint}
 
-    #Action code ends here
     return json.dumps(res)
 
 
@@ -308,7 +329,6 @@ def VSprintTarea():
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
-    #Action code goes here, res should be a JSON structure
 
     if 'usuario' not in session:
         res['logout'] = '/'
@@ -332,7 +352,6 @@ def VSprintTarea():
 
     res['idSprint']= idSprint
     res['usuario'] = session['usuario']
-    #Action code ends here
     return json.dumps(res)
 
 
