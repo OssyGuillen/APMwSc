@@ -197,6 +197,7 @@ class clsUserHistory(db.Model):
     UH_refActorsUserHist = db.relationship('clsActorsUserHistory', backref='userHistory', lazy='dynamic', cascade="all, delete, delete-orphan")
     UH_refTareaUserHist  = db.relationship('clsTask', backref='userHistory', lazy='dynamic', cascade="all, delete, delete-orphan")
     UH_refObjUserHist    = db.relationship('clsObjectivesUserHistory', backref='userHistory', lazy='dynamic', cascade="all, delete, delete-orphan")
+    UH_idSprint          = db.Column(db.Integer, db.ForeignKey('clsSprint.S_idSprint'))
 
     def __init__(self, codeUserHistory, idSuperHistory, accionType, idAccion, idBacklog, scale):
         self.UH_codeUserHistory = codeUserHistory
@@ -254,6 +255,7 @@ class clsTask(db.Model):
     HW_weight        = db.Column(db.Integer)
     HW_idCategory    = db.Column(db.Integer, db.ForeignKey('category.C_idCategory'))
     HW_idUserHistory = db.Column(db.Integer, db.ForeignKey('userHistory.UH_idUserHistory'))
+    HW_idSprint      = db.Column(db.Integer, db.ForeignKey('clsSprint.S_idSprint'))
 
     def __init__(self, description, idCategory, weight, idUserHistory):
         self.HW_description   = description
@@ -291,6 +293,8 @@ class clsSprint(db.Model):
     S_numero            = db.Column(db.Integer)
     S_sprintDescription = db.Column(db.String(140))
     S_idBacklog         = db.Column(db.Integer, db.ForeignKey('backlog.BL_idBacklog'))
+    S_refUserHistory    = db.relationship('clsUserHistory', backref='sprint', lazy='dynamic', cascade="all, delete, delete-orphan")
+    S_refTask           = db.relationship('clsTask', backref='sprint', lazy='dynamic', cascade="all, delete, delete-orphan")
 
     def __init__(self, numero, sprintDescription, idBacklog):
         self.S_numero            = numero
