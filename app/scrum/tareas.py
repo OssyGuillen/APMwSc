@@ -4,7 +4,8 @@ from flask                 import request, session, Blueprint, json, render_temp
 from app.scrum.backLog     import *
 from app.scrum.userHistory import *
 from app.scrum.task        import *
-from app.scrum.model      import taskDocs_by_taskId
+from app.scrum.model      import *
+
 from werkzeug import secure_filename
 
 tareas = Blueprint('tareas', __name__)
@@ -138,6 +139,24 @@ def AModifTarea():
             session['actor'] = res['actor']
     return json.dumps(res)
 
+@tareas.route('/tareas/ACompletarTarea', methods=['GET'])
+def ACompletarTarea():
+    params  = request.get_json()
+    idTarea    = request.args.get('idTarea')
+    results = [{'label':'/VTarea/'+idTarea, 'msg':['La tarea fue marcada como completada']}, {'label':'/VTarea/'+idTarea, 'msg':['Error al modificar tarea']}, ]
+    res     = results[1]
+
+    # Obtenemos el id del Producto.
+    idPila  = int(session['idPila'])
+
+    # Extraemos los valores
+    oTarea    = task()
+
+    completed = oTarea.completeTask(int(idTarea))
+    if completed == True:
+        res = results[0]
+    return json.dumps(res)
+
 
 @tareas.route('/tareas/VCrearTarea')
 def VCrearTarea():
@@ -198,8 +217,13 @@ def VTarea():
         res['actor']=session['actor']
 
     idTarea = request.args.get('idTarea')
+    oTarea = task()
     result   = clsTask.query.filter_by(HW_idTask = idTarea).first()
     categoryList     = clsCategory.query.all()
+    if result.HW_completed:
+        estado = 'completado'
+    else:
+        estado = 'incompleto'
 
     if 'usuario' not in session:
       res['logout'] = '/'
@@ -211,7 +235,7 @@ def VTarea():
     res['fTarea_opcionesCategoria'] = [
       {'key':cat.C_idCategory ,'value':cat.C_nameCate+" ("+str(cat.C_weight)+")",'peso':result.HW_weight}for cat in categoryList]
 
-    res['fTarea'] = {'idHistoria':idHistoria,'idTarea': idTarea,'descripcion': result.HW_description, 'categoria': result.HW_idCategory, 'peso':result.HW_weight}
+    res['fTarea'] = {'idHistoria':idHistoria,'idTarea': idTarea,'descripcion': result.HW_description, 'categoria': result.HW_idCategory, 'peso':result.HW_weight, 'estado':estado}
 
 
     session['idTarea'] = idTarea

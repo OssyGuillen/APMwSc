@@ -7,11 +7,14 @@ from flask import Flask
 from flask.ext.migrate import Migrate, MigrateCommand
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.script import Manager
+from sqlalchemy import *
+from migrate import *
+from migrate.changeset import *
 from sqlalchemy.sql.schema import PrimaryKeyConstraint
 
 # Conexion con la base de datos.
 basedir = os.path.abspath(os.path.dirname(__file__))
-SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'apl.db')
+SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 
 # Instancia de la aplicacion.
@@ -162,6 +165,7 @@ class clsUserHistory(db.Model):
                                           cascade="all, delete, delete-orphan")
     UH_refObjUserHist = db.relationship('clsObjectivesUserHistory', backref='userHistory', lazy='dynamic',
                                         cascade="all, delete, delete-orphan")
+    UH_completed = db.Column(db.Boolean)
 
     def __init__(self, codeUserHistory, idSuperHistory, accionType, idAccion, idBacklog, scale):
         self.UH_codeUserHistory = codeUserHistory
@@ -220,6 +224,7 @@ class clsTask(db.Model):
     HW_weight = db.Column(db.Integer)
     HW_idCategory = db.Column(db.Integer, db.ForeignKey('category.C_idCategory'))
     HW_idUserHistory = db.Column(db.Integer, db.ForeignKey('userHistory.UH_idUserHistory'))
+    HW_completed = db.Column(db.Boolean)
 
     def __init__(self, description, idCategory, weight, idUserHistory):
         self.HW_description = description
@@ -227,10 +232,13 @@ class clsTask(db.Model):
         self.HW_weight = weight
         self.HW_idUserHistory = idUserHistory
 
+    def getCompleted(self):
+        return self.HW_completed
+
     def __repr__(self):
         '''Representacion en string de la Tarea'''
-        return '<HW_ idTask  %r,HW_idCategory %r, HW_weight %r ,HW_idUserHistory %r>' % (
-            self.HW_idTask, self.HW_idCategory, self.HW_weight, self.HW_idUserHistory)
+        return '<HW_ idTask  %r,HW_idCategory %r, HW_weight %r ,HW_idUserHistory %r,HW_completed %r >' % (
+            self.HW_idTask, self.HW_idCategory, self.HW_weight, self.HW_idUserHistory, self.HW_completed)
 
 
 class clsCategory(db.Model):
@@ -311,3 +319,22 @@ manager = Manager(app)
 
 manager.add_command('db', MigrateCommand)
 db.create_all()  # Creamos la base de datos
+
+try:
+    engine = create_engine(SQLALCHEMY_DATABASE_URI)
+    meta = MetaData(engine)
+    historiaDeUsuario = Table('userHistory', meta, autoload=True)
+    completed = Column('UH_completed', db.Boolean)
+    completed.create(historiaDeUsuario)
+except:
+    pass
+
+try:
+    engine = create_engine(SQLALCHEMY_DATABASE_URI)
+    meta = MetaData(engine)
+    tareaTable = Table('task', meta, autoload=True)
+    completedTask = Column('HW_completed', db.Boolean)
+    completedTask.create(tareaTable)
+except:
+    pass
+

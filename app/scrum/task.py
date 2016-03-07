@@ -87,7 +87,22 @@ class task(object):
             db.session.commit()
             return True
         return False
-    
+
+    def completeTask(self,idTask):
+        '''Permite actualizar la prioridad de una historia de usuario'''
+
+        found     = clsTask.query.filter_by(HW_idTask = idTask).first()
+        if found != None:
+            found.HW_completed = True
+            db.session.commit()
+            return True
+        return False
+
+    def taskById(self,idTask):
+        '''Permite actualizar la prioridad de una historia de usuario'''
+
+        found     = clsTask.query.filter_by(HW_idTask = idTask).first()
+        return found
     
     def searchTask(self, HW_description):
         '''Permite buscar tareas por su descripcion'''
