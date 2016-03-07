@@ -110,6 +110,16 @@ scrumModule.controller('VTareaController',
           });
     };
 
+    $scope.AIncompletarTarea = function(idTarea) {
+        tareasService.AIncompletarTarea({idTarea: idTarea}).then(function (object) {
+              var msg = object.data["msg"];
+              if (msg) flash(msg);
+              var label = object.data["label"];
+              $location.path(label);
+              $route.reload();
+          });
+    };
+
       $scope.fTareaSubmitted = false;
       $scope.AModifTarea0 = function(isValid) {
         $scope.fTareaSubmitted = true;

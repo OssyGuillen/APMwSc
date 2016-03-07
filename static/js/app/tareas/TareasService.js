@@ -93,5 +93,18 @@ scrumModule.service('tareasService', ['$q', '$http', function($q, $http) {
     //    return deferred.promise;
     };
 
+    this.AIncompletarTarea = function(args) {
+        if(typeof args == 'undefined') args={};
+        return $http({
+          url: 'tareas/AIncompletarTarea',
+          method: 'GET',
+          params: args
+        });
+    //    var res = {};
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+
 
 }]);

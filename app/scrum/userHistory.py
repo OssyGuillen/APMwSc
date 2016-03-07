@@ -229,7 +229,7 @@ class userHistory(object):
         return False
 
     def completeHistory(self,idHistory):
-        '''Permite actualizar la prioridad de una historia de usuario'''
+        '''Permite marcar una historia como completa'''
 
         checkIdHistory  = type(idHistory) == int
         if checkIdHistory:
@@ -238,6 +238,20 @@ class userHistory(object):
                 found     = clsUserHistory.query.filter_by(UH_idUserHistory = idHistory).first()
                 if found != None:
                     found.UH_completed = True
+                    db.session.commit()
+                    return True
+        return False
+
+    def incompleteHistory(self,idHistory):
+        '''Permite marcar una historia como incompleta'''
+
+        checkIdHistory  = type(idHistory) == int
+        if checkIdHistory:
+            checkLonIdHistory = CONST_MIN_ID <= idHistory
+            if  checkLonIdHistory:
+                found     = clsUserHistory.query.filter_by(UH_idUserHistory = idHistory).first()
+                if found != None:
+                    found.UH_completed = False
                     db.session.commit()
                     return True
         return False

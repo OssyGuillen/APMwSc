@@ -251,6 +251,24 @@ def ACompletarHistoria():
         res = results[0]
     return json.dumps(res)
 
+@historias.route('/historias/AIncompletarHistoria', methods=['GET'])
+def AIncompletarHistoria():
+    params  = request.get_json()
+    idHistory    = request.args.get('idHistoria')
+    results = [{'label':'/VHistoria/'+idHistory, 'msg':['La historia fue marcada como incompleta']}, {'label':'/VHistoria/'+idHistory, 'msg':['Error al modificar historia']}, ]
+    res     = results[1]
+
+    # Obtenemos el id del Producto.
+    idPila  = int(session['idPila'])
+
+    # Extraemos los valores
+    oUserHist    = userHistory()
+
+    incompleted = oUserHist.incompleteHistory(int(idHistory))
+    if incompleted == True:
+        res = results[0]
+    return json.dumps(res)
+
 
 @historias.route('/historias/VCrearHistoria')
 def VCrearHistoria():
@@ -406,9 +424,9 @@ def VHistoria():
     res['fHistoria_opcionesObjetivos']     = [{'key':obj.O_idObjective,'value':obj.O_descObjective}for obj in objectiveList]
     res['fHistoria_opcionesPrioridad']     = [{'key':scale[0], 'value':scale[1]}for scale in resultScale]
     if history.UH_completed:
-        estado = 'completado'
+        estado = 'completa'
     else:
-        estado = 'incompleto'
+        estado = 'incompleta'
     
     res['fHistoria'] = {'super':history.UH_idSuperHistory , 'idHistoria':idHistory, 'idPila':history.UH_idBacklog, 
                         'codigo':history.UH_codeUserHistory,'actores':actors, 'accion':history.UH_idAccion, 

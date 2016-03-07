@@ -196,6 +196,15 @@ scrumModule.controller('VHistoriaController',
               $route.reload();
           });
     };
+    $scope.AIncompletarHistoria = function(idHistoria) {
+        historiasService.AIncompletarHistoria({idHistoria: idHistoria}).then(function (object) {
+              var msg = object.data["msg"];
+              if (msg) flash(msg);
+              var label = object.data["label"];
+              $location.path(label);
+              $route.reload();
+          });
+    };
 
       $scope.VTarea2 = function(idTarea) {
         $location.path('/VTarea/'+((typeof idTarea === 'object')?JSON.stringify(idTarea):idTarea));

@@ -78,6 +78,19 @@ scrumModule.service('historiasService', ['$q', '$http', function($q, $http) {
     //    return deferred.promise;
     };
 
+    this.AIncompletarHistoria = function(args) {
+        if(typeof args == 'undefined') args={};
+        return $http({
+          url: 'historias/AIncompletarHistoria',
+          method: 'GET',
+          params: args
+        });
+    //    var res = {};
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+
     this.VCrearHistoria = function(args) {
         if(typeof args == 'undefined') args={};
         return $http({

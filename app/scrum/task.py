@@ -89,11 +89,21 @@ class task(object):
         return False
 
     def completeTask(self,idTask):
-        '''Permite actualizar la prioridad de una historia de usuario'''
+        '''Permite marcar una tarea como completa'''
 
         found     = clsTask.query.filter_by(HW_idTask = idTask).first()
         if found != None:
             found.HW_completed = True
+            db.session.commit()
+            return True
+        return False
+
+    def incompleteTask(self,idTask):
+        '''Permite marcar una tarea como incompleta'''
+
+        found     = clsTask.query.filter_by(HW_idTask = idTask).first()
+        if found != None:
+            found.HW_completed = False
             db.session.commit()
             return True
         return False

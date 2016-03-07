@@ -35,6 +35,18 @@
   font-size: 100%;
 }
 
-.completado{
+.completa{
     display:none;
+}
+
+.no-incompleta{
+    display:none;
+}
+
+.estado-incompleta{
+    color:red;
+}
+
+.estado-completa{
+    color:green;
 }

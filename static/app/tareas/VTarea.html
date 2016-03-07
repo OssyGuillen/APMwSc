@@ -36,14 +36,17 @@
             <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.descripcion.$invalid && fTareaForm.descripcion.$pristine && fTareaSubmitted}"><label for="fTarea_descripcion">Descripción</label><textarea id="fTarea_descripcion" name="descripcion" class="form-control" ng-model="fTarea.descripcion" placeholder="Descripción" required></textarea><p ng-show="fTareaSubmitted && fTareaForm.descripcion.$invalid" class="help-block">Error en campo Descripción.</p></div>
             <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.categoria.$invalid && fTareaForm.categoria.$pristine && fTareaSubmitted}"><label for="fTarea_categoria">Cateoría</label>:&nbsp;<select id="fTarea_categoria" ng-model="fTarea.categoria"  ng-options="item.key as item.value for item in fTarea_opcionesCategoria"></select><p ng-show="fTareaSubmitted && fTareaForm.categoria.$invalid" class="help-block">Error en campo Cateoría.</p></div>
             <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.peso.$invalid && fTareaForm.peso.$pristine && fTareaSubmitted}"><label for="fTarea_peso">Peso</label><input id="fTarea_peso" type="number" name="peso" class="form-control" ng-model="fTarea.peso" placeholder="Peso"  min=""/><p ng-show="fTareaSubmitted && fTareaForm.peso.$invalid" class="help-block">Error en campo Peso.</p></div>
-            <b>Estado:</b>{{fTarea.estado}}
+            <b>Estado de la tarea:<span class="estado-{{fTarea.estado}}">{{fTarea.estado}}</span></b>
         <button type="submit" class="btn btn-perso btn-lg btn-block">
             <span class="glyphicon glyphicon-flash"></span>Modificar
         </button>
     </form>
 </br>
     <button class="btn btn-perso btn-lg btn-block {{fTarea.estado}}" ng-click="ACompletarTarea(fTarea.idTarea)" type="button">
-        Marcar como completada
+        Marcar como completa
+    </button>
+<button class="btn btn-perso btn-lg btn-block no-{{fTarea.estado}}" ng-click="AIncompletarTarea(fTarea.idTarea)" type="button">
+        Marcar como incompleta
     </button>
 
     <h2 class="form-signin-heading" align="center">Subir Documento</h2>

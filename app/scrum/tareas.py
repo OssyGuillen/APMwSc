@@ -157,6 +157,24 @@ def ACompletarTarea():
         res = results[0]
     return json.dumps(res)
 
+@tareas.route('/tareas/AIncompletarTarea', methods=['GET'])
+def AIncompletarTarea():
+    params  = request.get_json()
+    idTarea    = request.args.get('idTarea')
+    results = [{'label':'/VTarea/'+idTarea, 'msg':['La tarea fue marcada como incompleta']}, {'label':'/VTarea/'+idTarea, 'msg':['Error al modificar tarea']}, ]
+    res     = results[1]
+
+    # Obtenemos el id del Producto.
+    idPila  = int(session['idPila'])
+
+    # Extraemos los valores
+    oTarea    = task()
+
+    incompleted = oTarea.incompleteTask(int(idTarea))
+    if incompleted == True:
+        res = results[0]
+    return json.dumps(res)
+
 
 @tareas.route('/tareas/VCrearTarea')
 def VCrearTarea():
@@ -221,9 +239,9 @@ def VTarea():
     result   = clsTask.query.filter_by(HW_idTask = idTarea).first()
     categoryList     = clsCategory.query.all()
     if result.HW_completed:
-        estado = 'completado'
+        estado = 'completa'
     else:
-        estado = 'incompleto'
+        estado = 'incompleta'
 
     if 'usuario' not in session:
       res['logout'] = '/'
