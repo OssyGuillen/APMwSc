@@ -351,7 +351,7 @@ class TestPrecedence (unittest.TestCase):
 		aAcc.deleteAccion('cinrohbwidia', idFound0)
 		aBacklog.deleteProduct('Podn fjdd.')
 
-	#Prueba 8: Eliminacion de precedencias
+	#Prueba 8: Eliminacion de precedencias en tope de lista de precedencias (Caso borde, lista de un elemento)
 	def testDeleteCorrecto(self):
 		# Insertamos Producto
 		aBacklog = backlog()
@@ -860,6 +860,207 @@ class TestPrecedence (unittest.TestCase):
 		aAcc.deleteAccion('cinrohbwidia', idFound0)
 		aBacklog.deleteProduct('Podn fjdd.')
 
+	#Prueba 18: Eliminar precedencia que no esta en tope de lista de precedencias
+	def testEliminarCentroPrecedencia(self):
+		# Insertamos Producto
+		aBacklog = backlog()
+		aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
+		searchBacklog = aBacklog.findName('Podn fjdd.')
+		idFound0 = searchBacklog[0].BL_idBacklog
+	 
+		# Insertamos la accion
+		aAcc = accions()
+		aAcc.insertAccion('cinrohbwidia',idFound0)
+		search = aAcc.searchAccion('cinrohbwidia',idFound0)
+		idFound = search[0].AC_idAccion
+			   
+		# Insertamos la historia
+		aHist = userHistory()
+		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+		searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
+		idFound1 = searchHist[0].UH_idUserHistory 
+		 
+		# Insertamos la categoria
+		aCategory = category()
+		aCategory.insertCategory('wofhweoifh',1)
+		 
+		# Insertamos la tarea 1  
+		aTarea = task()
+		aTarea.insertTask('dwidjw',1,1,idFound1)
+		searchTask1 = aTarea.searchTask('dwidjw')
+		idprimera = searchTask1[0].HW_idTask
+
+		# Insertamos la tarea 2
+		bTarea = task()
+		bTarea.insertTask('dfghj',2,2,idFound1)
+		searchTask2 = bTarea.searchTask('dfghj')
+		idsegunda = searchTask2[0].HW_idTask
+
+		# Insertamos la tarea 3
+		cTarea = task()
+		cTarea.insertTask('dfghj2',3,3,idFound1)
+		searchTask3 = cTarea.searchTask('dfghj2')
+		idtercera = searchTask3[0].HW_idTask
+
+		# Insertamos la tarea 4
+		cTarea = task()
+		cTarea.insertTask('dfghj3',4,4,idFound1)
+		searchTask4 = cTarea.searchTask('dfghj3')
+		idcuarta = searchTask4[0].HW_idTask
+
+		#Insertamos la precedencia
+		aPrecedence = precedence()
+		aPrecedence.insertPrecedence(idprimera,idsegunda,idFound0)
+		aPrecedence.insertPrecedence(idtercera,idsegunda,idFound0)
+		aPrecedence.insertPrecedence(idcuarta,idsegunda,idFound0)
+		self.assertEqual ((aPrecedence.deletePrecedence(idtercera,idsegunda)), True)
+
+		# Eliminamos la precedencia, tarea, categoria, historia, accion y producto
+		aPrecedence.deletePrecedence(idprimera,idsegunda)
+		aPrecedence.deletePrecedence(idcuarta,idsegunda)
+		aTarea.deleteTask('dwidjw')
+		bTarea.deleteTask('dfghj')
+		bTarea.deleteTask('dfghj2')
+		bTarea.deleteTask('dfghj3')
+		aCategory.deleteCategory('wofhweoifh')
+		aHist.deleteUserHistory(idFound1)
+		aAcc.deleteAccion('cinrohbwidia', idFound0)
+		aBacklog.deleteProduct('Podn fjdd.')
+	
+	#Prueba 19: Eliminar precedencia que esta en fondo de lista de precedencias
+	def testEliminarUltima(self):
+		# Insertamos Producto
+		aBacklog = backlog()
+		aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
+		searchBacklog = aBacklog.findName('Podn fjdd.')
+		idFound0 = searchBacklog[0].BL_idBacklog
+	 
+		# Insertamos la accion
+		aAcc = accions()
+		aAcc.insertAccion('cinrohbwidia',idFound0)
+		search = aAcc.searchAccion('cinrohbwidia',idFound0)
+		idFound = search[0].AC_idAccion
+			   
+		# Insertamos la historia
+		aHist = userHistory()
+		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+		searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
+		idFound1 = searchHist[0].UH_idUserHistory 
+		 
+		# Insertamos la categoria
+		aCategory = category()
+		aCategory.insertCategory('wofhweoifh',1)
+		 
+		# Insertamos la tarea 1  
+		aTarea = task()
+		aTarea.insertTask('dwidjw',1,1,idFound1)
+		searchTask1 = aTarea.searchTask('dwidjw')
+		idprimera = searchTask1[0].HW_idTask
+
+		# Insertamos la tarea 2
+		bTarea = task()
+		bTarea.insertTask('dfghj',2,2,idFound1)
+		searchTask2 = bTarea.searchTask('dfghj')
+		idsegunda = searchTask2[0].HW_idTask
+
+		# Insertamos la tarea 3
+		cTarea = task()
+		cTarea.insertTask('dfghj2',3,3,idFound1)
+		searchTask3 = cTarea.searchTask('dfghj2')
+		idtercera = searchTask3[0].HW_idTask
+
+		# Insertamos la tarea 4
+		cTarea = task()
+		cTarea.insertTask('dfghj3',4,4,idFound1)
+		searchTask4 = cTarea.searchTask('dfghj3')
+		idcuarta = searchTask4[0].HW_idTask
+
+		#Insertamos la precedencia
+		aPrecedence = precedence()
+		aPrecedence.insertPrecedence(idprimera,idsegunda,idFound0)
+		aPrecedence.insertPrecedence(idtercera,idsegunda,idFound0)
+		aPrecedence.insertPrecedence(idcuarta,idsegunda,idFound0)
+		self.assertEqual ((aPrecedence.deletePrecedence(idprimera,idsegunda)), True)
+
+		# Eliminamos la precedencia, tarea, categoria, historia, accion y producto
+		aPrecedence.deletePrecedence(idtercera,idsegunda)
+		aPrecedence.deletePrecedence(idcuarta,idsegunda)
+		aTarea.deleteTask('dwidjw')
+		bTarea.deleteTask('dfghj')
+		bTarea.deleteTask('dfghj2')
+		bTarea.deleteTask('dfghj3')
+		aCategory.deleteCategory('wofhweoifh')
+		aHist.deleteUserHistory(idFound1)
+		aAcc.deleteAccion('cinrohbwidia', idFound0)
+		aBacklog.deleteProduct('Podn fjdd.')
+	
+	#Prueba 20: Eliminar precedencia que esta en final de lista de precedencias
+	def testEliminarPrimera(self):
+		# Insertamos Producto
+		aBacklog = backlog()
+		aBacklog.insertBacklog('Podn fjdd.','ODJdbeidbww',1)
+		searchBacklog = aBacklog.findName('Podn fjdd.')
+		idFound0 = searchBacklog[0].BL_idBacklog
+	 
+		# Insertamos la accion
+		aAcc = accions()
+		aAcc.insertAccion('cinrohbwidia',idFound0)
+		search = aAcc.searchAccion('cinrohbwidia',idFound0)
+		idFound = search[0].AC_idAccion
+			   
+		# Insertamos la historia
+		aHist = userHistory()
+		aHist.insertUserHistory('BIEEIEB1',0, 1,idFound, idFound0,1)
+		searchHist = aHist.searchUserHistory('BIEEIEB1',idFound0)
+		idFound1 = searchHist[0].UH_idUserHistory 
+		 
+		# Insertamos la categoria
+		aCategory = category()
+		aCategory.insertCategory('wofhweoifh',1)
+		 
+		# Insertamos la tarea 1  
+		aTarea = task()
+		aTarea.insertTask('dwidjw',1,1,idFound1)
+		searchTask1 = aTarea.searchTask('dwidjw')
+		idprimera = searchTask1[0].HW_idTask
+
+		# Insertamos la tarea 2
+		bTarea = task()
+		bTarea.insertTask('dfghj',2,2,idFound1)
+		searchTask2 = bTarea.searchTask('dfghj')
+		idsegunda = searchTask2[0].HW_idTask
+
+		# Insertamos la tarea 3
+		cTarea = task()
+		cTarea.insertTask('dfghj2',3,3,idFound1)
+		searchTask3 = cTarea.searchTask('dfghj2')
+		idtercera = searchTask3[0].HW_idTask
+
+		# Insertamos la tarea 4
+		cTarea = task()
+		cTarea.insertTask('dfghj3',4,4,idFound1)
+		searchTask4 = cTarea.searchTask('dfghj3')
+		idcuarta = searchTask4[0].HW_idTask
+
+		#Insertamos la precedencia
+		aPrecedence = precedence()
+		aPrecedence.insertPrecedence(idprimera,idsegunda,idFound0)
+		aPrecedence.insertPrecedence(idtercera,idsegunda,idFound0)
+		aPrecedence.insertPrecedence(idcuarta,idsegunda,idFound0)
+		self.assertEqual ((aPrecedence.deletePrecedence(idcuarta,idsegunda)), True)
+
+		# Eliminamos la precedencia, tarea, categoria, historia, accion y producto
+		aPrecedence.deletePrecedence(idprimera,idsegunda)
+		aPrecedence.deletePrecedence(idtercera,idsegunda)
+		aTarea.deleteTask('dwidjw')
+		bTarea.deleteTask('dfghj')
+		bTarea.deleteTask('dfghj2')
+		bTarea.deleteTask('dfghj3')
+		aCategory.deleteCategory('wofhweoifh')
+		aHist.deleteUserHistory(idFound1)
+		aAcc.deleteAccion('cinrohbwidia', idFound0)
+		aBacklog.deleteProduct('Podn fjdd.')
+	
 
 if __name__ == '__main__':
     unittest.main()
