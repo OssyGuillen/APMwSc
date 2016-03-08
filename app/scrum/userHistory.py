@@ -379,9 +379,6 @@ class userHistory(object):
             foundUserHistory = self.searchIdUserHistory(idUserHistory)
             foundUrlScript = clsAcceptanceTests.query.filter_by(AT_urlScript = urlScript).first()
 
-            print(foundUserHistory)
-            print(foundUrlScript)
-
             if foundUserHistory != [] and foundUrlScript == None:
                 newAT = clsAcceptanceTests(idUserHistory,description,urlScript)
                 db.session.add(newAT)
