@@ -19,16 +19,19 @@ class precedence(object):
 
     def insertPrecedence(self, idFirstTask, idSecondTask, idPila):
         '''Insertar prelacion a la base de datos'''
-
-        if (idFirstTask != idSecondTask):
-            if self.doesNotMakeLoops(idFirstTask, idSecondTask) and not self.existPrecedence(idFirstTask,idSecondTask):
-                newPrecedence = clsPrecedence(idFirstTask, idSecondTask, idPila)
-                db.session.add(newPrecedence)
-                db.session.commit()
+        if (idFirstTask != None and idSecondTask != None):
+            if (idFirstTask != idSecondTask):
+                if self.doesNotMakeLoops(idFirstTask, idSecondTask) and not self.existPrecedence(idFirstTask,idSecondTask):
+                    newPrecedence = clsPrecedence(idFirstTask, idSecondTask, idPila)
+                    db.session.add(newPrecedence)
+                    db.session.commit()
+                    return True
+                else:
+                    print('Error')
             else:
                 print('Error')
         else:
-            print('Error')
+            print ('Error')
         return
 
     def deletePrecedence(self, idFirstTask, idSecondTask):
@@ -38,6 +41,7 @@ class precedence(object):
         if exists is not None :
             db.session.delete(exists)
             db.session.commit()
+            return True
         return
 
     def existPrecedence(self, idFirstTask, idSecondTask):
