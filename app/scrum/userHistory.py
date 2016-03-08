@@ -357,5 +357,95 @@ class userHistory(object):
                     return historyDict
 
         return historyDict 
-    
+
+
+    def findIdAcceptanceTests(self, idAT):
+        '''Permite encontrar una prueba de aceptacion dado un id'''
+        checkTypeIdAT = type(idAT) == int
+        found = None
+
+        if checkTypeIdAT:
+            found = clsAcceptanceTests.query.filter_by(AT_idAT=idAT).first()
+        return found
+
+    def insertAcceptanceTests(self,idUserHistory,description,urlScript):
+        '''Permite insertar una nueva prueba de aceptacion'''
+
+        checkTypeidUserHistory  = type(idUserHistory)   == int
+        checkTypeDescription    = type(description)     == str
+        checkTypeUrlScript      = type(urlScript)       == str
+
+        if checkTypeidUserHistory and checkTypeDescription and checkTypeUrlScript:
+            foundUserHistory = self.searchIdUserHistory(idUserHistory)
+            foundUrlScript = clsAcceptanceTests.query.filter_by(AT_urlScript = urlScript).first()
+
+            print(foundUserHistory)
+            print(foundUrlScript)
+
+            if foundUserHistory != [] and foundUrlScript == None:
+                newAT = clsAcceptanceTests(idUserHistory,description,urlScript)
+                db.session.add(newAT)
+                db.session.commit()
+                return True
+
+        return False
+
+
+    def deleteAcceptanceTests(self,idAT):
+        '''Permite eliminar una nueva prueba de aceptacion'''
+        checkTypeidAT = type(idAT) == int
+
+        if checkTypeidAT:
+            found = self.findIdAcceptanceTests(idAT)
+
+            if found != []:
+                db.session.delete(found)
+                db.session.commit()
+                return True
+
+        return False
+
+    def modifyAcceptanceTests(self,idAT,description,urlScript):
+        '''Permite modificar una nueva prueba de aceptacion'''
+        checkTypeidAT = type(idAT) == int
+
+        if checkTypeidAT:
+            if description == None and urlScript == None:
+                return True
+
+
+            if urlScript == None and description != None:
+                checkTypeDescription = type(description) == str
+                if checkTypeDescription:
+                    found = self.findIdAcceptanceTests(idAT)
+                    if found != []:
+                        found.AT_description = description
+                        db.session.commit()
+                        return True
+
+            if description == None and urlScript != None:
+                checkTypeUrlScript = type(urlScript) == str
+                if checkTypeUrlScript:
+                    found = self.findIdAcceptanceTests(idAT)
+                    if found != []:
+                        found.AT_urlScript = urlScript
+                        db.session.commit()
+                        return True
+
+            if description != None and urlScript != None:
+                checkTypeDescription = type(description) == str
+                checkTypeUrlScript = type(urlScript) == str
+                if checkTypeDescription and checkTypeUrlScript:
+                    found = self.findIdAcceptanceTests(idAT)
+                    if found != []:
+                        found.AT_description = description
+                        found.AT_urlScript = urlScript
+                        db.session.commit()
+                        return True
+
+        return False
+
+
+
+
 # Fin Clase userHistory
