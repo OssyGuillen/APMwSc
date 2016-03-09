@@ -176,23 +176,41 @@ def AModifSprint():
 @sprint.route('/sprint/ASprintHistoria', methods=['POST'])
 def ASprintHistoria():
     #POST/PUT parameters
-    params = request.get_json()
+    params  = request.get_json()
     results = [{'label':'/VSprint', 'msg':['Historia Asignado']}, {'label':'/VSprint', 'msg':['Error al Asignar Historia']}, ]
-    res = results[1]
-    #Action code goes here, res should be a list with a label and a message
+    res     = results[1]
 
-    idSprint = int(params['idSprint'])
-    idPila = params['idPila']
+    idSprint   = int(params['idSprint'])
+    idPila     = params['idPila']
     idHistoria = params['historia']
 
-    oSprint = sprints()
+    oSprint      = sprints()
+    oTask        = task()
     oUserHistory = userHistory()
+
+    #Lista usada para obtener los ids de las historias asigndas
+    historiesList = []
+
     if oSprint.asignSprintHistory(idSprint,idPila, idHistoria):
+        historiesList.append(idHistoria)
+
         # Chequeamos si es epica, si lo es agregamos las sub-historias
         if oUserHistory.isEpic(idHistoria):
             for idHistoria in oUserHistory.historySuccesors(idHistoria):
                 oSprint.asignSprintHistory(idSprint,idPila, idHistoria)
+                historiesList.append(idHistoria)
 
+        totalResult = True
+        #Obtenemos las tareas asociadas a cada historia de usuario asignada
+        for idHist in historiesList:
+            taskList = oTask.getAllTask(idHist)
+            
+            if taskList != []:
+                for t in taskList:
+                    result = oSprint.asignSprintTask(idSprint,idPila, t.HW_idTask)
+                    totalResult = totalResult and result
+
+    #if totalResult:
         res = results[0]
 
     res['label'] = res['label'] + '/' + str(idSprint)
@@ -218,6 +236,8 @@ def ASprintTarea():
     idTarea = params['tarea']
 
     oSprint = sprints()
+
+    #Obtenemos las tareas asociadas a cada historia de usuario
     if oSprint.asignSprintTask(idSprint,idPila, idTarea):
         res = results[0]
 
@@ -270,15 +290,40 @@ def VSprint():
     res['usuario'] = session['usuario']
 
     # Buscamos el actor actual
-    oSprint = sprints()
-    sprint  = oSprint.searchIdSprint(idSprint,idPila)[0]
-    listaHistorias = oSprint.getAssignedSprintHistory(idSprint, idPila) #Obtenes las historias asignadas al sprint
+    oSprint      = sprints()
+    oBacklog     = backlog() 
+    oUserHistory = userHistory()
+    sprint       = oSprint.searchIdSprint(idSprint,idPila)[0]
 
     res['fSprint'] = {'idSprint':idSprint, 'numero':sprint.S_numero, 'descripcion':sprint.S_sprintDescription}
 
+    #Obtenes las historias asignadas al sprint
+    listaHistorias = oSprint.getAssignedSprintHistory(idSprint, idPila) 
+    userHistories  = []
+
+    #Acomodamos la escala asociada a la historia
+    priorities     = {0:'Epica',1:'Alta',2:'Media',3:'Baja'}
+    priorities2    = {i:str(i)for i in range(1,20+1)}
+    priorities2[0] = 'Epica'
+
+    # Obtenemos el tipo de escala seleccionada en el producto asociado a la historia.
+    typeScale = oBacklog.scaleType(idPila)
+
+    #Obtenemos los valores de cada historia en un diccionario y almacenamos esos diccionarios en un arreglo.
+    for hist in listaHistorias:
+        result = oUserHistory.transformUserHistory(hist.UH_idUserHistory)
+
+        if typeScale == 1:
+            result['priority'] = priorities[hist.UH_scale]
+        elif typeScale == 2:
+            result['priority'] = priorities2[hist.UH_scale]
+        userHistories.append(result)
+
     #Lista de Historias
     res['data5'] = [
-        {'idHistoria':historia.UH_idUserHistory,'prioridad':historia.UH_scale, 'enunciado':historia.UH_codeUserHistory}for historia in listaHistorias
+        {'idHistoria':hist['idHistory'],
+         'prioridad' :hist['priority'], 
+         'enunciado' :'En tanto ' + hist['actors'] + hist['accions'] + ' para ' + hist['objectives']}for hist in userHistories
     ]
 
     listaTareas = oSprint.getAssignedSprintTask(idSprint, idPila) # Tareas asignadas al Sprint
