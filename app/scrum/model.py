@@ -25,6 +25,10 @@ app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 # Instancia de la base de datos.
 
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
+manager = Manager(app)
+manager.add_command('db', MigrateCommand)
 
 # Definicion de la Base de Datos.
 
@@ -311,7 +315,7 @@ class clsSprintMeeting(db.Model):
     SM_suggestions      = db.Column(db.String(300))
     SM_challenges       = db.Column(db.String(300))
     SM_typeMeeting      = db.Column(db.String(300))
-    SM_idSprint         = db.Column(db.Integer, db.For_teignKey('sprint.S_idSprint'))
+    SM_idSprint         = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
 
     def __init__(self, meetingDate, activities, suggestions, challenges, idSprint, typeM):
         self.SM_meetingDate     = meetingDate
@@ -347,8 +351,6 @@ class clsElementMeeting(db.Model):
         '''Representacion en string del ElementMeeting'''
         return '<EM_idElementMeeting %r, EM_challenges %r,  EM_planned %r, EM_done %r, EM_meeting %r, EM_user %r>' % (self.EM_idElementMeeting, self.EM_challenges, self.EM_planned, self.EM_done, self.EM_meeting, self.EM_user)
 
-migrate = Migrate(app, db)
-manager = Manager(app)
-
-manager.add_command('db', MigrateCommand)
+if __name__ == '__main__':
+    manager.run()
 db.create_all()  # Creamos la base de datos
