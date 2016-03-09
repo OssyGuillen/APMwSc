@@ -97,7 +97,6 @@ class sprints(object):
 					return True
 		return False
 
-	#Nuevo metodo Sprint 2
 	def asignSprintHistory(self, sprintNumber, idBacklog, idUserHistory):
 		''' Permite asignar a un Sprint una historia de usuario asociado al producto '''
 		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
@@ -113,7 +112,6 @@ class sprints(object):
 				return True
 		return False
 
-	#Nuevo metodo Sprint 2
 	def getAssignedSprintHistory(self, sprintNumber, idBacklog):
 		'''Permite obtener las historias asociados a un determinado Sprint'''
 		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
@@ -126,12 +124,11 @@ class sprints(object):
 
 	#Nuevo metodo Sprint 2
 	def deleteAssignedSprintHistory(self, sprintNumber, idBacklog, idUserHistory):
-		''' Permite la asignacion de una historia asociado a un Sprint dado su id'''
+		''' Permite eliminar la asignacion de una historia asociado a un Sprint dado su id'''
 		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
 		checkidBacklog    = type(idBacklog) == int and MIN_ID <= idBacklog
 		checkidUserHistory = type(idUserHistory) == int and MIN_ID <= idUserHistory
 		if checkSprintNumber and checkidBacklog and checkidUserHistory:
-			print("entrando")
 			oUserHistory = userHistory()
 			history = oUserHistory.searchIdUserHistory(idUserHistory)
 			if history != []:
@@ -140,7 +137,6 @@ class sprints(object):
 				return True
 		return False
 
-	#Nuevo metodo Sprint 2
 	def asignSprintTask(self, sprintNumber, idBacklog, idTask):
 		''' Permite asignar a un Sprint una tarea asociado a sus historias'''
 		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
@@ -156,7 +152,6 @@ class sprints(object):
 				return True
 		return False
 
-	# Nuevo metodo Sprint 2
 	def getAssignedSprintTask(self, sprintNumber, idBacklog):
 		'''Permite obtener las Tareas asociados a un determinado Sprint'''
 		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
