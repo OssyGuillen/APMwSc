@@ -211,22 +211,22 @@ class clsUserHistory(db.Model):
         return '<idUserHistory %r, codeUserHistory %r, idSuperHistory %r, scale %r>' % (self.UH_idUserHistory, self.UH_codeUserHistory, self.UH_idSuperHistory, self.UH_scale)
 
 
-class clsAcceptanceTests(db.Model):
-    '''Clase que define el modelo de la tabla AcceptanceTests'''
-    __tablename__       = 'acceptanceTests'
+class clsAcceptanceTest(db.Model):
+    '''Clase que define el modelo de la tabla AcceptanceTest'''
+    __tablename__       = 'acceptanceTest'
     AT_idAT             = db.Column(db.Integer, primary_key = True, index = True)
     AT_idUserHistory    = db.Column(db.Integer, db.ForeignKey('userHistory.UH_idUserHistory'))
     AT_description      = db.Column(db.String(200))
     AT_urlScript        = db.Column(db.String(200), nullable=False)
 
     def __init__(self, idUserHistory, description, urlScript):
-        '''Constructor del modelo AcceptanceTests'''
+        '''Constructor del modelo AcceptanceTest'''
         self.AT_idUserHistory   = idUserHistory
         self.AT_description = description
         self.AT_urlScript   = urlScript
 
     def __repr__(self):
-        '''Representacion en string del modelo AcceptanceTests'''
+        '''Representacion en string del modelo AcceptanceTest'''
         return '<idAT %r, idUserHistory %r, description %r, urlScript %r >' % (self.AT_idAT, self.AT_idUserHistory, self.AT_description, self.AT_urlScript)
 
 
