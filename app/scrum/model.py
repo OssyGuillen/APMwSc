@@ -322,8 +322,9 @@ class clsSprintMeeting(db.Model):
         self.SM_activities      = activities
         self.SM_suggestions     = suggestions
         self.SM_challenges      = challenges
-        self.SM_idSprint        = idSprint
         self.SM_typeMeeting     = typeM
+        self.SM_idSprint        = idSprint
+
 
     def __repr__(self):
         '''Representacion en string del Meeting'''

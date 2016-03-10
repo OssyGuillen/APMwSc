@@ -51,7 +51,7 @@ class meeting(object):
 		
 		if checkTypeIdSprint:
 			foundMeeting =  self.getMeetings(idSprint)
-			print("FOUND MEETING", foundMeeting)
+			#print("FOUND MEETING", foundMeeting)
 			for m in foundMeeting:
 				dbDate = datetime.datetime.strptime(m.SM_meetingDate,'%d/%m/%Y')
 				#print (date,dbDate)
