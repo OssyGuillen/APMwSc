@@ -1,12 +1,12 @@
 scrumModule.service('sprintService', ['$q', '$http', function($q, $http) {
 
-    this.ACrearSprint = function(fSprint) {
+    this.ACrearElementoMeeting = function(fElementoMeeting) {
         return  $http({
-          url: "sprint/ACrearSprint",
-          data: fSprint,
+          url: "sprint/ACrearElementoMeeting",
+          data: fElementoMeeting,
           method: 'POST',
         });
-    //    var labels = ["/VSprints", "/VSprint", ];
+    //    var labels = ["/VReunion", "/VCrearElementoMeeting", ];
     //    var res = labels[0];
     //    var deferred = $q.defer();
     //    deferred.resolve(res);
@@ -26,6 +26,19 @@ scrumModule.service('sprintService', ['$q', '$http', function($q, $http) {
     //    return deferred.promise;
     };
 
+    this.ACrearSprint = function(fSprint) {
+        return  $http({
+          url: "sprint/ACrearSprint",
+          data: fSprint,
+          method: 'POST',
+        });
+    //    var labels = ["/VSprints", "/VSprint", ];
+    //    var res = labels[0];
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+
     this.AElimSprint = function(args) {
         if(typeof args == 'undefined') args={};
         return $http({
@@ -34,6 +47,18 @@ scrumModule.service('sprintService', ['$q', '$http', function($q, $http) {
           params: args
         });
     //    var labels = ["/VSprints", "/VSprint", ];
+    //    var res = labels[0];
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+    this.AModifElementoMeeting = function(fElementoMeeting) {
+        return  $http({
+          url: "sprint/AModifElementoMeeting",
+          data: fElementoMeeting,
+          method: 'POST',
+        });
+    //    var labels = ["/VReunion", ];
     //    var res = labels[0];
     //    var deferred = $q.defer();
     //    deferred.resolve(res);
@@ -52,6 +77,7 @@ scrumModule.service('sprintService', ['$q', '$http', function($q, $http) {
     //    deferred.resolve(res);
     //    return deferred.promise;
     };
+
     this.AModifSprint = function(fSprint) {
         return  $http({
           url: "sprint/AModifSprint",
@@ -60,6 +86,19 @@ scrumModule.service('sprintService', ['$q', '$http', function($q, $http) {
         });
     //    var labels = ["/VSprints", "/VSprint", ];
     //    var res = labels[0];
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+
+    this.VCrearElementoMeeting = function(args) {
+        if(typeof args == 'undefined') args={};
+        return $http({
+          url: 'sprint/VCrearElementoMeeting',
+          method: 'GET',
+          params: args
+        });
+    //    var res = {};
     //    var deferred = $q.defer();
     //    deferred.resolve(res);
     //    return deferred.promise;
@@ -82,6 +121,19 @@ scrumModule.service('sprintService', ['$q', '$http', function($q, $http) {
         if(typeof args == 'undefined') args={};
         return $http({
           url: 'sprint/VCrearSprint',
+          method: 'GET',
+          params: args
+        });
+    //    var res = {};
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+
+    this.VElementoMeeting = function(args) {
+        if(typeof args == 'undefined') args={};
+        return $http({
+          url: 'sprint/VElementoMeeting',
           method: 'GET',
           params: args
         });

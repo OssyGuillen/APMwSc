@@ -7,6 +7,27 @@ from datetime import datetime
 sprint = Blueprint('sprint', __name__)
 
 
+@sprint.route('/sprint/ACrearElementoMeeting', methods=['POST'])
+def ACrearElementoMeeting():
+    #POST/PUT parameters
+    params = request.get_json()
+    results = [{'label':'/VReunion', 'msg':['Elemento de la reunión creado']}, {'label':'/VCrearElementoMeeting', 'msg':['Error al crear un elemento a la reunión']}, ]
+    res = results[0]
+    #Action code goes here, res should be a list with a label and a message
+
+    idReunion = 1
+    res['label'] = res['label'] + '/' + str(idReunion)
+
+    #Action code ends here
+    if "actor" in res:
+        if res['actor'] is None:
+            session.pop("actor", None)
+        else:
+            session['actor'] = res['actor']
+    return json.dumps(res)
+
+
+
 @sprint.route('/sprint/ACrearReunionSprint', methods=['POST'])
 def ACrearReunionSprint():
     #POST/PUT parameters
@@ -20,11 +41,11 @@ def ACrearReunionSprint():
     fecha = params['Fecha']
     actividades = params['Actividades']
     sugerencias = params['Sugerencias']
+    tipo = params['Tipo'] #NUEVO ATRIBUTO OJO!!! AGREGAR A LA LLAMADA DE LA FUNCION DE ABAJO
     retos = params['Retos']
 
     oMeeting = meeting()
-    print ('IDSPRINT', idSprint)
-    exito = oMeeting.insertMeeting(fecha,actividades,sugerencias,retos,idSprint)
+    exito = oMeeting.insertMeeting(fecha,actividades,sugerencias,retos,idSprint) #AGREGAR NUEVO ATRIBUTO
     print(exito)
     print(fecha)
     if exito:
@@ -39,6 +60,8 @@ def ACrearReunionSprint():
         else:
             session['actor'] = res['actor']
     return json.dumps(res)
+
+
 
 
 @sprint.route('/sprint/ACrearSprint', methods=['POST'])
@@ -72,9 +95,10 @@ def ACrearSprint():
     return json.dumps(res)
 
 
+
 @sprint.route('/sprint/AElimSprint')
 def AElimSprint():
-    #POST/PUT parameters
+     #POST/PUT parameters
     params  = request.get_json()
     results = [{'label':'/VSprints', 'msg':['Sprint eliminado']}, {'label':'/VSprint', 'msg':['Error al eliminar Sptrint']}, ]
     res     = results[1]
@@ -107,6 +131,29 @@ def AElimSprint():
     return json.dumps(res)
 
 
+@sprint.route('/sprint/AModifElementoMeeting', methods=['POST'])
+def AModifElementoMeeting():
+    #POST/PUT parameters
+    params = request.get_json()
+    results = [{'label':'/VReunion', 'msg':['Elemento Modificado con exito']}, ]
+    res = results[0]
+    #Action code goes here, res should be a list with a label and a message
+
+    if 'usuario' not in session:
+      res['logout'] = '/'
+      return json.dumps(res)
+    idReunion = 1
+    res['label'] = res['label'] + '/' + str(idReunion)
+
+    #Action code ends here
+    if "actor" in res:
+        if res['actor'] is None:
+            session.pop("actor", None)
+        else:
+            session['actor'] = res['actor']
+    return json.dumps(res)
+
+
 
 @sprint.route('/sprint/AModifReunionSprint', methods=['POST'])
 def AModifReunionSprint():
@@ -123,6 +170,7 @@ def AModifReunionSprint():
     actividades = params['Actividades']
     sugerencias = params['Sugerencias']
     retos = params['Retos']
+    tipo = params['Tipo'] #NUEVO ATRIBUTO OJO!!! AGREGAR A LA LLAMADA DE LA FUNCION DE ABAJO (updateMeeting)
 
     oMeeting = meeting()
     result = oMeeting.getMeetingID(idReunion,idSprint)
@@ -186,12 +234,34 @@ def AModifSprint():
 
 
 
+@sprint.route('/sprint/VCrearElementoMeeting')
+def VCrearElementoMeeting():
+    #GET parameter
+    idReunion = request.args['idReunion']
+    res = {}
+    if "actor" in session:
+        res['actor']=session['actor']
+    #Action code goes here, res should be a JSON structure
+
+    if 'usuario' not in session:
+      res['logout'] = '/'
+      return json.dumps(res)
+    res['usuario'] = session['usuario']
+    #Datos de prueba
+    res['idReunion'] = 1
+    res['idSprint'] = 1
+
+    #Action code ends here
+    return json.dumps(res)
+
+
+
 @sprint.route('/sprint/VCrearReunionSprint')
 def VCrearReunionSprint():
     #GET parameter
     res = {}
 
-    idPila = request.args.get('idPila',1)
+    idPila = int(request.args.get('idPila',1))
 
     if "actor" in session:
         res['actor']=session['actor']
@@ -212,10 +282,10 @@ def VCrearReunionSprint():
 
 @sprint.route('/sprint/VCrearSprint')
 def VCrearSprint():
-    #GET parameter
+   #GET parameter
     res = {}
 
-    idPila = request.args.get('idPila',1)
+    idPila = int(request.args.get('idPila',1))
         
     if "actor" in session:
         res['actor']=session['actor']
@@ -232,8 +302,9 @@ def VCrearSprint():
 
 
 
-@sprint.route('/sprint/VReunion')
-def VReunion():
+
+@sprint.route('/sprint/VElementoMeeting')
+def VElementoMeeting():
     #GET parameter
     idReunion = request.args['idReunion']
     res = {}
@@ -241,12 +312,43 @@ def VReunion():
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
 
+    if 'usuario' not in session:
+      res['logout'] = '/'
+      return json.dumps(res)
+    res['usuario'] = session['usuario']
+    res['fElementoMeeting'] = {
+      'challenge' :'Carrera inicial. Modelo de datos, MVC, identificación',
+      'planed':'planificado',
+      'done':'realizado',
+      'idReunion':1,
+      'idUser':1,
+      }
+    res['idElementMeeting'] = 1
+    res['idElemento'] = 1
+    res['idReunion'] = 1
+    res['idSprint'] = 1
+
+    #Action code ends here
+    return json.dumps(res)
+
+
+
+@sprint.route('/sprint/VReunion')
+def VReunion():
+    #GET parameter
+    idReunion = int(request.args.get('id', 1))
+
     idSprint = session['idSprint']
+    res = {}
+    if "actor" in session:
+        res['actor']=session['actor']
+    #Action code goes here, res should be a JSON structure
 
     oMeeting = meeting()
     result  = oMeeting.getMeetingID(idReunion,idSprint)
 
-    res['fReunion'] = {'idReunion':idReunion,'idSprint':idSprint, 'Fecha':result[0].SM_meetingDate, 'Actividades':result[0].SM_activities, 'Sugerencias':result[0].SM_suggestions,'Retos':result[0].SM_challenges}
+    res['data4'] = [{'id':1, 'user': 'username'}]  
+    res['fReunion'] = {'idReunion':idReunion,'idSprint':idSprint, 'Actividades':result[0].SM_activities, 'Sugerencias':result[0].SM_suggestions,'Retos':result[0].SM_challenges, 'Tipo':result[0].SM_typeMeeting}
 
     #Action code ends here
     return json.dumps(res)
@@ -278,7 +380,7 @@ def VSprint():
 
     oMeeting = meeting()
     result  = oMeeting.getMeetings(idSprint)
-    res['data4'] = [{'id':res.SM_idSprintMeeting, 'fecha':res.SM_meetingDate, 'actividades':res.SM_activities } for res in result]  
+    res['data4'] = [{'id':res.SM_idSprintMeeting, 'fecha':res.SM_meetingDate, 'actividades':res.SM_activities,'tipo':res.SM_typeMeeting } for res in result]  
 
     session['idSprint'] = idSprint
     res['idSprint'] = idSprint
@@ -289,11 +391,12 @@ def VSprint():
     
 
     return json.dumps(res)
-    
+
+
 
 @sprint.route('/sprint/VSprints')
 def VSprints():
-    #GET parameter
+     #GET parameter
     res = {}
     
     # Obtenemos el id del producto.
@@ -317,7 +420,6 @@ def VSprints():
     res['idPila']     = idPila 
  
     return json.dumps(res)
-
 
 
 
