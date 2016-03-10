@@ -167,7 +167,9 @@ scrumModule.controller('VHistoriaController',
       $scope.VDesempeno10 = function(idHistoria) {
         $location.path('/VDesempeno/'+idHistoria);
       };
-
+      $scope.VCrearPrueba11 = function(idHistoria) {
+        $location.path('/VCrearPrueba/'+idHistoria);
+      };      
       $scope.fHistoriaSubmitted = false;
       $scope.AModifHistoria0 = function(isValid) {
         $scope.fHistoriaSubmitted = true;
