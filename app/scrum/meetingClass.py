@@ -54,8 +54,8 @@ class meeting(object):
 			#print("FOUND MEETING", foundMeeting)
 			for m in foundMeeting:
 				dbDate = datetime.datetime.strptime(m.SM_meetingDate,'%d/%m/%Y')
-				print (date,dbDate)
-				print (date == dbDate)
+				#print (date,dbDate)
+				#print (date == dbDate)
 				if (date == dbDate):
 					new.append(m)
 					#print('remove')
@@ -92,7 +92,7 @@ class meeting(object):
 					# Si no hay ninguna reunión en ese sprint con esa fecha
 					if foundMeeting == []:
 						date = datetime.datetime.strptime(date,'%Y-%m-%d').strftime('%d/%m/%Y')
-						newMeeting = clsSprintMeeting(date,activities,suggestions,challenges,mtype,idSprint)
+						newMeeting = clsSprintMeeting(date,activities,suggestions,challenges,idSprint,mtype)
 						db.session.add(newMeeting)
 						db.session.commit()
 						return True
