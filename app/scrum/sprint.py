@@ -41,11 +41,13 @@ def ACrearReunionSprint():
     fecha = params['Fecha']
     actividades = params['Actividades']
     sugerencias = params['Sugerencias']
-    tipo = params['Tipo'] #NUEVO ATRIBUTO OJO!!! AGREGAR A LA LLAMADA DE LA FUNCION DE ABAJO
+    #tipo = params['Tipo'] #NUEVO ATRIBUTO OJO!!! AGREGAR A LA LLAMADA DE LA FUNCION DE ABAJO
     retos = params['Retos']
+    tipo = "Presencial"
+
 
     oMeeting = meeting()
-    exito = oMeeting.insertMeeting(fecha,actividades,sugerencias,retos,idSprint) #AGREGAR NUEVO ATRIBUTO
+    exito = oMeeting.insertMeeting(fecha,actividades,sugerencias,retos,tipo,idSprint) #AGREGAR NUEVO ATRIBUTO
     print(exito)
     print(fecha)
     if exito:
@@ -166,7 +168,7 @@ def AModifReunionSprint():
     idPila  = int(session['idPila'])
     idReunion  = params['idReunion']
     idSprint = int(session['idSprint'])
-    fecha = params['Fecha']
+    #fecha = params['Fecha']
     actividades = params['Actividades']
     sugerencias = params['Sugerencias']
     retos = params['Retos']
@@ -175,7 +177,7 @@ def AModifReunionSprint():
     oMeeting = meeting()
     result = oMeeting.getMeetingID(idReunion,idSprint)
 
-    exito = oMeeting.updateMeeting(result[0].SM_meetingDate,result[0].SM_meetingDate,actividades,sugerencias,retos,idSprint)
+    exito = oMeeting.updateMeeting(result[0].SM_meetingDate,result[0].SM_meetingDate,actividades,sugerencias,retos,tipo,idSprint)
 
     if exito:
         res = results[0]

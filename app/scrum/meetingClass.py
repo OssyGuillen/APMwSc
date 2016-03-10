@@ -47,24 +47,31 @@ class meeting(object):
 		date = datetime.datetime.strptime(date,'%Y-%m-%d')
 		date.strftime('%d/%m/%Y')
 		
+		new =[]
+		
 		if checkTypeIdSprint:
 			foundMeeting =  self.getMeetings(idSprint)
+			#print("FOUND MEETING", foundMeeting)
 			for m in foundMeeting:
 				dbDate = datetime.datetime.strptime(m.SM_meetingDate,'%d/%m/%Y')
-				if not(date == dbDate):
-					foundMeeting.remove(m)
-		return foundMeeting
+				#print (date,dbDate)
+				#print (date == dbDate)
+				if (date == dbDate):
+					new.append(m)
+					#print('remove')
+		return new
 
-	def insertMeeting(self, date, activities, suggestions, challenges, idSprint): 
+	def insertMeeting(self, date, activities, suggestions, challenges, mtype, idSprint): 
 		'''Permite insertar una reunión diaria a un sprint'''   
 		checkTypeDate 			= type(date) == str
 		checkTypeActivities     = type(activities) == str
 		checkTypeSuggestions    = type(suggestions) == str
 		checkTypeChallenges     = type(challenges) == str
+		checkTypemType			= type(mtype) == str
 		checkTypeIdSprint      	= type(idSprint) == int
 
 		# Verifica que la longitud de los campos sea correcta
-		if checkTypeDate and checkTypeActivities and checkTypeSuggestions and checkTypeChallenges and checkTypeIdSprint:
+		if checkTypeDate and checkTypeActivities and checkTypeSuggestions and checkTypeChallenges and checkTypemType and checkTypeIdSprint:
 			checkActivityLong = MIN_MEETING_ACTIVITIES <= len(activities) <= MAX_MEETING_ACTIVITIES
 			checkSusggestionLong = MIN_MEETING_SUGGESTIONS <= len(suggestions) <= MAX_MEETING_SUGGESTIONS
 			checkChallengeLong = MIN_MEETING_CHALLENGES <= len(challenges) <= MAX_MEETING_CHALLENGES
@@ -84,23 +91,24 @@ class meeting(object):
 					# Si no hay ninguna reunión en ese sprint con esa fecha
 					if foundMeeting == []:
 						date = datetime.datetime.strptime(date,'%Y-%m-%d').strftime('%d/%m/%Y')
-						newMeeting = clsSprintMeeting(date,activities,suggestions,challenges,idSprint)
+						newMeeting = clsSprintMeeting(date,activities,suggestions,challenges,mtype,idSprint)
 						db.session.add(newMeeting)
 						db.session.commit()
 						return True
 		return False
 
-	def updateMeeting(self, date, newDate, newActivities, newSuggestions, newChallenges, idSprint):
+	def updateMeeting(self, date, newDate, newActivities, newSuggestions, newChallenges, newType,idSprint):
 		'''Permite actualizar los datos de una reunión diaria'''   
 		checkTypeDate 			   = type(date) == str
 		checkTypeNewDate 		   = type(newDate) == str
 		checkTypeNewSuggestions    = type(newSuggestions) == str
 		checkTypeNewActivities     = type(newActivities) == str
 		checkTypeNewChallenges     = type(newChallenges) == str
+		checkTypemType			   = type(newType) == str
 		checkTypeIdSprint      	   = type(idSprint) == int
 		
 		# Verifica la longitud de los campos
-		if checkTypeDate and checkTypeNewDate and checkTypeNewActivities and checkTypeNewSuggestions and checkTypeNewChallenges and checkTypeIdSprint:
+		if checkTypeDate and checkTypeNewDate and checkTypeNewActivities and checkTypeNewSuggestions and checkTypeNewChallenges and checkTypemType and checkTypeIdSprint:
 			
 			checkNewActivityLong    = MIN_MEETING_ACTIVITIES <= len(newActivities) <= MAX_MEETING_ACTIVITIES
 			checkNewSusggestionLong = MIN_MEETING_SUGGESTIONS <= len(newSuggestions) <= MAX_MEETING_SUGGESTIONS
@@ -121,6 +129,7 @@ class meeting(object):
 					foundMeeting[0].SM_activities  = newActivities
 					foundMeeting[0].SM_suggestions = newSuggestions
 					foundMeeting[0].SM_challenges  = newChallenges
+					foundMeeting[0].SM_typeMeeting = newType
 					return True
 				# Si cambié la fecha
 				else:
@@ -132,6 +141,7 @@ class meeting(object):
 						foundMeeting[0].SM_activities  = newActivities
 						foundMeeting[0].SM_suggestions = newSuggestions
 						foundMeeting[0].SM_challenges  = newChallenges
+						foundMeeting[0].SM_typeMeeting = newType
 						return True
 		return False
 
