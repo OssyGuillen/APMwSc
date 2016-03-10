@@ -240,7 +240,20 @@ class userHistory(object):
             if checkLonId:
                 found = clsUserHistory.query.filter_by(UH_idUserHistory = userHistoryId).all()
                 return found
-        return([])    
+        return([])
+
+    def testsAsociatedToUserHistory(self, userHistoryId):
+        ''' Permite obtener una lista de las pruebas asociadas a una historia de usuario'''
+        
+        checkTypeId = type(userHistoryId) == int
+        
+        if checkTypeId:
+            checkLonId = CONST_MIN_ID <= userHistoryId
+            
+            if checkLonId:
+                found = clsAcceptanceTest.query.filter_by(AT_idUserHistory = userHistoryId).all()
+                return found
+        return([])
     
     
     def searchidUserHistoryIdAccion(self, idAccion):
