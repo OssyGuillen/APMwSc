@@ -54,11 +54,12 @@ class meeting(object):
 			#print("FOUND MEETING", foundMeeting)
 			for m in foundMeeting:
 				dbDate = datetime.datetime.strptime(m.SM_meetingDate,'%d/%m/%Y')
-				#print (date,dbDate)
-				#print (date == dbDate)
+				print (date,dbDate)
+				print (date == dbDate)
 				if (date == dbDate):
 					new.append(m)
 					#print('remove')
+				return new
 		return new
 
 	def insertMeeting(self, date, activities, suggestions, challenges, mtype, idSprint): 
