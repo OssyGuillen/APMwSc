@@ -58,7 +58,7 @@ class meeting(object):
 				#print (date == dbDate)
 				if (date == dbDate):
 					new.append(m)
-					print('remove')
+					#print('remove')
 		return new
 
 	def insertMeeting(self, date, activities, suggestions, challenges, mtype, idSprint): 
