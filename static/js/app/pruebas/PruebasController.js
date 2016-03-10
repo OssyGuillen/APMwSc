@@ -77,15 +77,6 @@ scrumModule.controller('VPruebaController',
       $scope.VHistoria1 = function(idHistoria) {
         $location.path('/VHistoria/'+idHistoria);
       };
-      $scope.AElimPrueba2 = function() {
-          
-        pruebasService.AElimPrueba().then(function (object) {
-          var msg = object.data["msg"];
-          if (msg) flash(msg);
-          var label = object.data["label"];
-          $location.path(label);
-          $route.reload();
-        });};
       $scope.VLogin3 = function() {
         $location.path('/VLogin');
       };

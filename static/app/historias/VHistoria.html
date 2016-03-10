@@ -73,8 +73,8 @@
         <table ng-table="tableParams3" template-pagination="pager.html" class="table">
             <tr ng-repeat="row in $data">
                 <td data-title="'Descripción'">{{row['descripcion']}}</td>
-                <td data-title="'Archivo'" ng-click="downloadAcceptanceTest(row['urlScript'])">{{row['urlScript']}}</td>
-                <td><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" >Detalles</a></td>
+                <td><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="downloadAcceptanceTest(row['url'])">Descargar</a></td>
+                <td ><a ng-click="AElimPrueba2(row['idTarea'])">-prueba</a></td>
             </tr>
         </table>
 <hr />

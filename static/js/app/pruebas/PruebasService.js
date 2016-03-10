@@ -39,12 +39,11 @@ scrumModule.service('pruebasService', ['$q', '$http', function($q, $http) {
     //    return deferred.promise;
     };
 
-    this.AElimPrueba = function(args) {
-        if(typeof args == 'undefined') args={};
+    this.AElimPrueba = function(idPrueba) {
+        if(typeof idPrueba == 'undefined') args={};
         return $http({
-          url: 'pruebaAceptacion/AElimPruebaAceptacion',
+          url: 'pruebaAceptacion/AElimPruebaAceptacion/' + String(idPrueba),
           method: 'GET',
-          params: args
         });
     //    var labels = ["/VHistoria", "/VPrueba", ];
     //    var res = labels[0];

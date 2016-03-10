@@ -44,7 +44,7 @@ class acceptanceTest(object):
         checkTypeidAT = type(idAT) == int
 
         if checkTypeidAT:
-            found = self.findIdAcceptanceTests(idAT)
+            found = self.findIdAcceptanceTest(idAT)
 
             if found != []:
                 db.session.delete(found)

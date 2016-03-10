@@ -37,8 +37,8 @@ def ACrearPruebaAceptacion():
             session['actor'] = res['actor']
     return json.dumps(res)
 
-@pruebaAceptacion.route('/pruebaAceptacion/AElimPruebaAceptacion')
-def AElimPruebaAceptacion():
+@pruebaAceptacion.route('/pruebaAceptacion/AElimPruebaAceptacion/<idPrueba>')
+def AElimPruebaAceptacion(idPrueba):
     #POST/PUT parameters
     params  = request.get_json()
     results = [{'label':'/VHistoria', 'msg':['Prueba borrada']}, 
@@ -46,10 +46,10 @@ def AElimPruebaAceptacion():
     res     = results[0]
 
     # Obtenemos los parámetros
-    idPrueba = int(session['idPrueba'])
 
     oPrueba = acceptanceTest()
-    result  = oPrueba.findIdAcceptanceTest(idPrueba)
+    print(idPrueba)
+    result  = oPrueba.findIdAcceptanceTest(int(idPrueba))
 
     # Delete physical file
     os.remove(result.AT_urlScript)
@@ -60,7 +60,7 @@ def AElimPruebaAceptacion():
     if delete:
         res = results[0]
 
-    res['label'] = res['label'] + '/' + str(idHistoria)
+    res['label'] = res['label'] + '/' + str(session['idHistoria'])
 
     if "actor" in res:
         if res['actor'] is None:
