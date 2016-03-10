@@ -109,8 +109,8 @@ scrumModule.controller('VCrearHistoriaController',
 
     }]);
 scrumModule.controller('VHistoriaController', 
-   ['$scope', '$location', '$route', 'flash', '$routeParams', 'ngTableParams', 'accionService', 'actorService', 'historiasService', 'identService', 'objetivoService', 'prodService', 'tareasService',
-    function ($scope, $location, $route, flash, $routeParams, ngTableParams, accionService, actorService, historiasService, identService, objetivoService, prodService, tareasService) {
+   ['$scope', '$location', '$route', 'flash', '$routeParams', 'ngTableParams', 'accionService', 'actorService', 'historiasService', 'identService', 'objetivoService', 'prodService', 'tareasService', , 'pruebasService',
+    function ($scope, $location, $route, flash, $routeParams, ngTableParams, accionService, actorService, historiasService, identService, objetivoService, prodService, tareasService, pruebasService) {
       $scope.msg = '';
       $scope.fHistoria = {};
 
@@ -134,8 +134,6 @@ scrumModule.controller('VHistoriaController',
                       $defer.resolve(VTarea2Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                   }
               });            
-
-
       });
       $scope.VHistorias3 = function(idPila) {
         $location.path('/VHistorias/'+idPila);
