@@ -54,6 +54,8 @@ from app.scrum.sprint import sprint
 app.register_blueprint(sprint)
 from app.scrum.equipo import equipo
 app.register_blueprint(equipo)
+from app.scrum.pruebaAceptacion import pruebaAceptacion
+app.register_blueprint(pruebaAceptacion)
 
 
 if __name__ == '__main__':
