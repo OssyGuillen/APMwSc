@@ -108,6 +108,7 @@ class sprints(object):
 			sprint = self.searchIdSprint(sprintNumber, idBacklog)
 			if history != [] and sprint != []:
 				history[0].UH_idSprint = sprint[0].S_idSprint
+				history[0].UH_resume = None
 				db.session.commit()
 				return True
 		return False
@@ -136,6 +137,7 @@ class sprints(object):
 			history = oUserHistory.searchIdUserHistory(idUserHistory)
 			if history != []:
 				history[0].UH_idSprint = None
+				history[0].UH_resume = None
 				db.session.commit()
 				return True
 		return False
