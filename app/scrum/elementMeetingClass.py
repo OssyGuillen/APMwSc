@@ -33,7 +33,7 @@ class elementMeeting(object):
 		return (aMeeting)
 
 	def getElements(self,idMeeting):
-		print ("ID MEETING", idMeeting)
+		#print ("ID MEETING", idMeeting)
 		aMeeting = clsElementMeeting.query.filter_by(EM_meeting = idMeeting).all()
 		return (aMeeting)
 
@@ -111,12 +111,19 @@ class elementMeeting(object):
 	def deleteElement(self,elementId, idMeeting):
 		'''Permite eliminar una elemento de una reunión'''
 
-		foundElement = self.getElementID(elementId,idMeeting)
-		if foundElement !=[]:
-			for m in foundElement:
-				db.session.delete(m)
-			db.session.commit()
-			return True
+		checkTypeElementId 		= type(elementId) == int
+		checkTypeIdMeeting 	= type(idMeeting) == int
+
+		if checkTypeElementId and checkTypeIdMeeting:
+			checkMeetingId = MIN_ID_MEETING <= idMeeting
+			# Si encuentra una reunion con esa fecha en ese sprint
+			if checkMeetingId:
+				foundElement = self.getElementID(elementId,idMeeting)
+				if foundElement !=[]:
+					for m in foundElement:
+						db.session.delete(m)
+					db.session.commit()
+					return True
 		return False
 
 		
