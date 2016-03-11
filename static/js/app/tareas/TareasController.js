@@ -2,7 +2,7 @@ scrumModule.config(function ($routeProvider) {
     $routeProvider.when('/VCrearTarea/:idHistoria', {
                 controller: 'VCrearTareaController',
                 templateUrl: 'app/tareas/VCrearTarea.html'
-            }).when('/VTarea/:idTarea', {
+            }).when('/VTarea/:idTarea/:idHistoria', {
                 controller: 'VTareaController',
                 templateUrl: 'app/tareas/VTarea.html'
             });
@@ -10,7 +10,7 @@ scrumModule.config(function ($routeProvider) {
 
 scrumModule.controller('VCrearTareaController', 
    ['$scope', '$location', '$route', 'flash', '$routeParams', 'historiasService', 'identService', 'tareasService',
-    function ($scope, $location, $route, flash, $routeParams, historiasService, identService, tareasService) {
+    function ($scope, $location, $route, flash, $routeParams,  historiasService, identService, tareasService) {
       $scope.msg = '';
       $scope.fTarea = {};
 
@@ -58,16 +58,28 @@ $scope.$watch('fTarea.categoria', function(newV,oldV) {
 });
     }]);
 scrumModule.controller('VTareaController', 
-   ['$scope', '$location', '$route', 'flash', '$routeParams', 'historiasService', 'identService', 'tareasService',
-    function ($scope, $location, $route, flash, $routeParams, historiasService, identService, tareasService) {
+   ['$scope', '$location', '$route', 'flash', '$routeParams', 'historiasService', 'identService', 'tareasService', 'equipoService',
+    function ($scope, $location, $route, flash, $routeParams, historiasService, identService, tareasService, equipoService) {
       $scope.msg = '';
       $scope.fTarea = {};
+      $scope.idHistoria = $routeParams.idHistoria;
 
-      tareasService.VTarea({"idTarea":$routeParams.idTarea}).then(function (object) {
+      tareasService.VTarea({"idTarea":$routeParams.idTarea, "idHistoria": 7}).then(function (object) {
         $scope.res = object.data;
         for (var key in object.data) {
             $scope[key] = object.data[key];
         }
+        equipoService.VEquipo({"idPila":1}).then(function (object) {
+            var miembros = object.data.fEquipo.lista;
+
+            for (var i = 0; i < miembros.length; i++) {
+                if (miembros[i].id == $scope.res.fTarea.asignado){
+                    $scope.miembroAsignado = miembros[i].miembro;
+                }
+            }
+        });
+
+
         if ($scope.logout) {
             $location.path('/');
         }

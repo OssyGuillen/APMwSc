@@ -253,7 +253,7 @@ class TestArchivo(unittest.TestCase):
        idBacklog = findId[0].BL_idBacklog
        # Inicio de la prueba.
        aArchive      = archivos()
-       result = aArchive.findIdArchives(1)
+       result = aArchive.findIdArchives(1532)
        self.assertFalse(result)
        # Eliminamos los datos insertados.
        aBacklog.deleteProduct('Bxtyllz')

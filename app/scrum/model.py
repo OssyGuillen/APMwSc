@@ -21,6 +21,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] =\
     'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Instancia de la base de datos.
 
@@ -211,6 +212,26 @@ class clsUserHistory(db.Model):
         return '<idUserHistory %r, codeUserHistory %r, idSuperHistory %r, scale %r>' % (self.UH_idUserHistory, self.UH_codeUserHistory, self.UH_idSuperHistory, self.UH_scale)
 
 
+class clsAcceptanceTest(db.Model):
+    '''Clase que define el modelo de la tabla AcceptanceTest'''
+    __tablename__       = 'acceptanceTest'
+    AT_idAT             = db.Column(db.Integer, primary_key = True, index = True)
+    AT_idUserHistory    = db.Column(db.Integer, db.ForeignKey('userHistory.UH_idUserHistory'))
+    AT_description      = db.Column(db.String(200))
+    AT_urlScript        = db.Column(db.String(200), nullable=False)
+
+    def __init__(self, idUserHistory, description, urlScript):
+        '''Constructor del modelo AcceptanceTest'''
+        self.AT_idUserHistory   = idUserHistory
+        self.AT_description = description
+        self.AT_urlScript   = urlScript
+
+    def __repr__(self):
+        '''Representacion en string del modelo AcceptanceTest'''
+        return '<idAT %r, idUserHistory %r, description %r, urlScript %r >' % (self.AT_idAT, self.AT_idUserHistory, self.AT_description, self.AT_urlScript)
+
+
+
 class clsActorsUserHistory(db.Model):
     '''Clase que define el modelo de tabla actorsUserHistory'''
 
@@ -254,6 +275,7 @@ class clsTask(db.Model):
     HW_weight        = db.Column(db.Integer)
     HW_idCategory    = db.Column(db.Integer, db.ForeignKey('category.C_idCategory'))
     HW_idUserHistory = db.Column(db.Integer, db.ForeignKey('userHistory.UH_idUserHistory'))
+    HW_idEquipo   = db.Column(db.Integer, db.ForeignKey('equipo.EQ_idEquipo'))
 
     def __init__(self, description, idCategory, weight, idUserHistory):
         self.HW_description   = description
@@ -263,7 +285,7 @@ class clsTask(db.Model):
 
     def __repr__(self):
         '''Representacion en string de la Tarea'''
-        return '<HW_ idTask  %r,HW_idCategory %r, HW_weight %r ,HW_idUserHistory %r>' % (self.HW_idTask, self.HW_idCategory, self.HW_weight, self.HW_idUserHistory)
+        return '<HW_ idTask  %r,HW_idCategory %r, HW_weight %r ,HW_idUserHistory %r, HW_idEquipo %r>' % (self.HW_idTask, self.HW_idCategory, self.HW_weight, self.HW_idUserHistory, self.HW_idEquipo)
 
 
 class clsCategory(db.Model):
@@ -300,6 +322,8 @@ class clsSprint(db.Model):
     def __repr__(self):
         '''Representacion en string del Sprint'''
         return '<S_idSprint %r, S_numero %r, S_sprintDescription %r, S_idBacklog %r>' % (self.S_idSprint, self.S_numero, self.S_sprintDescription, self.S_idBacklog)
+
+
 
 migrate = Migrate(app, db)
 manager = Manager(app)

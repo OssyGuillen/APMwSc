@@ -54,7 +54,7 @@ def VEquipo():
     oUser = user()
     userList = oUser.getAllUsers()
 
-    res['fEquipo'] = {'lista':[{'miembro':team.EQ_username, 'rol': team.EQ_rol} for team in teamList]}
+    res['fEquipo'] = {'lista':[{'miembro':team.EQ_username, 'rol': team.EQ_rol, 'id': team.EQ_idEquipo} for team in teamList]}
     res['usuario'] = session['usuario']
     res['idPila'] = idPila
 

@@ -1,0 +1,8 @@
+# This file is used to keep an empty folder in the repo as stated in
+# http://stackoverflow.com/questions/115983/how-can-i-add-an-empty-directory-to-a-git-repository
+# If this folder does not exists, files cannot be uploaded.
+#
+# Ignore everything in this directory
+*
+# Except this file
+!.gitignore
