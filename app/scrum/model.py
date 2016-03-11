@@ -217,22 +217,6 @@ class clsUserHistory(db.Model):
         return '<idUserHistory %r, codeUserHistory %r, idSuperHistory %r, scale %r>' % (self.UH_idUserHistory, self.UH_codeUserHistory, self.UH_idSuperHistory, self.UH_scale)
 
 
-class clsHistoryResume(db.Model):
-    '''Clase que define el modelo HistoryResume'''
-
-    __tablename__ = 'historyResume'
-    HR_idHistoryResume   = db.Column(db.Integer, primary_key=True, index=True)
-    HR_idUserHistory     = db.Column(db.Integer, db.ForeignKey('userHistory.UH_idUserHistory'))
-    HR_resume            = db.Column(db.String(200), nullable=True)
-
-    def __init__(self, idHistoryResume, idUserHistory):
-        self.HR_idHistoryResume = idHistoryResume
-        self.HR_idUserHistory   = idUserHistory
-
-    def __repr__(self):
-        '''Representacion en string de los id's a los actores y sus historias'''
-        return '<idHistoryResume %r, idUserHistory %r, resume %r>' % (self.HR_idHistoryResume, self.HR_idUserHistory, self.HR_resume)
-
 class clsActorsUserHistory(db.Model):
     '''Clase que define el modelo de tabla actorsUserHistory'''
 
