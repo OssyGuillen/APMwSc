@@ -278,6 +278,7 @@ class userHistory(object):
                     if (idSuperHistory != 0 and succesor == []):
                         self.updatePriority(idSuperHistory,1)
                     return True
+                    
         return False 
 
 

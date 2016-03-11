@@ -114,8 +114,10 @@ class sprints(object):
 
 	def getAssignedSprintHistory(self, sprintNumber, idBacklog):
 		'''Permite obtener las historias asociados a un determinado Sprint'''
+
 		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
 		checkidBacklog    = type(idBacklog) == int and MIN_ID <= idBacklog
+
 		if checkSprintNumber and checkidBacklog:
 			sprint = self.searchIdSprint(sprintNumber, idBacklog)
 			found = clsUserHistory.query.filter_by(UH_idSprint = sprint[0].S_idSprint).all()
@@ -124,9 +126,11 @@ class sprints(object):
 
 	def deleteAssignedSprintHistory(self, sprintNumber, idBacklog, idUserHistory):
 		''' Permite eliminar la asignacion de una historia asociado a un Sprint dado su id'''
+
 		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
 		checkidBacklog    = type(idBacklog) == int and MIN_ID <= idBacklog
 		checkidUserHistory = type(idUserHistory) == int and MIN_ID <= idUserHistory
+		
 		if checkSprintNumber and checkidBacklog and checkidUserHistory:
 			oUserHistory = userHistory()
 			history = oUserHistory.searchIdUserHistory(idUserHistory)
