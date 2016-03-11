@@ -30,7 +30,7 @@ description = browser.find_element_by_id('fPrueba_descripcion')
 description.send_keys('Ejemplo de descripcion en prueba de aceptacion')
 sleep(2)
 fileUpload = browser.find_element_by_id('fPrueba_contenido')
-fileUpload.send_keys("/home/marcos/soft2/venv3/APMwSc/testing/testInterface-AcceptanceTest.py"")
+fileUpload.send_keys("/home/marcos/soft2/venv3/APMwSc/testing/testInterface-AcceptanceTest.py")
 browser.find_element_by_xpath("//button[@type='submit']").click()
 sleep(2)
 
