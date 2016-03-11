@@ -73,7 +73,7 @@ def VCrearPruebaAceptacion():
     #GET parameter
     res = {}    
     # Obtenemos el id de la historia actual
-    idHistory = 7
+    idHistory = int(request.args.get('idHistoria'))
 
     if "actor" in session:
         res['actor']=session['actor']
