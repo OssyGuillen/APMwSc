@@ -233,6 +233,41 @@ def AModifHistoria():
             session['actor'] = res['actor']       
     return json.dumps(res)
 
+@historias.route('/historias/ACompletarHistoria', methods=['GET'])
+def ACompletarHistoria():
+    params  = request.get_json()
+    idHistory    = request.args.get('idHistoria')
+    results = [{'label':'/VHistoria/'+idHistory, 'msg':['La historia fue marcada como completada']}, {'label':'/VHistoria/'+idHistory, 'msg':['Error al modificar historia']}, ]
+    res     = results[1]
+
+    # Obtenemos el id del Producto.
+    idPila  = int(session['idPila'])
+
+    # Extraemos los valores
+    oUserHist    = userHistory()
+
+    completed = oUserHist.completeHistory(int(idHistory))
+    if completed == True:
+        res = results[0]
+    return json.dumps(res)
+
+@historias.route('/historias/AIncompletarHistoria', methods=['GET'])
+def AIncompletarHistoria():
+    params  = request.get_json()
+    idHistory    = request.args.get('idHistoria')
+    results = [{'label':'/VHistoria/'+idHistory, 'msg':['La historia fue marcada como incompleta']}, {'label':'/VHistoria/'+idHistory, 'msg':['Error al modificar historia']}, ]
+    res     = results[1]
+
+    # Obtenemos el id del Producto.
+    idPila  = int(session['idPila'])
+
+    # Extraemos los valores
+    oUserHist    = userHistory()
+
+    incompleted = oUserHist.incompleteHistory(int(idHistory))
+    if incompleted == True:
+        res = results[0]
+    return json.dumps(res)
 
 
 @historias.route('/historias/VCrearHistoria')
@@ -388,12 +423,15 @@ def VHistoria():
     res['fHistoria_opcionesAcciones']      = [{'key':acc.AC_idAccion,'value':acc.AC_accionDescription}for acc in accionList]
     res['fHistoria_opcionesObjetivos']     = [{'key':obj.O_idObjective,'value':obj.O_descObjective}for obj in objectiveList]
     res['fHistoria_opcionesPrioridad']     = [{'key':scale[0], 'value':scale[1]}for scale in resultScale]
-    
+    if history.UH_completed:
+        estado = 'completa'
+    else:
+        estado = 'incompleta'
     
     res['fHistoria'] = {'super':history.UH_idSuperHistory , 'idHistoria':idHistory, 'idPila':history.UH_idBacklog, 
                         'codigo':history.UH_codeUserHistory,'actores':actors, 'accion':history.UH_idAccion, 
-                        'objetivos':objectives, 'tipo':history.UH_accionType, 'prioridad':history.UH_scale}
-   
+                        'objetivos':objectives, 'tipo':history.UH_accionType, 'prioridad':history.UH_scale, 'estado': estado}
+
     res['data2'] = [{'idTarea':tarea.HW_idTask, 'descripcion':tarea.HW_description}for tarea in taskList]
 
     session['idHistoria'] = idHistory

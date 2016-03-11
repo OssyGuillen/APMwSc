@@ -65,6 +65,32 @@ scrumModule.service('historiasService', ['$q', '$http', function($q, $http) {
     //    return deferred.promise;
     };
 
+    this.ACompletarHistoria = function(args) {
+        if(typeof args == 'undefined') args={};
+        return $http({
+          url: 'historias/ACompletarHistoria',
+          method: 'GET',
+          params: args
+        });
+    //    var res = {};
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+
+    this.AIncompletarHistoria = function(args) {
+        if(typeof args == 'undefined') args={};
+        return $http({
+          url: 'historias/AIncompletarHistoria',
+          method: 'GET',
+          params: args
+        });
+    //    var res = {};
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+
     this.VCrearHistoria = function(args) {
         if(typeof args == 'undefined') args={};
         return $http({
@@ -90,6 +116,7 @@ scrumModule.service('historiasService', ['$q', '$http', function($q, $http) {
     //    deferred.resolve(res);
     //    return deferred.promise;
     };
+
 
     this.VHistorias = function(args) {
         if(typeof args == 'undefined') args={};

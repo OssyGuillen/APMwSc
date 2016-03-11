@@ -34,3 +34,19 @@
   font-family: inherit;
   font-size: 100%;
 }
+
+.completa{
+    display:none;
+}
+
+.no-incompleta{
+    display:none;
+}
+
+.estado-incompleta{
+    color:red;
+}
+
+.estado-completa{
+    color:green;
+}
