@@ -122,7 +122,6 @@ class sprints(object):
 			return found
 		return []
 
-	#Nuevo metodo Sprint 2
 	def deleteAssignedSprintHistory(self, sprintNumber, idBacklog, idUserHistory):
 		''' Permite eliminar la asignacion de una historia asociado a un Sprint dado su id'''
 		checkSprintNumber = type(sprintNumber) == int and  MIN_SPRINT_NUMBER <= sprintNumber <= MAX_SPRINT_NUMBER
