@@ -1,5 +1,6 @@
-venv3/
 *.pyc
+*~
+*.swp
 app/scrum/data.sqlite
 
 # Custom ignores

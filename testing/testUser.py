@@ -1580,5 +1580,49 @@ class TestUser(unittest.TestCase):
         oUser.deleteUser('ehfahw')
         oRole.deleteActor('Xsxyrvz',idBacklog)
         oBacklog.deleteProduct('Pxrsynzjxs')
+
+    #############################################      
+    #         Pruebas para getAllUsers          #
+    #############################################
+
+    # Probar que la funcionalidad se ejecuta
+    def testgetAllUsers(self):
+        # Creamos varios usuarios
+
+        # Creamos el backlog
+        _backlog  = backlog()
+        _backlog.insertBacklog('Backlog','Prueba',2)
+        findId    = _backlog.findName('Backlog')
+        idBacklog = findId[0].BL_idBacklog 
+        # Creamos el actor 1
+        actor = role()
+        actor.insertActor('Actor1','Descripcion',idBacklog)
+        result    = actor.findNameActor('Actor1',idBacklog)
+        idActor   = result[0].A_idActor
+        # Creamos el actor 2
+        actor.insertActor('Actor2','Descripcion',idBacklog)
+        result    = actor.findNameActor('Actor2',idBacklog)
+        idActor   = result[0].A_idActor
+        # Creamos el actor 3
+        actor.insertActor('Actor3','Descripcion',idBacklog)
+        result    = actor.findNameActor('Actor3',idBacklog)
+        idActor   = result[0].A_idActor
+        # Creamos el usuario 1
+        _user = user()
+        _user.insertUser('fullname','user1','password1234','prueba@user1.com',idActor)
+        _user.insertUser('fullname','user2','password1232','prueba@user2.com',idActor)
+        _user.insertUser('fullname','user3','password1233','prueba@user3.com',idActor)
+        # Probamos la funcionalidad
+        _user.getAllUsers()
+        # Eliminamos los datos insertados.
+        _user.deleteUser('user1')
+        _user.deleteUser('user2')
+        _user.deleteUser('user3')
+        actor.deleteActor('Actor1', idBacklog)
+        actor.deleteActor('Actor2', idBacklog)
+        actor.deleteActor('Actor3', idBacklog)
+        _backlog.deleteProduct('Backlog')
         
 # Fin de casos User
+if __name__ == '__main__':
+    unittest.main()

@@ -99,7 +99,6 @@ def VProducto():
     res = {}
     # Obtenemos el id del producto
     idPila = int(request.args.get('idPila', 1))
-    
     if "actor" in session:
         res['actor']=session['actor']
 

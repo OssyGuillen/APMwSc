@@ -5,6 +5,7 @@ from app.scrum.backLog     import *
 from app.scrum.userHistory import *
 from app.scrum.task        import *
 from app.scrum.model      import *
+from app.scrum.Team        import *
 
 from werkzeug import secure_filename
 
@@ -29,9 +30,22 @@ def ACrearTarea():
     oBackLog    = backlog()
     oTask       = task()
 
+    if 'miembro' in params:
+        miembro = params['miembro']
+    else:
+        miembro = None
+
     insert   = oTask.insertTask(taskDesc, idCategoria, taskPeso, idHistory)
 
-    if insert:
+    insertedTask = oTask.searchTask(taskDesc)[0]
+
+    if miembro == None or miembro < 0:
+        oTask.deleteUserTask(int(insertedTask.HW_idTask))
+    else:
+        oTask.insertUserTask(int(insertedTask.HW_idTask), int(miembro))
+
+
+    if insert:        
         res = results[0]
     else:
         res = results[1]
@@ -119,6 +133,7 @@ def AModifTarea():
     idTarea         = params['idTarea']
     new_idCategoria = params['categoria']
     new_taskPeso    = params['peso']
+    new_miembro = params['miembro']
 
     # Buscamos la tarea a modificar
     oTarea   = task()
@@ -126,6 +141,11 @@ def AModifTarea():
 
     # Modificamos la tarea
     modify   = oTarea.updateTask(result.HW_description,new_description,new_idCategoria,new_taskPeso)
+
+    if new_miembro == None or new_miembro < 0:
+        oTarea.deleteUserTask(int(idTarea))
+    else:
+        oTarea.insertUserTask(int(idTarea), int(new_miembro))
 
     if modify:
         res = results[0]
@@ -200,6 +220,13 @@ def VCrearTarea():
     # Obtenemos una lista con los datos asociados a las categorías
     cateList  = clsCategory.query.all()
 
+    idTarea = request.args.get('idTarea')
+    result   = clsTask.query.filter_by(HW_idTask = idTarea).first()
+    cateList     = clsCategory.query.all()
+    oTeam = team()
+    found = clsUserHistory.query.filter_by(UH_idUserHistory = idHistory).first()
+    miembroList = oTeam.getTeam(found.UH_idBacklog)
+
     # Mostramos los datos en la vista
     ListaCompleta = []
     for i in cateList:
@@ -210,6 +237,9 @@ def VCrearTarea():
 
     res['fTarea_opcionesCategoria'] = [
      {'key':cat[1][0] ,'value':cat[1][1]+" ("+str(cat[1][2])+")",'peso':cat[1][2]} for cat in decorated]
+
+    res['fTarea_opcionesMiembro'] = [{'key':-1,'value':'Sin asignacion'}] + [
+      {'key':miembro.EQ_idEquipo ,'value':miembro.EQ_username} for miembro in miembroList]
 
     res['fTarea'] = {'idHistoria':idHistory}
 
@@ -225,7 +255,7 @@ def VTarea():
 
     # Obtenemos el id de la historia y de la tarea
     idTarea    = int(request.args['idTarea'])
-    idHistoria = int(session['idHistoria'])
+    idHistoria    = int(request.args['idHistoria'])
 
     found = clsUserHistory.query.filter_by(UH_idUserHistory = idHistoria).first()
     codHistoria = found.UH_codeUserHistory
@@ -238,6 +268,9 @@ def VTarea():
     oTarea = task()
     result   = clsTask.query.filter_by(HW_idTask = idTarea).first()
     categoryList     = clsCategory.query.all()
+    oTeam = team()
+    miembroList = oTeam.getTeam(found.UH_idBacklog)
+
     if result.HW_completed:
         estado = 'completa'
     else:
@@ -253,8 +286,18 @@ def VTarea():
     res['fTarea_opcionesCategoria'] = [
       {'key':cat.C_idCategory ,'value':cat.C_nameCate+" ("+str(cat.C_weight)+")",'peso':result.HW_weight}for cat in categoryList]
 
+    res['fTarea_opcionesMiembro'] = [{'key':-1,'value':'Sin asignacion'}] + [
+      {'key':miembro.EQ_idEquipo ,'value':miembro.EQ_username} for miembro in miembroList]
+
     res['fTarea'] = {'idHistoria':idHistoria,'idTarea': idTarea,'descripcion': result.HW_description, 'categoria': result.HW_idCategory, 'peso':result.HW_weight, 'estado':estado}
 
+    res['fTarea'] = {'idHistoria':idHistoria,
+                    'idTarea': idTarea,
+                    'descripcion': result.HW_description,
+                    'categoria': result.HW_idCategory,
+                    'peso':result.HW_weight,
+                    'miembro': result.HW_idEquipo,
+                    'estado': estado}
 
     session['idTarea'] = idTarea
     res['idTarea']     = idTarea

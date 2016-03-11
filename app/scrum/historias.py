@@ -404,6 +404,9 @@ def VHistoria():
     
     # Obtenemos la escala asignada a la historia actual
     numScale  = history.UH_scale 
+
+    # Obtenemos las pruebas de la historia actual
+    testsList = oUserHist.testsAsociatedToUserHistory(idHistory)
     
     resultScale = []
     if numScale == 0:
@@ -433,6 +436,10 @@ def VHistoria():
                         'objetivos':objectives, 'tipo':history.UH_accionType, 'prioridad':history.UH_scale, 'estado': estado}
 
     res['data2'] = [{'idTarea':tarea.HW_idTask, 'descripcion':tarea.HW_description}for tarea in taskList]
+
+    res['pruebas'] = [{'idTarea':test.AT_idAT, 
+                        'descripcion':test.AT_description, 
+                        'url': test.AT_urlScript} for test in testsList]
 
     session['idHistoria'] = idHistory
     res['idHistoria'] = idHistory

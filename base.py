@@ -46,6 +46,16 @@ from app.scrum.tareas import tareas
 app.register_blueprint(tareas)
 from app.scrum.cates import cates
 app.register_blueprint(cates)
+from app.scrum.equipo import equipo
+app.register_blueprint(equipo)
+from app.scrum.anexo import anexo
+app.register_blueprint(anexo)
+from app.scrum.sprint import sprint
+app.register_blueprint(sprint)
+from app.scrum.equipo import equipo
+app.register_blueprint(equipo)
+from app.scrum.pruebaAceptacion import pruebaAceptacion
+app.register_blueprint(pruebaAceptacion)
 
 
 if __name__ == '__main__':

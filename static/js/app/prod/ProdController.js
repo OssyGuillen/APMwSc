@@ -53,13 +53,14 @@ scrumModule.controller('VProductosController',
 
     }]);
 scrumModule.controller('VProductoController', 
-   ['$scope', '$location', '$route', 'flash', '$routeParams', 'ngTableParams', 'accionService', 'actorService', 'catesService', 'historiasService', 'identService', 'objetivoService', 'prodService',
-    function ($scope, $location, $route, flash, $routeParams, ngTableParams, accionService, actorService, catesService, historiasService, identService, objetivoService, prodService) {
+   ['$window', '$timeout', '$scope', '$location', '$route', 'flash', '$routeParams', 'ngTableParams', 'accionService', 'actorService', 'catesService', 'historiasService', 'identService', 'objetivoService', 'prodService',
+    function ($window, $timeout, $scope, $location, $route, flash, $routeParams, ngTableParams, accionService, actorService, catesService, historiasService, identService, objetivoService, prodService) {
       $scope.msg = '';
       $scope.fPila = {};
 
       prodService.VProducto({"idPila":$routeParams.idPila}).then(function (object) {
         $scope.res = object.data;
+        $scope.backlogId = $routeParams.nombrePila;
         for (var key in object.data) {
             $scope[key] = object.data[key];
         }
@@ -100,7 +101,20 @@ scrumModule.controller('VProductoController',
                   getData: function($defer, params) {
                       $defer.resolve(VObjetivo7Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                   }
-              });            
+              });
+
+              // estos son los files
+              var VFiles9Data = $scope.res.data9;
+              if(typeof VFiles9Data === 'undefined') VFiles9Data=[];
+              $scope.tableParams9 = new ngTableParams({
+                  page: 1,            // show first page
+                  count: 10           // count per page
+              }, {
+                  total: VFiles9Data.length, // length of data
+                  getData: function($defer, params) {
+                      $defer.resolve(VFiles9Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                  }
+              });
 
 
       });
@@ -122,6 +136,17 @@ scrumModule.controller('VProductoController',
       $scope.VHistorias12 = function(idPila) {
         $location.path('/VHistorias/'+idPila);
       };
+      $scope.VAnexo13 = function(idPila) {
+        $location.path('/VAnexo/'+idPila);
+      };
+      $scope.VSprints14 = function(idPila) {
+        $location.path('/VSprints/'+idPila);
+      };
+      $scope.VEquipo15 = function(idPila) {
+        $location.path('/VEquipo/'+idPila);
+      };
+
+
 
       $scope.fPilaSubmitted = false;
       $scope.AModifProducto0 = function(isValid) {

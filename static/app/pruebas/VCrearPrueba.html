@@ -1,0 +1,40 @@
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" 
+                    data-toggle="collapse" 
+                    data-target="#contenido-plegable">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand" >Crear Prueba para la historia {{codHistoria}}</span>
+        </div>
+        <div class="collapse navbar-collapse" id="contenido-plegable">
+            <ul class="nav navbar-nav navbar-left">
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+<li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
+<li><a ng-click="VHistoria1(idHistoria)"
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+    Regresar</a></li>
+<li><a ng-click="VLogin2()">
+    Salir</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<form name="fPruebaForm" ng-submit="ACrearPrueba0(fPruebaForm.$valid)" novalidate>
+            <input id="fPrueba_idProyecto" type="hidden" name="idProyecto" ng-model="fPrueba.idProyecto" />
+            <div class="form-group" ng-class="{ 'has-error' :  fPruebaSubmitted && fPruebaForm.descripcion.$invalid && fPruebaForm.descripcion.$pristine && fPruebaSubmitted}"><label for="fPrueba_descripcion">Descripción</label><textarea id="fPrueba_descripcion" type="text" name="descripcion" class="form-control" ng-model="fPrueba.descripcion" placeholder="Descripcion" required/><p ng-show="fPruebaSubmitted && fPruebaForm.descripcion.$invalid" class="help-block">Error en campo Descripcion.</p></div>
+            <div class="form-group" ng-class="{ 'has-error' :  fPruebaSubmitted && fPruebaForm.contenido.$invalid && fPruebaForm.contenido.$pristine && fPruebaSubmitted}"><label for="fPrueba_contenido">Script de la prueba</label><input type="file" id="fPrueba_contenido" name="contenido" class="form-control" file-model="myFile" placeholder="Script de la prueba" required/><p ng-show="fPruebaSubmitted && fPruebaForm.contenido.$invalid" class="help-block">Error en campo prueba.</p></div>
+        <button type="submit" class="btn btn-perso btn-lg btn-block">
+            <span class="glyphicon glyphicon-flash"></span>Cargar
+        </button>
+    </form>
+    <hr />
+
+
+<div id="right"></div>

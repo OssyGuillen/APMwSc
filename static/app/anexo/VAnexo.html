@@ -1,0 +1,50 @@
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" 
+                    data-toggle="collapse" 
+                    data-target="#contenido-plegable">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand" >Anexos</span>
+        </div>
+        <div class="collapse navbar-collapse" id="contenido-plegable">
+            <ul class="nav navbar-nav navbar-left">
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+<li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
+<li><a ng-click="VProducto3(idPila)"
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+    Regresar</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<h3>Anexos</h3>        
+        <table ng-table="tableParams1" template-pagination="pager.html" class="table">
+            <tr ng-repeat="row in $data">
+                <td data-title="'Nombre'">
+                    <span class="file-name" ng-click="downloadFile(row['url'])">
+                        {{row['nombre']}}
+                    </span>                    
+                </td>
+                <td ng-show="row['idAnexo']"><a ng-click="AElimAnexo1(row['idAnexo'], row['idBacklog'])">-anexo</a></td>
+            </tr>
+        </table>
+
+<hr />    <form name="fAnexoForm" ng-submit="AAnexo2(fAnexoForm.$valid)" novalidate>
+            <input id="fAnexo_idProyecto" type="hidden" name="idProyecto" ng-model="fAnexo.idProyecto" />
+            <div class="form-group" ng-class="{ 'has-error' :  fAnexoSubmitted && fAnexoForm.nombre.$invalid && fAnexoForm.nombre.$pristine && fAnexoSubmitted}"><label for="fAnexo_nombre">Nombre</label><input id="fAnexo_nombre" type="text" name="nombre" class="form-control" ng-model="fAnexo.nombre" placeholder="Nombre" required/><p ng-show="fAnexoSubmitted && fAnexoForm.nombre.$invalid" class="help-block">Error en campo Nombre.</p></div>
+            <div class="form-group" ng-class="{ 'has-error' :  fAnexoSubmitted && fAnexoForm.contenido.$invalid && fAnexoForm.contenido.$pristine && fAnexoSubmitted}"><label for="fAnexo_contenido">Contenido</label><input type="file" id="fAnexo_contenido" name="contenido" class="form-control" file-model="myFile" placeholder="Contenido" required/><p ng-show="fAnexoSubmitted && fAnexoForm.contenido.$invalid" class="help-block">Error en campo Contenido.</p></div>
+        <button type="submit" class="btn btn-perso btn-lg btn-block">
+            <span class="glyphicon glyphicon-flash"></span>Anexar
+        </button>
+    </form>
+    <hr />
+
+
+<div id="right"></div>

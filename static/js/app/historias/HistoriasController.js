@@ -112,13 +112,14 @@ scrumModule.controller('VCrearHistoriaController',
 
     }]);
 scrumModule.controller('VHistoriaController', 
-   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngTableParams', 'accionService', 'actorService', 'historiasService', 'identService', 'objetivoService', 'prodService', 'tareasService',
-    function ($scope, $location, $route, $timeout, flash, $routeParams, ngTableParams, accionService, actorService, historiasService, identService, objetivoService, prodService, tareasService) {
+   ['$window', '$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngTableParams', 'accionService', 'actorService', 'historiasService', 'identService', 'objetivoService', 'prodService', 'tareasService', 'pruebasService',
+    function ($window, $scope, $location, $route, $timeout, flash, $routeParams, ngTableParams, accionService, actorService, historiasService, identService, objetivoService, prodService, tareasService, pruebasService) {
       $scope.msg = '';
       $scope.fHistoria = {};
 
       historiasService.VHistoria({"idHistoria":$routeParams.idHistoria}).then(function (object) {
         $scope.res = object.data;
+        $scope.idHistoria = $routeParams.idHistoria;
         for (var key in object.data) {
             $scope[key] = object.data[key];
         }
@@ -135,9 +136,18 @@ scrumModule.controller('VHistoriaController',
                   getData: function($defer, params) {
                       $defer.resolve(VTarea2Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                   }
-              });            
-
-
+              });
+              var VPrueba2Data = $scope.res.pruebas;
+              if(typeof VPrueba2Data === 'undefined') VPrueba2Data=[];
+              $scope.tableParams3 = new ngTableParams({
+                  page: 1,            // show first page
+                  count: 10           // count per page
+              }, {
+                  total: VPrueba2Data.length, // length of data
+                  getData: function($defer, params) {
+                      $defer.resolve(VPrueba2Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                  }
+              });
       });
       $scope.VHistorias3 = function(idPila) {
         $location.path('/VHistorias/'+idPila);
@@ -171,7 +181,9 @@ scrumModule.controller('VHistoriaController',
       $scope.VDesempeno10 = function(idHistoria) {
         $location.path('/VDesempeno/'+idHistoria);
       };
-
+      $scope.VCrearPrueba11 = function(idHistoria) {
+        $location.path('/VCrearPrueba/'+idHistoria);
+      };
       $scope.fHistoriaSubmitted = false;
       $scope.AModifHistoria0 = function(isValid) {
         $scope.fHistoriaSubmitted = true;
@@ -187,31 +199,43 @@ scrumModule.controller('VHistoriaController',
         }
       };
 
-    $scope.ACompletarHistoria = function(idHistoria) {
+      $scope.ACompletarHistoria = function(idHistoria) {
         historiasService.ACompletarHistoria({idHistoria: idHistoria}).then(function (object) {
-              var msg = object.data["msg"];
-              if (msg) flash(msg);
-              var label = object.data["label"];
-              $location.path(label);
-              $route.reload();
-          });
-    };
-    $scope.AIncompletarHistoria = function(idHistoria) {
+          var msg = object.data["msg"];
+          if (msg) flash(msg);
+          var label = object.data["label"];
+          $location.path(label);
+          $route.reload();
+        });
+      };
+      $scope.AIncompletarHistoria = function(idHistoria) {
         historiasService.AIncompletarHistoria({idHistoria: idHistoria}).then(function (object) {
-              var msg = object.data["msg"];
-              if (msg) flash(msg);
-              var label = object.data["label"];
-              $location.path(label);
-              $route.reload();
-          });
-    };
+          var msg = object.data["msg"];
+          if (msg) flash(msg);
+          var label = object.data["label"];
+          $location.path(label);
+          $route.reload();
+        });
+      };
 
       $scope.VTarea2 = function(idTarea) {
         $location.path('/VTarea/'+((typeof idTarea === 'object')?JSON.stringify(idTarea):idTarea));
       };
 
-    }]);
-scrumModule.controller('VHistoriasController', 
+      $scope.downloadAcceptanceTest = function (url) {
+          $window.location = '/anexo/ADescargar/' + url;
+      };
+
+      $scope.AElimPrueba2 = function(idPrueba) {
+        pruebasService.AElimPrueba(idPrueba).then(function (object) {
+          var msg = object.data["msg"];
+          if (msg) flash(msg);
+          var label = object.data["label"];
+          $location.path(label);
+          $route.reload();})
+          ;};
+      }]);
+scrumModule.controller('VHistoriasController',
    ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngTableParams', 'accionService', 'actorService', 'historiasService', 'identService', 'objetivoService', 'prodService', 'tareasService',
     function ($scope, $location, $route, $timeout, flash, $routeParams, ngTableParams, accionService, actorService, historiasService, identService, objetivoService, prodService, tareasService) {
       $scope.msg = '';
@@ -235,7 +259,7 @@ scrumModule.controller('VHistoriasController',
                   getData: function($defer, params) {
                       $defer.resolve(VHistoria0Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                   }
-              });            
+              });
 
 
       });
@@ -260,7 +284,7 @@ scrumModule.controller('VHistoriasController',
       };
 
     }]);
-scrumModule.controller('VPrelacionesController', 
+scrumModule.controller('VPrelacionesController',
    ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'accionService', 'actorService', 'historiasService', 'identService', 'objetivoService', 'prodService', 'tareasService',
     function ($scope, $location, $route, $timeout, flash, $routeParams, accionService, actorService, historiasService, identService, objetivoService, prodService, tareasService) {
       $scope.msg = '';
@@ -293,7 +317,7 @@ $scope.elimPrelacion = function (index) {
       $scope.APrelaciones0 = function(isValid) {
         $scope.fPrelacionesSubmitted = true;
         if (isValid) {
-          
+
           historiasService.APrelaciones($scope.fPrelaciones).then(function (object) {
               var msg = object.data["msg"];
               if (msg) flash(msg);

@@ -59,3 +59,29 @@ unzip scrumFL.zip
 #Ejecutar la aplicación
 
 python base.py runserver
+
+Si va a utilizar SQLAlchemy verifique que este paquete está instalado. Si no
+es el caso pruebe ejecutando los siguientes comandos de instalación:
+
+sudo pip3 install SQLAlchemy
+sudo pip3 install Flask-SQLAlchemy
+sudo pip3 install Flask-Migrate
+
+Para verificar si ya están instalados ejecute python3 una consola de terminal e importe 
+los archivos pertinentes:
+
+from flask import Flask
+from flask.ext.sqlalchemy import SQLAlchemy
+
+Para instalar con Miniconda:
+Crear ambiente:
+
+conda create -n condaenv3 python=3.4
+source activate condaenv3
+
+Instalar paquetes
+
+conda install flask
+conda install --channel https://conda.anaconda.org/ziff flask-script
+conda install --channel https://conda.anaconda.org/hugo flask-sqlalchemy
+(Flask-Migrate no está empaquetado para anaconda)
