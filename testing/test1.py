@@ -8,6 +8,7 @@ sys.path.append('../app/scrum')
 
 from sprintClass import *
 from meetingClass import *
+from elementMeetingClass import *
 from role import *
 
 class TestElementMeeting(unittest.TestCase):
@@ -30,23 +31,33 @@ class TestElementMeeting(unittest.TestCase):
         date1 = '02/03/2015'
         date2 = '2015-02-03'
         aMeeting = meeting()
-        a = aMeeting.getMeetings(3)
-        print ("A", a)
-        b = aMeeting.getMeetings(idASprint)
-        print("B",b)
-
-
-
-        #aMeeting.searchMeeting(date0, idSprint):
         aMeeting.insertMeeting(date0, 'A1', 'S1', 'C1', 'Presencial', idASprint)
-        x = aMeeting.searchMeeting(date0,idASprint)
-        print(x)
+        findIdMeeting = aMeeting.searchMeeting(date0, idASprint)
+        idMeeting = findIdMeeting[0].SM_idSprintMeeting
+
+        print ("ID MEETING", idMeeting)
+
+        # Creamos el elemento
+        aElement = elementMeeting()
+        #result =  aElement.emptyTable()
+        #self.assertTrue(result)
+        result = aElement.insertElement('challenges', 'planned', 'done', idMeeting, 'user1')
+        #self.assertTrue(result)
+        get = aElement.getElements(idMeeting)
+        print("GET", get)
+        foundElementId = aElement.getElementsByUserAndMeeting('user1',idMeeting)
+        elementID = foundElementId[0].EM_idElementMeeting
+
+        print ("ELEMENT ID", elementID)
+        x = aElement.updateElement(elementID, 'newChallenges', 'newPlanned', 'newDone', idMeeting, 'user1')
+        x = aElement.deleteElement(elementID, idMeeting)
+        self.assertTrue(x)
 
         # Eliminamos los datos insertados.
-        result = aMeeting.deleteMeeting(date2,idASprint)
+        result = aMeeting.deleteMeeting(date0,idASprint)
+        self.assertTrue(result)
         aSprint.deleteSprint(1,self.idBacklog)
         self.aBacklog.deleteProduct('Bxtyllz')
-        #self.assertTrue(result)
 
 
 

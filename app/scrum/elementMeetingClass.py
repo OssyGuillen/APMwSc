@@ -32,6 +32,15 @@ class elementMeeting(object):
 		aMeeting = clsElementMeeting.query.filter_by(EM_meeting = idMeeting, EM_idElementMeeting = idElement).all()
 		return (aMeeting)
 
+	def getElements(self,idMeeting):
+		print ("ID MEETING", idMeeting)
+		aMeeting = clsElementMeeting.query.filter_by(EM_meeting = idMeeting).all()
+		return (aMeeting)
+
+	def getElementsByUserAndMeeting(self,user,idMeeting):
+		aMeeting = clsElementMeeting.query.filter_by(EM_meeting = idMeeting, EM_user = user).all()
+		return (aMeeting)
+
 	def insertElement(self, challenges, planned, done, idMeeting, user):
 		'''Permite insertar un elemento a una reunión diaria'''   
 		checkTypeChallenges     = type(challenges) == str
@@ -41,7 +50,7 @@ class elementMeeting(object):
 
 		# Verifica que la longitud de los campos sea correcta
 		if checkTypeChallenges and checkTypePlanned and checkTypeDone and checkTypeIdMeeting:
-			
+			#print("INSERT 1")			
 			checkChallengeLong = MIN_ELEMENT_CHALLENGES <= len(challenges) <= MAX_ELEMENT_CHALLENGES
 			checkPlannedLong   = MIN_ELEMENT_PLANNED <= len(planned) <= MAX_ELEMENT_PLANNED
 			checkDoneLong 	   = MIN_ELEMENT_DONE <= len (done) <= MAX_ELEMENT_DONE
@@ -49,18 +58,23 @@ class elementMeeting(object):
 
 			# Si todas las longitudes son correctas
 			if checkChallengeLong and checkPlannedLong and checkDoneLong and checkIdMeeting:
+				#print("INSERT 2")			
 
 				# Verifico que el meeting exista
 				foundMeeting = clsSprintMeeting.query.filter_by(SM_idSprintMeeting = idMeeting)
 			
 				# Si el meeting existe. Verifico que usuario no se repita
 				if foundMeeting != []:
+					#print("INSERT 3")			
 
-					foundElement = clsElementMeeting.query.filter_by(EM_meeting = idMeeting, EM_user= user)
-					
-					# Si no hay ninguna element en esa reunión con ese usuario
+					foundElement = clsElementMeeting.query.filter_by(EM_meeting = idMeeting, EM_user = user).all()
+
 					if foundElement == []:
+						
+						#print("INSERT 4")			
 						newElement = clsElementMeeting(challenges,planned, done, idMeeting, user)
+						newElement.EM_meeting = idMeeting
+						newElement.EM_user = user
 						db.session.add(newElement)
 						db.session.commit()
 						return True
@@ -94,7 +108,7 @@ class elementMeeting(object):
 		return False
 
 
-	def deleteMeeting(self,elementId, idSprint):
+	def deleteElement(self,elementId, idMeeting):
 		'''Permite eliminar una elemento de una reunión'''
 
 		foundElement = self.getElementID(elementId,idMeeting)
