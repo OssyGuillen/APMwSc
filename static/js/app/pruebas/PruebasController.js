@@ -14,15 +14,24 @@ scrumModule.controller('VCrearPruebaController',
       $scope.msg = '';
       $scope.fPrueba = {};
 
-      $scope.VHistoria1 = function(idHistoria) {
-        $location.path('/VHistoria/'+idHistoria);
-      };
-      $scope.VLogin2 = function() {
-        $location.path('/VLogin');
-      };
+      pruebasService.VCrearPrueba({"idHistoria":$routeParams.idHistoria}).then(function (object) {
 
-      $scope.fPruebaSubmitted = false;
-      $scope.ACrearPrueba0 = function(isValid) {
+        $scope.res = object.data;
+        for (var key in object.data) {
+            $scope[key] = object.data[key];
+        }
+        if ($scope.logout) {
+            $location.path('/');
+        }        
+        $scope.VHistoria1 = function(idHistoria) {
+            $location.path('/VHistoria/'+idHistoria);
+        };
+        $scope.VLogin2 = function() {
+            $location.path('/VLogin');
+        };
+
+        $scope.fPruebaSubmitted = false;
+        $scope.ACrearPrueba0 = function(isValid) {
         $scope.fPruebaSubmitted = true;
         if (isValid) {          
           pruebasService.ACrearPrueba($scope.fPrueba, $scope.myFile).then(function (object) {
@@ -33,7 +42,9 @@ scrumModule.controller('VCrearPruebaController',
               $route.reload();
           });
         }
-      };
+        };
+      });
+
 
 $scope.$watch('fPrueba.categoria', function(newV,oldV) {
   var tabla = $scope.fPrueba_opcionesCategoria;

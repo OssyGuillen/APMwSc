@@ -48,7 +48,6 @@ def AElimPruebaAceptacion(idPrueba):
     # Obtenemos los parámetros
 
     oPrueba = acceptanceTest()
-    print(idPrueba)
     result  = oPrueba.findIdAcceptanceTest(int(idPrueba))
 
     # Delete physical file
@@ -74,7 +73,7 @@ def VCrearPruebaAceptacion():
     #GET parameter
     res = {}    
     # Obtenemos el id de la historia actual
-    idHistory = int(request.args.get('idHistoria'))
+    idHistory = 7
 
     if "actor" in session:
         res['actor']=session['actor']
