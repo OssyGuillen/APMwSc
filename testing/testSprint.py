@@ -408,6 +408,78 @@ class TestSprintClass(unittest.TestCase):
         result   = oSprint.deleteSprint(100,self.idBacklog)
         self.assertFalse(result)
   
+
+    ####################################################
+    #    Pruebas para modificar resumen de Historia    #
+    ####################################################
+
+    def testshowHistoryResumeAssignedToSprint(self):
+                # Insertamos los datos necesarios. 
+        oSprint  = sprints()
+  
+        #Creamos un nuevo sprint
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+  
+        #Creamos una nueva historia de usuario
+        #Insertamos la accion
+        oAccion = accions()
+        oAccion.insertAccion('Dxfynyr', self.idBacklog)
+        search  = oAccion.searchAccion('Dxfynyr', self.idBacklog)
+        idFound = search[0].AC_idAccion
+  
+        #Insertamos la historia
+        oHistory = userHistory()
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        search  = oHistory.searchUserHistory('jDw',self.idBacklog)
+        idFound = search[0].UH_idUserHistory
+  
+        # Inicio de la prueba.
+        oSprint.asignSprintHistory(1,self.idBacklog,idFound)
+        oHistory.assignHistoryResume(idFound, "asdf")
+        result = (oSprint.getAssignedSprintHistory(1, self.idBacklog)[0].UH_resume == "asdf")
+        
+        self.assertTrue(result)
+  
+        #Eliminamos la historia, la accion y el sprint creado
+        oSprint.deleteAssignedSprintHistory(1,self.idBacklog,idFound)
+        oSprint.deleteSprint(1,self.idBacklog)
+        oHistory.deleteUserHistory(idFound)
+        oAccion.deleteAccion('Dxfynyr',self.idBacklog)
+
+    def testupdateHistoryResumeAssignedToSprint(self):
+        # Insertamos los datos necesarios. 
+        oSprint  = sprints()
+  
+        #Creamos un nuevo sprint
+        result1  = oSprint.insertSprint(1,'VtXcyr pvntgs dw wydz',self.idBacklog)
+  
+        #Creamos una nueva historia de usuario
+        #Insertamos la accion
+        oAccion = accions()
+        oAccion.insertAccion('Dxfynyr', self.idBacklog)
+        search  = oAccion.searchAccion('Dxfynyr', self.idBacklog)
+        idFound = search[0].AC_idAccion
+  
+        #Insertamos la historia
+        oHistory = userHistory()
+        result   = oHistory.insertUserHistory('jDw',0,1,idFound,self.idBacklog,1)
+        search  = oHistory.searchUserHistory('jDw',self.idBacklog)
+        idFound = search[0].UH_idUserHistory
+  
+        # Inicio de la prueba.
+        oSprint.asignSprintHistory(1,self.idBacklog,idFound)
+        oHistory.assignHistoryResume(idFound,"holaholahola")
+        oHistory.assignHistoryResume(idFound, "asdf")
+        result = (oSprint.getAssignedSprintHistory(1, self.idBacklog)[0].UH_resume == "asdf")
+
+        self.assertTrue(result)
+  
+        #Eliminamos la historia, la accion y el sprint creado
+        oSprint.deleteAssignedSprintHistory(1,self.idBacklog,idFound)
+        oSprint.deleteSprint(1,self.idBacklog)
+        oHistory.deleteUserHistory(1)
+        oAccion.deleteAccion('Dxfynyr',self.idBacklog)
+
     #############################################
     #      Pruebas para asignSprintHistory      #
     #############################################
@@ -4356,3 +4428,5 @@ class TestSprintClass(unittest.TestCase):
         oSprint.deleteSprint(1,self.idBacklog)
         oHistory.deleteUserHistory(idFound)
         oAccion.deleteAccion('Dxfynyr',self.idBacklog)
+
+
