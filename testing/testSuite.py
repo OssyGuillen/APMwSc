@@ -13,6 +13,7 @@ from testObjectivesUserHistory  import *
 from testRole                   import *
 from testTask                   import *
 from testUser                   import *
+from testUserHistory 			import *
 
 if __name__ == '__main__':
     runner = unittest.TextTestRunner()
