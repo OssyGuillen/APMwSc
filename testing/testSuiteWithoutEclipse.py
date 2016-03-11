@@ -17,6 +17,7 @@ from testRole                   import *
 from testTask                   import *
 from testUser                   import *
 from testArchivo                import *
+from testPrueba                 import *
 
 if __name__ == '__main__':
     unittest.main()
