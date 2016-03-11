@@ -529,5 +529,5 @@ class testPrueba(unittest.TestCase):
         self.assertFalse(result)
 
 
-if __name__ == '__main__':
-    unittest.main()
+# if __name__ == '__main__':
+#     unittest.main()
