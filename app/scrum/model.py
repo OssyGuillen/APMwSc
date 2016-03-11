@@ -2,18 +2,15 @@
 
 # Se importan las librerias necesarias.
 import os
-import sys
+import datetime
+
 from flask                 import Flask
 from flask.ext.migrate     import Migrate, MigrateCommand
 from flask.ext.sqlalchemy  import SQLAlchemy
 from flask.ext.script      import Manager
 
 from sqlalchemy import *
-from sqlalchemy.sql.schema import PrimaryKeyConstraint
 
-from migrate import *
-from migrte.changeset import *
- 
 # Conexion con la base de datos.
 basedir = os.path.abspath(os.path.dirname(__file__))
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'apl.db')
