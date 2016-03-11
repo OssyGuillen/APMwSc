@@ -1,6 +1,7 @@
 from flask import request, session, Blueprint, json
 from app.scrum.sprintClass       import *
 from app.scrum.meetingClass      import *
+from app.scrum.elementMeetingClass   import *
 from app.scrum.backLog           import *
 from datetime import datetime
 
@@ -12,11 +13,18 @@ def ACrearElementoMeeting():
     #POST/PUT parameters
     params = request.get_json()
     results = [{'label':'/VReunion', 'msg':['Elemento de la reunión creado']}, {'label':'/VCrearElementoMeeting', 'msg':['Error al crear un elemento a la reunión']}, ]
-    res = results[0]
+    res = results[1]
     #Action code goes here, res should be a list with a label and a message
 
-    idReunion = 1
-    res['label'] = res['label'] + '/' + str(idReunion)
+    usuario = 'gennysanchez11'
+    challenges = params['challenge']
+    planed = params['planed']
+    done = params['done']
+    idReunion = int(session['idReunion'])
+    oElementMeeting = elementMeeting()
+    exito = oElementMeeting.insertElement(challenges, planed, done, idReunion, usuario)
+    if exito:
+        res = results[0]
 
     #Action code ends here
     if "actor" in res:
