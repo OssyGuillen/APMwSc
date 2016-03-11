@@ -548,14 +548,5 @@ class TestUserHistory(unittest.TestCase):
 		aBacklog.deleteProduct('Podn fjdd.')
 
 
-	#########################
-	#      COMBINADAS       #
-	#########################
-
-	
-
-
-
-
 if __name__ == '__main__':
     unittest.main()
