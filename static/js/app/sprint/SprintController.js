@@ -2,6 +2,9 @@ scrumModule.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/VCrearSprint/:idPila', {
                 controller: 'VCrearSprintController',
                 templateUrl: 'app/sprint/VCrearSprint.html'
+            }).when('/VResumenHistoria/:idSprint', {
+                controller: 'VResumenHistoriaController',
+                templateUrl: 'app/sprint/VResumenHistoria.html'
             }).when('/VSprint/:idSprint', {
                 controller: 'VSprintController',
                 templateUrl: 'app/sprint/VSprint.html'
@@ -54,6 +57,43 @@ scrumModule.controller('VCrearSprintController',
       };
 
     }]);
+scrumModule.controller('VResumenHistoriaController', 
+   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'prodService', 'sprintService',
+    function ($scope, $location, $route, $timeout, flash, $routeParams, prodService, sprintService) {
+      $scope.msg = '';
+      $scope.fResumenHistoria = {};
+
+      sprintService.VResumenHistoria({"idSprint":$routeParams.idSprint}).then(function (object) {
+        $scope.res = object.data;
+        for (var key in object.data) {
+            $scope[key] = object.data[key];
+        }
+        if ($scope.logout) {
+            $location.path('/');
+        }
+
+
+      });
+      $scope.VSprint1 = function(idSprint) {
+        $location.path('/VSprint/'+idSprint);
+      };
+
+      $scope.fResumenHistoriaSubmitted = false;
+      $scope.AResumenHistoria0 = function(isValid) {
+        $scope.fResumenHistoriaSubmitted = true;
+        if (isValid) {
+          
+          sprintService.AResumenHistoria($scope.fResumenHistoria).then(function (object) {
+              var msg = object.data["msg"];
+              if (msg) flash(msg);
+              var label = object.data["label"];
+              $location.path(label);
+              $route.reload();
+          });
+        }
+      };
+
+    }]);
 scrumModule.controller('VSprintController', 
    ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngTableParams', 'prodService', 'sprintService',
     function ($scope, $location, $route, $timeout, flash, $routeParams, ngTableParams, prodService, sprintService) {
@@ -70,27 +110,27 @@ scrumModule.controller('VSprintController',
         }
 
 
-              var AElimSprintHistoria5Data = $scope.res.data5;
-              if(typeof AElimSprintHistoria5Data === 'undefined') AElimSprintHistoria5Data=[];
-              $scope.tableParams5 = new ngTableParams({
+              var AElimSprintHistoria6Data = $scope.res.data6;
+              if(typeof AElimSprintHistoria6Data === 'undefined') AElimSprintHistoria6Data=[];
+              $scope.tableParams6 = new ngTableParams({
                   page: 1,            // show first page
                   count: 10           // count per page
               }, {
-                  total: AElimSprintHistoria5Data.length, // length of data
+                  total: AElimSprintHistoria6Data.length, // length of data
                   getData: function($defer, params) {
-                      $defer.resolve(AElimSprintHistoria5Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                      $defer.resolve(AElimSprintHistoria6Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                   }
               });            
 
-              var AElimSprintTarea7Data = $scope.res.data7;
-              if(typeof AElimSprintTarea7Data === 'undefined') AElimSprintTarea7Data=[];
-              $scope.tableParams7 = new ngTableParams({
+              var AElimSprintTarea8Data = $scope.res.data8;
+              if(typeof AElimSprintTarea8Data === 'undefined') AElimSprintTarea8Data=[];
+              $scope.tableParams8 = new ngTableParams({
                   page: 1,            // show first page
                   count: 10           // count per page
               }, {
-                  total: AElimSprintTarea7Data.length, // length of data
+                  total: AElimSprintTarea8Data.length, // length of data
                   getData: function($defer, params) {
-                      $defer.resolve(AElimSprintTarea7Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                      $defer.resolve(AElimSprintTarea8Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                   }
               });            
 
@@ -104,6 +144,9 @@ scrumModule.controller('VSprintController',
       };
       $scope.VSprintTarea3 = function(idSprint) {
         $location.path('/VSprintTarea/'+idSprint);
+      };
+      $scope.VResumenHistoria4 = function(idSprint) {
+        $location.path('/VResumenHistoria/'+idSprint);
       };
 
       $scope.fSprintSubmitted = false;
@@ -121,7 +164,7 @@ scrumModule.controller('VSprintController',
         }
       };
 
-      $scope.AElimSprintHistoria5 = function(id) {
+      $scope.AElimSprintHistoria6 = function(id) {
           var tableFields = [["idHistoria","id"],["prioridad","Prioridad"],["enunciado","Enunciado"]];
           var arg = {};
           arg[tableFields[0][1]] = ((typeof id === 'object')?JSON.stringify(id):id);
@@ -133,7 +176,7 @@ scrumModule.controller('VSprintController',
               $route.reload();
           });
       };
-      $scope.AElimSprintTarea7 = function(id) {
+      $scope.AElimSprintTarea8 = function(id) {
           var tableFields = [["idTarea","id"],["descripcion","Descripción"]];
           var arg = {};
           arg[tableFields[0][1]] = ((typeof id === 'object')?JSON.stringify(id):id);

@@ -173,6 +173,35 @@ def AModifSprint():
 
     return json.dumps(res)
 
+@sprint.route('/sprint/AResumenHistoria', methods=['POST'])
+def AResumenHistoria():
+    #POST/PUT parameters
+    params = request.get_json()
+    results = [{'label':'/VSprint', 'msg':['Resumen agregado exitosamente!']}, {'label':'/VResumenHistoria', 'msg':['Error agregando resumen de historia']}, ]
+    res = results[0]
+    #Action code goes here, res should be a list with a label and a message
+
+    idSprint = int(session['idSprint'])
+    idUserHistory = int(params['Historia'])
+    resume = str(params['Resumen'])
+
+    res['label'] = res['label'] + '/' + str(idSprint)
+    oUserHistory = userHistory()
+    result = oUserHistory.assignHistoryResume(idUserHistory, resume)
+
+    if not result:
+        res = result[1]
+
+    #Action code ends here
+    if "actor" in res:
+        if res['actor'] is None:
+            session.pop("actor", None)
+        else:
+            session['actor'] = res['actor']
+    return json.dumps(res)
+
+
+
 @sprint.route('/sprint/ASprintHistoria', methods=['POST'])
 def ASprintHistoria():
     #POST/PUT parameters
@@ -268,6 +297,35 @@ def VCrearSprint():
     res['usuario'] = session['usuario']
     res['idPila']  = idPila
 
+    return json.dumps(res)
+
+
+@sprint.route('/sprint/VResumenHistoria')
+def VResumenHistoria():
+    #GET parameter
+    idSprint = request.args['idSprint']
+    res = {}
+    if "actor" in session:
+        res['actor']=session['actor']
+    #Action code goes here, res should be a JSON structure
+
+    if 'usuario' not in session:
+        res['logout'] = '/'
+        return json.dumps(res)
+    res['usuario'] = session['usuario']
+
+    idPila = int(session['idPila'])
+
+    oSprint = sprints()
+    historiasSprint = oSprint.getAssignedSprintHistory(idSprint, idPila)
+    res['fResumenHistoria_opcionesHistoria'] = [
+        {'key':historia.UH_idUserHistory,'value':historia.UH_codeUserHistory} for historia in historiasSprint
+    ]
+
+    res['idSprint'] = idSprint
+    res['fSprintHistoria'] = {'idPila':idPila, 'idSprint':idSprint}
+
+    #Action code ends here
     return json.dumps(res)
 
 
