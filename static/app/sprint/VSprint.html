@@ -45,6 +45,7 @@
             <tr ng-repeat="row in $data">
                 <td data-title="'Prioridad'" ng-bind="row['prioridad']"></td>
                 <td data-title="'Enunciado'" ng-bind="row['enunciado']"></td>
+                <td data-title="'Resumen'" ng-bind="row['resumen']"></td>
                 <td ng-show="row['idHistoria']"><a ng-click="AElimSprintHistoria6(row['idHistoria'])">-historia</a></td>
             </tr>
         </table>

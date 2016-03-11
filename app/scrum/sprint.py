@@ -181,6 +181,8 @@ def AResumenHistoria():
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
 
+    print(params)
+
     idSprint = int(session['idSprint'])
     idUserHistory = int(params['Historia'])
     resume = str(params['Resumen'])
@@ -190,7 +192,7 @@ def AResumenHistoria():
     result = oUserHistory.assignHistoryResume(idUserHistory, resume)
 
     if not result:
-        res = result[1]
+        res = results[1]
 
     #Action code ends here
     if "actor" in res:
@@ -200,7 +202,7 @@ def AResumenHistoria():
             session['actor'] = res['actor']
     return json.dumps(res)
 
-
+# 
 
 @sprint.route('/sprint/ASprintHistoria', methods=['POST'])
 def ASprintHistoria():
@@ -303,7 +305,7 @@ def VCrearSprint():
 @sprint.route('/sprint/VResumenHistoria')
 def VResumenHistoria():
     #GET parameter
-    idSprint = request.args['idSprint']
+    # idSprint = request.args['idSprint']
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
@@ -315,7 +317,8 @@ def VResumenHistoria():
     res['usuario'] = session['usuario']
 
     idPila = int(session['idPila'])
-
+    idSprint = int(session['idSprint'])
+# 
     oSprint = sprints()
     historiasSprint = oSprint.getAssignedSprintHistory(idSprint, idPila)
     res['fResumenHistoria_opcionesHistoria'] = [
@@ -378,15 +381,16 @@ def VSprint():
         userHistories.append(result)
 
     #Lista de Historias
-    res['data5'] = [
+    res['data6'] = [
         {'idHistoria':hist['idHistory'],
-         'prioridad' :hist['priority'], 
-         'enunciado' :'En tanto ' + hist['actors'] + hist['accions'] + ' para ' + hist['objectives']}for hist in userHistories
+         'prioridad' :hist['priority'],
+         'enunciado' :'En tanto ' + hist['actors'] + hist['accions'] + ' para ' + hist['objectives'],
+         'resumen'   :hist['resume']}for hist in userHistories
     ]
 
     listaTareas = oSprint.getAssignedSprintTask(idSprint, idPila) # Tareas asignadas al Sprint
     #Lista de tareas
-    res['data7'] = [{'idTarea':tarea.HW_idTask, 'descripcion':tarea.HW_description}for tarea in listaTareas]
+    res['data8'] = [{'idTarea':tarea.HW_idTask, 'descripcion':tarea.HW_description}for tarea in listaTareas]
 
     session['idSprint'] = idSprint
     res['idSprint'] = idSprint

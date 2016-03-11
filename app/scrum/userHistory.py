@@ -301,6 +301,9 @@ class userHistory(object):
                     # Almacenamos en el diccionario el valor de la escala correspondiente.
                     historyDict['priority'] = foundHistory.UH_scale
                     
+                    # Almacenamos en el diccionario el valor del resumen.
+                    historyDict['resume'] = foundHistory.UH_resume
+
                     # Obtenemos los id de los actores que componen la historia.
                     result = clsActorsUserHistory.query.filter_by(AUH_idUserHistory = idUserHistory)
                     idActorsList = []
@@ -370,7 +373,7 @@ class userHistory(object):
             if checkIdHistory:
 
                 oHistory = self.searchIdUserHistory(idUserHistory)
-                oHistory.UH_resume = historyResume
+                oHistory[0].UH_resume = historyResume
             
                 db.session.commit()
 
