@@ -60,10 +60,10 @@
             <span class="glyphicon glyphicon-flash"></span>Modificar
         </button>
     </form></br>
-        <button class="btn btn-perso btn-lg btn-block {{fHistoria.estado}}" ng-click="ACompletarHistoria(fHistoria.idHistoria)" type="button">
+        <button name="complete" class="btn btn-perso btn-lg btn-block {{fHistoria.estado}}" ng-click="ACompletarHistoria(fHistoria.idHistoria)" type="button">
             Marcar como completa
         </button>
-        <button class="btn btn-perso btn-lg btn-block no-{{fHistoria.estado}}" ng-click="AIncompletarHistoria(fHistoria.idHistoria)" type="button">
+        <button name="incomplete" class="btn btn-perso btn-lg btn-block no-{{fHistoria.estado}}" ng-click="AIncompletarHistoria(fHistoria.idHistoria)" type="button">
             Marcar como incompleta
         </button>
 
