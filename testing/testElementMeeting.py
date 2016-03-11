@@ -3,7 +3,7 @@
 import sys
 import unittest
 
-# Ruta que permite utilizar el módulo Team.py
+# Ruta que permite utilizar el módulo elementMeetingClass.py
 sys.path.append('../app/scrum')
 
 from sprintClass import *
