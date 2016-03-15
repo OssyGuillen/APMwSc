@@ -12,9 +12,11 @@
         </div>
         <div class="collapse navbar-collapse" id="contenido-plegable">
             <ul class="nav navbar-nav navbar-left">
-<li><a ng-click="VSprintHistoria2(idSprint)">
+<li><a ng-click="VSprintHistoria2(idSprint)"
+       ng-show="actor=='duenoProducto' || false">
   +Asignar Historia</a></li>
-<li><a ng-click="VSprintTarea3(idSprint)">
+<li><a ng-click="VSprintTarea3(idSprint)"
+       ng-show="actor=='duenoProducto' || false">
   +Asignar Tarea</a></li>
 <li><a ng-click="VResumenHistoria4(idSprint)"
        ng-show="actor=='desarrollador' || false">
