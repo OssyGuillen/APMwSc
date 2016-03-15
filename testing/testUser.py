@@ -1618,9 +1618,9 @@ class TestUser(unittest.TestCase):
         _user.deleteUser('user1')
         _user.deleteUser('user2')
         _user.deleteUser('user3')
-        actor.deleteActor('Actor1')
-        actor.deleteActor('Actor2')
-        actor.deleteActor('Actor3')
+        actor.deleteActor('Actor1', idBacklog)
+        actor.deleteActor('Actor2', idBacklog)
+        actor.deleteActor('Actor3', idBacklog)
         _backlog.deleteProduct('Backlog')
         
 # Fin de casos User

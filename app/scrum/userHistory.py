@@ -240,7 +240,20 @@ class userHistory(object):
             if checkLonId:
                 found = clsUserHistory.query.filter_by(UH_idUserHistory = userHistoryId).all()
                 return found
-        return([])    
+        return([])
+
+    def testsAsociatedToUserHistory(self, userHistoryId):
+        ''' Permite obtener una lista de las pruebas asociadas a una historia de usuario'''
+
+        checkTypeId = type(userHistoryId) == int
+
+        if checkTypeId:
+            checkLonId = CONST_MIN_ID <= userHistoryId
+
+            if checkLonId:
+                found = clsAcceptanceTest.query.filter_by(AT_idUserHistory = userHistoryId).all()
+                return found
+        return([])
     
     
     def searchidUserHistoryIdAccion(self, idAccion):
@@ -278,7 +291,6 @@ class userHistory(object):
                     if (idSuperHistory != 0 and succesor == []):
                         self.updatePriority(idSuperHistory,1)
                     return True
-                    
         return False 
 
 
@@ -364,22 +376,22 @@ class userHistory(object):
 
     def assignHistoryResume(self,idUserHistory, historyResume):
         '''Permite agregar un resumen a una historia de usuario'''
-    
+
         checkTypeIdHistory = type(idUserHistory) == int
         checkTypeHistoryResume = type(historyResume) == str
 
         if checkTypeIdHistory and checkTypeHistoryResume:
             checkIdHistory = idUserHistory >= CONST_MIN_ID
-            
+
             if checkIdHistory:
 
                 oHistory = self.searchIdUserHistory(idUserHistory)
                 oHistory[0].UH_resume = historyResume
-            
+
                 db.session.commit()
 
                 return True
 
-        return False 
-    
+        return False
+
 # Fin Clase userHistory

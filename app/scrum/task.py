@@ -174,5 +174,48 @@ class task(object):
         ''' Permite obtener una tarea dado su ID'''
         return clsTask.query.filter_by(HW_idTask = taskID).first()
 
+    def findIdTask(self, idTask):
+        checkTypeId = type(idTask) == int
+        found = None
+
+        if checkTypeId:
+            found = clsTask.query.filter_by(HW_idTask=idTask).first()
+            return found
+
+        return None
+
+
+    def insertUserTask(self, idTask, idEquipo):
+        checkTypeidTask = type(idTask) == int
+        checkTypeidEquipo = type(idEquipo) == int
+
+        if checkTypeidTask and checkTypeidEquipo:
+            found = self.findIdTask(idTask)
+            if found != None:
+                idUserHistory = found.HW_idUserHistory
+                found2 = clsUserHistory.query.filter_by(UH_idUserHistory=idUserHistory).first()
+
+                if found2 != None:
+                    idBacklog = found2.UH_idBacklog
+                    found3 = clsEquipo.query.filter_by(EQ_idEquipo=idEquipo,EQ_idBacklog=idBacklog).first()
+
+                    if found3 != None:
+                        found.HW_idEquipo = idEquipo
+                        db.session.commit()
+                        return True
+        return False
+
+    def deleteUserTask(self, idTask):
+        checkTypeidTask = type(idTask) == int
+
+        if checkTypeidTask:
+            found = self.findIdTask(idTask)
+            if found != []:
+
+                found.HW_idEquipo = None
+                db.session.commit()
+                return True
+        return False
+
 
 #Fin clase Task
