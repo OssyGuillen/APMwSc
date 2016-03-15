@@ -48,8 +48,7 @@
                 <td data-title="'Prioridad'" ng-bind="row['prioridad']"></td>
                 <td data-title="'Enunciado'" ng-bind="row['enunciado']"></td>
                 <td data-title="'Resumen'" ng-bind="row['resumen']"></td>
-                <td ng-show="row['idHistoria']"><a ng-click="AElimSprintHistoria6(row['idHistoria'])"
-                ng-show="actor=='duenoProducto' || false">-historia</a></td>
+                <td ng-show="row['idHistoria']"><a ng-click="AElimSprintHistoria6(row['idHistoria'])" ng-show="actor=='duenoProducto' || false">-historia</a></td>
             </tr>
         </table>
 
@@ -57,7 +56,7 @@
         <table ng-table="tableParams8" template-pagination="pager.html" class="table">
             <tr ng-repeat="row in $data">
                 <td data-title="'Descripción'" ng-bind="row['descripcion']"></td>
-                <td ng-show="row['idTarea']"><a ng-click="AElimSprintTarea8(row['idTarea'])">-tarea</a></td>
+                <td ng-show="row['idTarea']"><a ng-click="AElimSprintTarea8(row['idTarea'])" ng-show="actor=='duenoProducto' || false">-tarea</a></td>
             </tr>
         </table>
 
