@@ -52,7 +52,7 @@ class TestElementMeeting(unittest.TestCase):
     def testEmptyTableTrue(self):
         aElement = elementMeeting()
         result = aElement.emptyTable()
-        self.assertTrue(result)
+        self.assertFalse(result)
 
     #Probar que si la tabla no esta vacia, se devuelve FALSE
     def testEmptyTableFalse(self):

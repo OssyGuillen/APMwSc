@@ -15,12 +15,18 @@ def ACrearElementoMeeting():
     results = [{'label':'/VReunion', 'msg':['Elemento de la reunión creado']}, {'label':'/VCrearElementoMeeting', 'msg':['Error al crear un elemento a la reunión']}, ]
     res = results[1]
     #Action code goes here, res should be a list with a label and a message
-
-    usuario = 'gennysanchez11'
+    idReunion = 1
+    res['label'] = res['label'] + '/' + str(idReunion)
+    # ATENCION: lo que estas a punto de leer es un cable que debe ser eliminado
+    # Por qué es un cable? El query no debería hacerse aquí.
+    res['usuario'] = session['usuario']
+    usuario = clsUser.query.filter_by(U_fullname = session['usuario']['nombre']).all()[0].U_username
+    # fin del cable
+    #usuario = 'gennysanchez11'
     challenges = params['challenge']
     planed = params['planed']
     done = params['done']
-    idReunion = int(session['idReunion'])
+    #idReunion = int(session['idReunion'])
     oElementMeeting = elementMeeting()
     exito = oElementMeeting.insertElement(challenges, planed, done, idReunion, usuario)
     if exito:
@@ -145,14 +151,31 @@ def AElimSprint():
 def AModifElementoMeeting():
     #POST/PUT parameters
     params = request.get_json()
-    results = [{'label':'/VReunion', 'msg':['Elemento Modificado con exito']}, ]
-    res = results[0]
+    results = [{'label':'/VReunion', 'msg':['Elemento Modificado con exito']},{'label':'/VReunion', 'msg':['Error al modificar elemento']} ]
+    res = results[1]
     #Action code goes here, res should be a list with a label and a message
-
+    # Cableada para la presentación. Sólo funciona para modificar los 
+    # elementos creados por el usuario de turno en la reunión 1
     if 'usuario' not in session:
       res['logout'] = '/'
       return json.dumps(res)
+
+    challenges = params['challenge']
+    planed = params['planed']
+    done = params['done']
+    # ATENCIÓN: lo que estás a punto de leer es un cable, pues hay un bug en el que
+    # session['idReunion'] arrpja KEY ERROR.
     idReunion = 1
+    # ATENCION: lo que estas a punto de leer es un cable que debe ser eliminado
+    # Por qué es un cable? El query no debería hacerse aquí.
+    res['usuario'] = session['usuario']
+    usuario = clsUser.query.filter_by(U_fullname = session['usuario']['nombre']).all()[0].U_username
+    # fin del cable
+    oElementMeeting = elementMeeting()
+    anElement = oElementMeeting.getElementsByUserAndMeeting(usuario, idReunion)[0]
+    exito = oElementMeeting.updateElement(anElement.EM_idElementMeeting, challenges, planed, done, idReunion, usuario)
+    if exito:
+        res = results[0]
     res['label'] = res['label'] + '/' + str(idReunion)
 
     #Action code ends here
@@ -257,7 +280,8 @@ def VCrearElementoMeeting():
       res['logout'] = '/'
       return json.dumps(res)
     res['usuario'] = session['usuario']
-    #Datos de prueba
+    # ATENCIÓN: lo que estás a punto de leer es un cable, pues hay un bug en el que
+    # idReunion tiene valor UNDEFINED
     res['idReunion'] = 1
     res['idSprint'] = 1
 
@@ -316,7 +340,7 @@ def VCrearSprint():
 @sprint.route('/sprint/VElementoMeeting')
 def VElementoMeeting():
     #GET parameter
-    idReunion = request.args['idReunion']
+    idReunion = int(request.args['idReunion'])
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
@@ -325,17 +349,28 @@ def VElementoMeeting():
     if 'usuario' not in session:
       res['logout'] = '/'
       return json.dumps(res)
+
+    # ATENCION: lo que estas a punto de leer es un cable que debe ser eliminado
+    # Por qué es un cable? Porque debería ser el username que lo creó y no el que
+    # está en sesión. Además, el query no debería hacerse aquí.
     res['usuario'] = session['usuario']
+    u = clsUser.query.filter_by(U_fullname = session['usuario']['nombre']).all()[0].U_username
+    # fin del cable
+    oElementMeeting = elementMeeting()
+    anElement = oElementMeeting.getElementsByUserAndMeeting(u, idReunion)[0]
     res['fElementoMeeting'] = {
-      'challenge' :'Carrera inicial. Modelo de datos, MVC, identificación',
-      'planed':'planificado',
-      'done':'realizado',
-      'idReunion':1,
-      'idUser':1,
+        'challenge' : anElement.EM_challenges,
+        'planed' : anElement.EM_planned,
+        'done' : anElement.EM_done,
+#      'challenge' :'Carrera inicial. Modelo de datos, MVC, identificación',
+#      'planed':'planificado',
+#      'done':'realizado',
+#      'idReunion':1,
+#      'idUser':1,
       }
-    res['idElementMeeting'] = 1
-    res['idElemento'] = 1
-    res['idReunion'] = 1
+    res['idElementMeeting'] = anElement.EM_idElementMeeting 
+    res['idElemento'] = 1 # Qué es esto?
+    res['idReunion'] =  idReunion
     res['idSprint'] = 1
 
     #Action code ends here
@@ -357,7 +392,10 @@ def VReunion():
     oMeeting = meeting()
     result  = oMeeting.getMeetingID(idReunion,idSprint)
 
-    res['data4'] = [{'id':1, 'user': 'username'}]  
+    oElementMeeting = elementMeeting()
+    elements  = oElementMeeting.getElements(idReunion)
+    res['data4'] = [{'id': e.EM_idElementMeeting, 'user': e.EM_user} for e in elements]
+
     res['fReunion'] = {'idReunion':idReunion,'idSprint':idSprint, 'Actividades':result[0].SM_activities, 'Sugerencias':result[0].SM_suggestions,'Retos':result[0].SM_challenges, 'Tipo':result[0].SM_typeMeeting}
 
     #Action code ends here
