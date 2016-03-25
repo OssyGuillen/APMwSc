@@ -7,6 +7,26 @@ from datetime import datetime
 
 sprint = Blueprint('sprint', __name__)
 
+@sprint.route('/sprint/AActualizarEquipoSprint', methods=['POST'])
+def AActualizarEquipoSprint():
+    #POST/PUT parameters
+    params = request.get_json()
+    results = [{'label':'/VEquipoSprint', 'msg':['Equipo actualizado']}, {'label':'/VEquipoSprint', 'msg':['Error al actualizar equipo']}, ]
+    res = results[0]
+    #Action code goes here, res should be a list with a label and a message
+
+    print(params['lista'])
+    res['label'] = res['label'] + '/' + repr(1)
+
+    #Action code ends here
+    if "actor" in res:
+        if res['actor'] is None:
+            session.pop("actor", None)
+        else:
+            session['actor'] = res['actor']
+    return json.dumps(res)
+
+
 
 @sprint.route('/sprint/ACrearElementoMeeting', methods=['POST'])
 def ACrearElementoMeeting():
@@ -284,6 +304,7 @@ def VCrearElementoMeeting():
     # idReunion tiene valor UNDEFINED
     res['idReunion'] = 1
     res['idSprint'] = 1
+    #FIN DEL CABLE
 
     #Action code ends here
     return json.dumps(res)
@@ -308,6 +329,12 @@ def VCrearReunionSprint():
     res['usuario'] = session['usuario']
     res['idPila']  = idPila
     res['idSprint'] = session['idSprint']
+    
+    res['fReunion_OpcionesTipo'] =[
+        {'key':1, 'value':'Presencial'},
+        {'key':2, 'value':'No Presencial'},
+    ]
+
 
     #Action code ends here
     return json.dumps(res)
@@ -376,6 +403,40 @@ def VElementoMeeting():
     #Action code ends here
     return json.dumps(res)
 
+
+@sprint.route('/sprint/VEquipoSprint')
+def VEquipoSprint():
+    #GET parameter
+    idSprint = request.args['idSprint']
+    res = {}
+    if "actor" in session:
+        res['actor']=session['actor']
+    #Action code goes here, res should be a JSON structure
+
+    if 'usuario' not in session:
+      res['logout'] = '/'
+      return json.dumps(res)
+    res['usuario'] = session['usuario']
+    res['idSprint'] = 1
+    res['fEquipo'] = {'lista':[
+        {'miembro':1, 'rol':1},
+        {'miembro':2, 'rol':1},
+        {'miembro':3, 'rol':1},
+      ]}
+    res['fEquipo_opcionesRol'] =[
+        {'key':1, 'value':'Desarrollador'},
+      ]
+    res['fEquipo_opcionesMiembros'] =[
+        {'key':1, 'value':'Mia'},
+        {'key':2, 'value':'Mara'},
+        {'key':3, 'value':'Marcos'},
+        {'key':4, 'value':'Julia'},
+        {'key':5, 'value':'Roberto'},
+      ]
+    
+
+    #Action code ends here
+    return json.dumps(res)
 
 
 @sprint.route('/sprint/VReunion')
