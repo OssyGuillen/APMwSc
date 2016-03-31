@@ -5,6 +5,7 @@ from app.scrum.elementMeetingClass   import *
 from app.scrum.backLog           import *
 from datetime import datetime
 from app.scrum.userHistory       import *
+from app.scrum.user              import *
 from app.scrum.task              import *
 
 sprint = Blueprint('sprint', __name__)
@@ -17,14 +18,16 @@ def ACrearElementoMeeting():
     results = [{'label':'/VReunion', 'msg':['Elemento de la reunión creado']}, {'label':'/VCrearElementoMeeting', 'msg':['Error al crear un elemento a la reunión']}, ]
     res = results[1]
     #Action code goes here, res should be a list with a label and a message
-
-    usuario = 'gennysanchez11'
+    usuario = session['usuario']
+    oUser = user()
+    usuario = oUser.searchUserByName(usuario['nombre'])
+    print(usuario)
     challenges = params['challenge']
     planed = params['planed']
     done = params['done']
     idReunion = int(session['idReunion'])
     oElementMeeting = elementMeeting()
-    exito = oElementMeeting.insertElement(challenges, planed, done, idReunion, usuario)
+    exito = oElementMeeting.insertElement(challenges, planed, done, idReunion, usuario.U_username)
     if exito:
         res = results[0]
 
@@ -578,10 +581,14 @@ def VReunion():
     oMeeting = meeting()
     result  = oMeeting.getMeetingID(idReunion,idSprint)
 
-    res['data4'] = [{'id':1, 'user': 'username'}]  
+    oElement = elementMeeting()
+    elements = oElement.getElements(idReunion)
+    res['data4'] = [{'id':elem.EM_idElementMeeting, 'user':elem.EM_user}for elem in elements]  
     res['fReunion'] = {'idReunion':idReunion,'idSprint':idSprint, 'Actividades':result[0].SM_activities, 'Sugerencias':result[0].SM_suggestions,'Retos':result[0].SM_challenges, 'Tipo':result[0].SM_typeMeeting}
 
     #Action code ends here
+    res['idReunion'] = idReunion
+    session['idReunion'] = idReunion
     return json.dumps(res)
 
 

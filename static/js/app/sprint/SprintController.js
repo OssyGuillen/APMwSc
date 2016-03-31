@@ -295,7 +295,7 @@ scrumModule.controller('VSprintController',
       $scope.msg = '';
       $scope.fSprint = {};
 
-      sprintService.VSprint({"idPila":$routeParams.idPila}).then(function (object) {
+      sprintService.VSprint({"idSprint":$routeParams.idSprint}).then(function (object) {
         $scope.res = object.data;
         for (var key in object.data) {
             $scope[key] = object.data[key];
@@ -532,8 +532,8 @@ scrumModule.controller('VSprintsController',
         $location.path('/VCrearSprint/'+idPila);
       };
 
-      $scope.VSprint1 = function(idPila) {
-        $location.path('/VSprint/'+((typeof idPila === 'object')?JSON.stringify(idPila):idPila));
+      $scope.VSprint1 = function(idSprint) {
+        $location.path('/VSprint/'+((typeof idSprint === 'object')?JSON.stringify(idSprint):idSprint));
       };
 
     }]);
