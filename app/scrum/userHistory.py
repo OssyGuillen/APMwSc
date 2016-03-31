@@ -342,6 +342,9 @@ class userHistory(object):
                     # Almacenamos en el diccionario el valor de la escala correspondiente.
                     historyDict['priority'] = foundHistory.UH_scale
                     
+                    # Almacenamos en el diccionario el valor del resumen.
+                    historyDict['resume'] = foundHistory.UH_resume
+
                     # Obtenemos los id de los actores que componen la historia.
                     result = clsActorsUserHistory.query.filter_by(AUH_idUserHistory = idUserHistory)
                     idActorsList = []
@@ -398,6 +401,26 @@ class userHistory(object):
                     return historyDict
 
         return historyDict 
+
+    def assignHistoryResume(self,idUserHistory, historyResume):
+        '''Permite agregar un resumen a una historia de usuario'''
+
+        checkTypeIdHistory = type(idUserHistory) == int
+        checkTypeHistoryResume = type(historyResume) == str
+
+        if checkTypeIdHistory and checkTypeHistoryResume:
+            checkIdHistory = idUserHistory >= CONST_MIN_ID
+
+            if checkIdHistory:
+
+                oHistory = self.searchIdUserHistory(idUserHistory)
+                oHistory[0].UH_resume = historyResume
+
+                db.session.commit()
+
+                return True
+
+        return False
 
     def getUHCodeFromId(self,idUserHistory):
         found = clsUserHistory.query.filter_by(UH_idUserHistory = idUserHistory).first()
