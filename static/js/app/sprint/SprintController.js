@@ -15,8 +15,8 @@ scrumModule.config(['$routeProvider', function ($routeProvider) {
                 controller: 'VReunionController',
                 templateUrl: 'app/sprint/VReunion.html'
             }).when('/VSprint/:idPila', {
-              controller: 'VCrearSprintController',
-                templateUrl: 'app/sprint/VCrearSprint.html'
+              controller: 'VSprintController',
+                templateUrl: 'app/sprint/VSprint.html'
             }).when('/VResumenHistoria/:idSprint', {
                 controller: 'VResumenHistoriaController',
                 templateUrl: 'app/sprint/VResumenHistoria.html'
