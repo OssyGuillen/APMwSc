@@ -267,7 +267,7 @@ def AModifReunionSprint():
     session['idReunion'] = idReunion
 
     return json.dumps(res)
-    
+
 @sprint.route('/sprint/AElimSprintTarea')
 def AElimSprintTarea():
     #POST/PUT parameters
@@ -648,6 +648,16 @@ def VSprint():
 
     session['idSprint'] = idSprint
     res['idSprint'] = idSprint
+    res['idPila'] = idPila
+
+    oMeeting = meeting()
+    result  = oMeeting.getMeetings(idSprint)
+    res['data4'] = [{'id':res.SM_idSprintMeeting, 'fecha':res.SM_meetingDate, 'actividades':res.SM_activities,'tipo':res.SM_typeMeeting } for res in result]  
+
+    session['idSprint'] = idSprint
+    res['idSprint'] = idSprint
+
+    session['idPila'] = idPila
     res['idPila'] = idPila
 
 
