@@ -65,19 +65,13 @@ class elementMeeting(object):
 			
 				# Si el meeting existe. Verifico que usuario no se repita
 				if foundMeeting != []:
-					#print("INSERT 3")			
-
-					foundElement = clsElementMeeting.query.filter_by(EM_meeting = idMeeting, EM_user = user).all()
-
-					if foundElement == []:
-						
-						#print("INSERT 4")			
-						newElement = clsElementMeeting(challenges,planned, done, idMeeting, user)
-						newElement.EM_meeting = idMeeting
-						newElement.EM_user = user
-						db.session.add(newElement)
-						db.session.commit()
-						return True
+					#print("INSERT 3")						
+					newElement = clsElementMeeting(challenges,planned, done, idMeeting, user)
+					newElement.EM_meeting = idMeeting
+					newElement.EM_user = user
+					db.session.add(newElement)
+					db.session.commit()
+					return True
 		return False
 
 	def updateElement(self, elementId, newChallenges, newPlanned, newDone, idMeeting, user):
