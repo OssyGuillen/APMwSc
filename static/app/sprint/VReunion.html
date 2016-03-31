@@ -13,7 +13,7 @@
         <div class="collapse navbar-collapse" id="contenido-plegable">
             <ul class="nav navbar-nav navbar-left">
 <li><a ng-click="VCrearElementoMeeting2(idReunion)" ng-show="actor=='desarrollador' || false">
-  +Elemento</a></li>
+  +Detalle</a></li>
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -38,7 +38,7 @@
             <span class="glyphicon glyphicon-flash"></span>Modificar Reunion de carrera
         </button>
     </form>
-    <hr /><h3> Elementos </h3>        <table ng-table="tableParams4" template-pagination="pager.html" class="table">
+    <hr /><h3> Detalles </h3>        <table ng-table="tableParams4" template-pagination="pager.html" class="table">
             <tr ng-repeat="row in $data">
                 <td data-title="'Número'" ng-bind="row['id']"></td>
                 <td data-title="'Usuario'" ng-bind="row['user']"></td>

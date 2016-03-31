@@ -11,9 +11,11 @@ from testArchivo                import *
 from testBackLog                import *
 from testCategory               import *
 from testHistory                import *
+from testElementMeeting			import *
 from testLogin                  import *
 from testObjective              import *
 from testObjectivesUserHistory  import *
+from testMeeting 				import *
 from testPrecedence             import *
 from testPrueba                 import *
 from testRole                   import *
