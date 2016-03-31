@@ -31,6 +31,8 @@ def ACrearElementoMeeting():
     if exito:
         res = results[0]
 
+    res['label'] = res['label'] + '/' + str(idReunion)
+
     #Action code ends here
     if "actor" in res:
         if res['actor'] is None:
