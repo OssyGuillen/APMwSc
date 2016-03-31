@@ -26,6 +26,10 @@ app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 
 # Instancia de la base de datos.
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
+manager = Manager(app)
+manager.add_command('db', MigrateCommand)
 
 
 # Definicion de la Base de Datos.
@@ -339,6 +343,50 @@ class clsSprint(db.Model):
         return '<S_idSprint %r, S_numero %r, S_sprintDescription %r, S_idBacklog %r>' % (self.S_idSprint, self.S_numero, self.S_sprintDescription, self.S_idBacklog)
 
 
+class clsSprintMeeting(db.Model):
+    '''Clase que define el modelo de las reuniones diarias'''
+    __tablename__ = 'meeting'
+    SM_idSprintMeeting  = db.Column(db.Integer, primary_key = True, index = True)
+    SM_meetingDate      = db.Column(db.String(12))
+    SM_activities       = db.Column(db.String(300))
+    SM_suggestions      = db.Column(db.String(300))
+    SM_challenges       = db.Column(db.String(300))
+    SM_typeMeeting      = db.Column(db.String(300))
+    SM_idSprint         = db.Column(db.Integer, db.ForeignKey('sprint.S_idSprint'))
+    def __init__(self, meetingDate, activities, suggestions, challenges, idSprint, typeM):
+        self.SM_meetingDate     = meetingDate
+        self.SM_activities      = activities
+        self.SM_suggestions     = suggestions
+        self.SM_challenges      = challenges
+        self.SM_idSprint        = idSprint
+        self.SM_typeMeeting     = typeM
+
+
+    def __repr__(self):
+        '''Representacion en string del Meeting'''
+        return '<SM_idSprintMeeting %r, SM_meetingDate %r,  SM_activities %r, SM_idSprint %r, SM_typeMeeting %r>' % (self.SM_idSprintMeeting, self.SM_meetingDate, self.SM_activities, self.SM_idSprint, self.SM_typeMeeting)
+
+
+class clsElementMeeting(db.Model):
+    '''Clase que define el modelo de un elemento de una reunión'''
+    __tablename__          = "elementMeeting"
+    EM_idElementMeeting    = db.Column(db.Integer, primary_key = True, index = True)
+    EM_challenges          = db.Column(db.String(300))
+    EM_planned             = db.Column(db.String(300))
+    EM_done                = db.Column(db.String(300))
+    EM_meeting             = db.Column(db.Integer, db.ForeignKey('meeting.SM_idSprintMeeting'))
+    EM_user                = db.Column(db.String(16), db.ForeignKey('equipo.EQ_username'))
+
+    def __init__(self,challenges,planned,done,user,meeting):
+        self.EM_challenges = challenges
+        self.EM_planned    = planned
+        self.EM_done       = done
+        self.EM_meeting    = meeting
+        self.EM_user       = user
+
+    def __repr__(self):
+        '''Representacion en string del ElementMeeting'''
+        return '<EM_idElementMeeting %r, EM_challenges %r,  EM_planned %r, EM_done %r, EM_meeting %r, EM_user %r>' % (self.EM_idElementMeeting, self.EM_challenges, self.EM_planned, self.EM_done, self.EM_meeting, self.EM_user)
 
 
 class clsPrecedence(db.Model):
@@ -418,4 +466,7 @@ try:
     completedTask.create(tareaTable)
 except:
     pass
+
+
+db.create_all()  # Creamos la base de datos
 
