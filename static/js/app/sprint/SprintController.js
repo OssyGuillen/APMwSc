@@ -15,6 +15,8 @@ scrumModule.config(['$routeProvider', function ($routeProvider) {
                 controller: 'VReunionController',
                 templateUrl: 'app/sprint/VReunion.html'
             }).when('/VSprint/:idPila', {
+              controller: 'VCrearSprintController',
+                templateUrl: 'app/sprint/VCrearSprint.html'
             }).when('/VResumenHistoria/:idSprint', {
                 controller: 'VResumenHistoriaController',
                 templateUrl: 'app/sprint/VResumenHistoria.html'
@@ -70,6 +72,7 @@ scrumModule.controller('VCrearElementoMeetingController',
       };
 
     }]);
+
 scrumModule.controller('VCrearReunionSprintController', 
    ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'prodService', 'sprintService',
     function ($scope, $location, $route, $timeout, flash, $routeParams, prodService, sprintService) {
@@ -110,6 +113,7 @@ scrumModule.controller('VCrearReunionSprintController',
       };
 
     }]);
+
 scrumModule.controller('VCrearSprintController', 
    ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'prodService', 'sprintService',
     function ($scope, $location, $route, $timeout, flash, $routeParams, prodService, sprintService) {
@@ -147,6 +151,7 @@ scrumModule.controller('VCrearSprintController',
       };
 
     }]);
+
 scrumModule.controller('VElementoMeetingController', 
    ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'prodService', 'sprintService',
     function ($scope, $location, $route, $timeout, flash, $routeParams, prodService, sprintService) {
@@ -154,13 +159,6 @@ scrumModule.controller('VElementoMeetingController',
       $scope.fElementoMeeting = {};
 
       sprintService.VElementoMeeting({"idReunion":$routeParams.idReunion}).then(function (object) {
-scrumModule.controller('VResumenHistoriaController', 
-   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'prodService', 'sprintService',
-    function ($scope, $location, $route, $timeout, flash, $routeParams, prodService, sprintService) {
-      $scope.msg = '';
-      $scope.fResumenHistoria = {};
-
-      sprintService.VResumenHistoria({"idSprint":$routeParams.idSprint}).then(function (object) {
         $scope.res = object.data;
         for (var key in object.data) {
             $scope[key] = object.data[key];
@@ -181,6 +179,34 @@ scrumModule.controller('VResumenHistoriaController',
         if (isValid) {
           
           sprintService.AModifElementoMeeting($scope.fElementoMeeting).then(function (object) {
+              var msg = object.data["msg"];
+              if (msg) flash(msg);
+              var label = object.data["label"];
+              $location.path(label);
+              $route.reload();
+          });
+        }
+      };
+
+    }]);
+
+scrumModule.controller('VResumenHistoriaController', 
+   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'prodService', 'sprintService',
+    function ($scope, $location, $route, $timeout, flash, $routeParams, prodService, sprintService) {
+      $scope.msg = '';
+      $scope.fResumenHistoria = {};
+
+      sprintService.VResumenHistoria({"idSprint":$routeParams.idSprint}).then(function (object) {
+        $scope.res = object.data;
+        for (var key in object.data) {
+            $scope[key] = object.data[key];
+        }
+        if ($scope.logout) {
+            $location.path('/');
+        }
+
+
+      });
       $scope.VSprint1 = function(idSprint) {
         $location.path('/VSprint/'+idSprint);
       };
@@ -201,6 +227,7 @@ scrumModule.controller('VResumenHistoriaController',
       };
 
     }]);
+
 scrumModule.controller('VReunionController', 
    ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngTableParams', 'prodService', 'sprintService',
     function ($scope, $location, $route, $timeout, flash, $routeParams, ngTableParams, prodService, sprintService) {
@@ -261,7 +288,9 @@ scrumModule.controller('VReunionController',
       };
 
     }]);
-scrumModule.controller('VSprintController', 
+
+scrumModule.controller('VSprintController',
+    ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngTableParams', 'prodService', 'sprintService', 
     function ($scope, $location, $route, $timeout, flash, $routeParams, ngTableParams, prodService, sprintService) {
       $scope.msg = '';
       $scope.fSprint = {};
@@ -276,15 +305,6 @@ scrumModule.controller('VSprintController',
         }
 
 
-              var VReunion4Data = $scope.res.data4;
-              if(typeof VReunion4Data === 'undefined') VReunion4Data=[];
-              $scope.tableParams4 = new ngTableParams({
-                  page: 1,            // show first page
-                  count: 10           // count per page
-              }, {
-                  total: VReunion4Data.length, // length of data
-                  getData: function($defer, params) {
-                      $defer.resolve(VReunion4Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
               var AElimSprintHistoria6Data = $scope.res.data6;
               if(typeof AElimSprintHistoria6Data === 'undefined') AElimSprintHistoria6Data=[];
               $scope.tableParams6 = new ngTableParams({
@@ -307,12 +327,48 @@ scrumModule.controller('VSprintController',
                   getData: function($defer, params) {
                       $defer.resolve(AElimSprintTarea8Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                   }
-              });            
+              });   
 
+              var VReunion4Data = $scope.res.data4;
+              if(typeof VReunion4Data === 'undefined') VReunion4Data=[];
+              $scope.tableParams4 = new ngTableParams({
+                  page: 1,            // show first page
+                  count: 10           // count per page
+              }, {
+                  total: VReunion4Data.length, // length of data
+                  getData: function($defer, params) {
+                      $defer.resolve(VReunion4Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                  }
+              });                
+
+      });
       $scope.VCrearReunionSprint1 = function(idSprint) {
         $location.path('/VCrearReunionSprint/'+idSprint);
       };
       $scope.VSprints2 = function(idPila) {
+        $location.path('/VSprints/'+idPila);
+      };
+
+      $scope.fSprintSubmitted = false;
+      $scope.AModifSprint0 = function(isValid) {
+        $scope.fSprintSubmitted = true;
+        if (isValid) {
+          
+          sprintService.AModifSprint($scope.fSprint).then(function (object) {
+              var msg = object.data["msg"];
+              if (msg) flash(msg);
+              var label = object.data["label"];
+              $location.path(label);
+              $route.reload();
+          });
+        }
+      };
+
+      $scope.VReunion4 = function(idSprint) {
+        $location.path('/VReunion/'+((typeof idSprint === 'object')?JSON.stringify(idSprint):idSprint));
+      };
+
+      $scope.VSprints1 = function(idPila) {
         $location.path('/VSprints/'+idPila);
       };
       $scope.VSprintHistoria2 = function(idSprint) {
@@ -340,8 +396,6 @@ scrumModule.controller('VSprintController',
         }
       };
 
-      $scope.VReunion4 = function(idSprint) {
-        $location.path('/VReunion/'+((typeof idSprint === 'object')?JSON.stringify(idSprint):idSprint));
       $scope.AElimSprintHistoria6 = function(id) {
           var tableFields = [["idHistoria","id"],["prioridad","Prioridad"],["enunciado","Enunciado"]];
           var arg = {};
@@ -368,7 +422,7 @@ scrumModule.controller('VSprintController',
       };
 
     }]);
-              
+
 scrumModule.controller('VSprintHistoriaController', 
    ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'prodService', 'sprintService',
     function ($scope, $location, $route, $timeout, flash, $routeParams, prodService, sprintService) {

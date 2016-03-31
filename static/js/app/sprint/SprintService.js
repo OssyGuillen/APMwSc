@@ -1,6 +1,6 @@
 scrumModule.service('sprintService', ['$q', '$http', function($q, $http) {
 
-    this.ACrearElementoMeeting = function(fElementoMeeting) {
+  this.ACrearElementoMeeting = function(fElementoMeeting) {
         return  $http({
           url: "sprint/ACrearElementoMeeting",
           data: fElementoMeeting,
@@ -60,6 +60,11 @@ scrumModule.service('sprintService', ['$q', '$http', function($q, $http) {
           method: 'POST',
         });
     //    var labels = ["/VReunion", ];
+    //    var res = labels[0];
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
 
     this.AElimSprintHistoria = function(args) {
         if(typeof args == 'undefined') args={};
@@ -82,6 +87,11 @@ scrumModule.service('sprintService', ['$q', '$http', function($q, $http) {
           method: 'POST',
         });
     //    var labels = ["/VReunion", "/VReunion", ];
+    //    var res = labels[0];
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
 
     this.AElimSprintTarea = function(args) {
         if(typeof args == 'undefined') args={};
@@ -118,6 +128,10 @@ scrumModule.service('sprintService', ['$q', '$http', function($q, $http) {
           params: args
         });
     //    var res = {};
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
 
     this.AResumenHistoria = function(fResumenHistoria) {
         return  $http({
@@ -140,6 +154,10 @@ scrumModule.service('sprintService', ['$q', '$http', function($q, $http) {
           params: args
         });
     //    var res = {};
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
 
     this.ASprintHistoria = function(fSprintHistoria) {
         return  $http({
@@ -197,6 +215,15 @@ scrumModule.service('sprintService', ['$q', '$http', function($q, $http) {
         if(typeof args == 'undefined') args={};
         return $http({
           url: 'sprint/VReunion',
+          method: 'GET',
+          params: args
+        });
+    //    var res = {};
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+
 
     this.VResumenHistoria = function(args) {
         if(typeof args == 'undefined') args={};
@@ -263,4 +290,4 @@ scrumModule.service('sprintService', ['$q', '$http', function($q, $http) {
     //    return deferred.promise;
     };
 
-}]);
+  }])
