@@ -3,6 +3,7 @@ from app.scrum.sprintClass       import *
 from app.scrum.meetingClass      import *
 from app.scrum.elementMeetingClass   import *
 from app.scrum.backLog           import *
+from app.scrum.subEquipoClass           import *
 from datetime import datetime
 
 sprint = Blueprint('sprint', __name__)
@@ -11,13 +12,21 @@ sprint = Blueprint('sprint', __name__)
 def AActualizarEquipoSprint():
     #POST/PUT parameters
     params = request.get_json()
-    results = [{'label':'/VEquipoSprint', 'msg':['Equipo actualizado']}, {'label':'/VEquipoSprint', 'msg':['Error al actualizar equipo']}, ]
-    res = results[0]
+    results = [{'label':'/VEquipoSprint', 'msg':['Sub Equipo actualizado']}, {'label':'/VEquipoSprint', 'msg':['Error al actualizar el Sub equipo']}, ]
+    res = results[1]
     #Action code goes here, res should be a list with a label and a message
 
-    print(params['lista'])
-    res['label'] = res['label'] + '/' + repr(1)
+    idSprint  = int(session['idSprint'])
+    idPila  = int(session['idPila'])
+    obTeam = team()
+    idEquipo = obTeam.getTeamId(idPila)
 
+    lista = params['lista']    
+    oTeam = subEquipoClass()
+    exito = oTeam.actualizar(lista,idSprint)
+    if exito:
+        res = results[0]
+    res['label'] = res['label'] + '/' + repr(1)
     #Action code ends here
     if "actor" in res:
         if res['actor'] is None:
@@ -25,6 +34,40 @@ def AActualizarEquipoSprint():
         else:
             session['actor'] = res['actor']
     return json.dumps(res)
+
+
+@sprint.route('/sprint/VEquipoSprint')
+def VEquipoSprint():
+    #GET parameter
+    idSprint = int(session['idSprint'])
+    idPila  = int(session['idPila'])
+    res = {}
+    #Action code goes here, res should be a JSON structure
+    if "actor" in session:
+        res['actor']=session['actor']
+   # #Action code goes here, res should be a JSON structure
+    if 'usuario' not in session:
+        res['logout'] = '/'
+        return json.dumps(res)
+   
+    obTeam = team()
+    teamList = obTeam.getTeamDevs(idPila)
+    oTeam = subEquipoClass()
+    SubteamList = oTeam.getSubEquipo(idSprint)
+
+    res['fEquipo'] = {'lista':[{'miembro':team.SEQ_username, 'rol': team.SEQ_rol} for team in SubteamList]}
+    res['usuario'] = session['usuario']
+    res['idSprint'] = idSprint
+
+    res['fEquipo_opcionesRol'] =[
+        {'key':'Desarrollador', 'value':'Desarrollador'}
+      ]
+
+    res['fEquipo_opcionesMiembros'] =[{'key':user.EQ_username,'value': user.EQ_username} for user in teamList]
+
+    #Action code ends here
+    return json.dumps(res)
+
 
 
 
@@ -120,6 +163,17 @@ def ACrearSprint():
 
         if result:
             res = results[0]
+
+        # Creamos el subEquipo
+        # Obtengo Todos los desarrolladores del Equipo
+        oTeam      = team()
+        teamList = oTeam.getTeamDevs(idPila)
+        oSubTeam = subEquipoClass()
+        idSprint = oSprint.getSprintId(newNumero,idPila)
+        print('SPRINT ID:::::::::::::: ' + str(idSprint))
+
+        for member in teamList:
+            oSubTeam.insertMiembroSubEquipo(member.EQ_username,member.EQ_rol,idSprint)
 
     res['label'] = res['label'] + '/' + str(idPila)
 
@@ -405,38 +459,7 @@ def VElementoMeeting():
 
 
 @sprint.route('/sprint/VEquipoSprint')
-def VEquipoSprint():
-    #GET parameter
-    idSprint = request.args['idSprint']
-    res = {}
-    if "actor" in session:
-        res['actor']=session['actor']
-    #Action code goes here, res should be a JSON structure
 
-    if 'usuario' not in session:
-      res['logout'] = '/'
-      return json.dumps(res)
-    res['usuario'] = session['usuario']
-    res['idSprint'] = 1
-    res['fEquipo'] = {'lista':[
-        {'miembro':1, 'rol':1},
-        {'miembro':2, 'rol':1},
-        {'miembro':3, 'rol':1},
-      ]}
-    res['fEquipo_opcionesRol'] =[
-        {'key':1, 'value':'Desarrollador'},
-      ]
-    res['fEquipo_opcionesMiembros'] =[
-        {'key':1, 'value':'Mia'},
-        {'key':2, 'value':'Mara'},
-        {'key':3, 'value':'Marcos'},
-        {'key':4, 'value':'Julia'},
-        {'key':5, 'value':'Roberto'},
-      ]
-    
-
-    #Action code ends here
-    return json.dumps(res)
 
 
 @sprint.route('/sprint/VReunion')

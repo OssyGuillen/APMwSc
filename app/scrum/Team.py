@@ -28,6 +28,20 @@ class team(object):
 
         return (aTeam)
 
+    def getTeamId(self,idBacklog):
+        '''Entrega la lista de miembros de un equipo'''
+
+        idTeam = clsEquipo.query.filter_by(EQ_idBacklog = idBacklog).first()
+
+        return (idTeam.EQ_idEquipo)
+
+    def getTeamDevs(self,idBacklog):
+        '''Entrega la lista de desarrolladores de un equipo'''
+
+        aTeam = clsEquipo.query.filter_by(EQ_idBacklog = idBacklog,EQ_rol = 'Desarrollador').all()
+
+        return (aTeam)
+
     def verifyScrumMaster(self,lista):
         cant = 0
         for miembro in lista:

@@ -78,6 +78,18 @@ class sprints(object):
 			foundSprint = clsSprint.query.filter_by(S_numero=sprintNumber,S_idBacklog =backlog).all()
 		return foundSprint
 
+	def getSprintId(self, sprintNumber, backlog):
+		'''retorna el id de un sprint dado su numero ysu backlog'''
+		checkTypeIdSprint = type(sprintNumber) == int
+		checkTypeBacklog  = type(backlog) == int
+		if checkTypeIdSprint and checkTypeBacklog:
+			foundSprint       = self.searchIdSprint(sprintNumber,backlog);
+
+			if foundSprint:
+				sprintId = clsSprint.query.filter_by(S_numero=sprintNumber,S_idBacklog =backlog).first()
+				return sprintId.S_idSprint;
+		return -23
+
 	def deleteSprint(self,sprintNumber,idBacklog):
 		'''Permite eliminar un Sprint segun su numero en el backlog'''
 		checkTypeSprintNumber = type(sprintNumber) == int
