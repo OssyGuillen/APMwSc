@@ -78,7 +78,7 @@ def VEquipoSprint():
 def ACrearElementoMeeting():
     #POST/PUT parameters
     params = request.get_json()
-    results = [{'label':'/VReunion', 'msg':['Elemento de la reunión creado']}, {'label':'/VCrearElementoMeeting', 'msg':['Error al crear un elemento a la reunión']}, ]
+    results = [{'label':'/VReunion', 'msg':['Detalle de la reunión creado']}, {'label':'/VCrearElementoMeeting', 'msg':['Error al crear un detalle a la reunión']}, ]
     res = results[1]
     #Action code goes here, res should be a list with a label and a message
     idReunion = 1
@@ -112,7 +112,7 @@ def ACrearElementoMeeting():
 def ACrearReunionSprint():
     #POST/PUT parameters
     params = request.get_json()
-    results = [{'label':'/VSprint', 'msg':['Reunion creada']}, {'label':'/VCrearReunionSprint', 'msg':['Error creando reunion']}, ]
+    results = [{'label':'/VSprint', 'msg':['Reunión creada']}, {'label':'/VCrearReunionSprint', 'msg':['Error creando reunion']}, ]
     res = results[1]
     #Action code goes here, res should be a list with a label and a message
 
@@ -269,7 +269,7 @@ def AElimSprintHistoria():
 def AModifElementoMeeting():
     #POST/PUT parameters
     params = request.get_json()
-    results = [{'label':'/VReunion', 'msg':['Elemento Modificado con exito']},{'label':'/VReunion', 'msg':['Error al modificar elemento']} ]
+    results = [{'label':'/VReunion', 'msg':['Detalle Modificado con éxito']},{'label':'/VReunion', 'msg':['Error al modificar detalle']} ]
     res = results[1]
     #Action code goes here, res should be a list with a label and a message
     # Cableada para la presentación. Sólo funciona para modificar los 
