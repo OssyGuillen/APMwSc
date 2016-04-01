@@ -83,8 +83,8 @@ def ACrearElementoMeeting():
     #Action code goes here, res should be a list with a label and a message
     usuario = session['usuario']
     oUser = user()
-    usuario = oUser.searchUserByName(usuario['nombre'])
     print(usuario)
+    usuario = oUser.searchUserByName(usuario['nombre'])
     challenges = params['challenge']
     planed = params['planed']
     done = params['done']
@@ -490,7 +490,8 @@ def ASprintHistoria():
 @sprint.route('/sprint/VCrearElementoMeeting')
 def VCrearElementoMeeting():
     #GET parameter
-    idReunion = request.args['idReunion']
+    #idReunion = request.args['idReunion']
+    idReunion = int(request.args.get('idReunion',1))
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
@@ -502,7 +503,7 @@ def VCrearElementoMeeting():
     res['usuario'] = session['usuario']
     # ATENCIÓN: lo que estás a punto de leer es un cable, pues hay un bug en el que
     # idReunion tiene valor UNDEFINED
-    res['idReunion'] = 1
+    session['idReunion'] = idReunion
     res['idSprint'] = 1
     #FIN DEL CABLE
 
@@ -681,7 +682,8 @@ def VReunion():
     res['data4'] = [{'id': e.EM_idElementMeeting, 'user': e.EM_user} for e in elements]
 
     res['fReunion'] = {'idReunion':idReunion,'idSprint':idSprint, 'Actividades':result[0].SM_activities, 'Sugerencias':result[0].SM_suggestions,'Retos':result[0].SM_challenges, 'Tipo':result[0].SM_typeMeeting}
-
+    res['idReunion'] = idReunion
+    res['idSprint'] = idSprint
     #Action code ends here
     return json.dumps(res)
 
