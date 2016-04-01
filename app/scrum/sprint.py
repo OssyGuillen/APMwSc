@@ -81,22 +81,20 @@ def ACrearElementoMeeting():
     results = [{'label':'/VReunion', 'msg':['Detalle de la reunión creado']}, {'label':'/VCrearElementoMeeting', 'msg':['Error al crear un detalle a la reunión']}, ]
     res = results[1]
     #Action code goes here, res should be a list with a label and a message
-    idReunion = 1
-    res['label'] = res['label'] + '/' + str(idReunion)
-    # ATENCION: lo que estas a punto de leer es un cable que debe ser eliminado
-    # Por qué es un cable? El query no debería hacerse aquí.
-    res['usuario'] = session['usuario']
-    usuario = clsUser.query.filter_by(U_fullname = session['usuario']['nombre']).all()[0].U_username
-    # fin del cable
-    #usuario = 'gennysanchez11'
+    usuario = session['usuario']
+    oUser = user()
+    usuario = oUser.searchUserByName(usuario['nombre'])
+    print(usuario)
     challenges = params['challenge']
     planed = params['planed']
     done = params['done']
-    #idReunion = int(session['idReunion'])
+    idReunion = int(session['idReunion'])
     oElementMeeting = elementMeeting()
-    exito = oElementMeeting.insertElement(challenges, planed, done, idReunion, usuario)
+    exito = oElementMeeting.insertElement(challenges, planed, done, idReunion, usuario.U_username)
     if exito:
         res = results[0]
+
+    res['label'] = res['label'] + '/' + str(idReunion)
 
     #Action code ends here
     if "actor" in res:
@@ -763,6 +761,7 @@ def VSprint():
     session['idPila'] = idPila
     res['idPila'] = idPila
 
+    print(res['data4'])
 
     return json.dumps(res)
 

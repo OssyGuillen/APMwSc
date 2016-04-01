@@ -337,6 +337,7 @@ scrumModule.controller('VReunionController',
 
     }]);
 
+
 scrumModule.controller('VSprintController',
     ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngTableParams', 'prodService', 'sprintService', 
     function ($scope, $location, $route, $timeout, flash, $routeParams, ngTableParams, prodService, sprintService) {
@@ -353,7 +354,6 @@ scrumModule.controller('VSprintController',
         }
 
 
-/*conflicto aqui HEAD*/
               var AElimSprintHistoria6Data = $scope.res.data6;
               if(typeof AElimSprintHistoria6Data === 'undefined') AElimSprintHistoria6Data=[];
               $scope.tableParams6 = new ngTableParams({
@@ -381,13 +381,12 @@ scrumModule.controller('VSprintController',
               var VReunion4Data = $scope.res.data4;
               if(typeof VReunion4Data === 'undefined') VReunion4Data=[];
               $scope.tableParams4 = new ngTableParams({
-
                   page: 1,            // show first page
                   count: 10           // count per page
               }, {
-                  total: VReunion5Data.length, // length of data
+                  total: VReunion4Data.length, // length of data
                   getData: function($defer, params) {
-                      $defer.resolve(VReunion5Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                      $defer.resolve(VReunion4Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                   }
               });                
 
