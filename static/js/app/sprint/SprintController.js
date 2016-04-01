@@ -378,9 +378,9 @@ scrumModule.controller('VSprintController',
                   }
               });   
 
-              var VReunion4Data = $scope.res.data4;
+              var VReunion4Data = $scope.res.data5;
               if(typeof VReunion4Data === 'undefined') VReunion4Data=[];
-              $scope.tableParams4 = new ngTableParams({
+              $scope.tableParams5 = new ngTableParams({
                   page: 1,            // show first page
                   count: 10           // count per page
               }, {
