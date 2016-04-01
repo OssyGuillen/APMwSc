@@ -148,6 +148,26 @@ class clsEquipo(db.Model):
         '''Respresentacion en string del modelo Equipo'''
         return '<IdEquipo %r, Nombre de Usuario %r, Rol %r, IdBacklog %r>' %(self.EQ_idEquipo, self.EQ_username , self.EQ_rol, self.EQ_idBacklog)
 
+class clsSubEquipo(db.Model):
+    '''Clase que define el modelo Sub Equipo'''
+
+    __tablename__ = 'SubEquipo'
+    SEQ_idSubEquipo         = db.Column(db.Integer, primary_key = True)
+    SEQ_username         = db.Column(db.String(16), db.ForeignKey('user.U_username'))
+    SEQ_rol              = db.Column(db.String(140))
+    SEQ_idSprint          = db.Column(db.Integer,db.ForeignKey('sprint.S_idSprint'))
+
+    def __init__(self, username,rol,idSprint):
+        '''Constructor del modelo Equipo'''
+        self.SEQ_username        = username
+        self.SEQ_rol             = rol
+        self.SEQ_idSprint        = idSprint
+
+    def __repr__(self):
+        '''Respresentacion en string del modelo Sub Equipo'''
+        return '<IdSubEquipo %r, Nombre de Usuario %r, Rol %r, IdSprint %r>' %(self.SEQ_idSubEquipo, self.SEQ_username , self.SEQ_rol, self,self.SEQ_idSprint)
+
+
 class clsObjective(db.Model):
     '''Clase que define el modelo Objective'''
 

@@ -12,7 +12,7 @@
         </div>
         <div class="collapse navbar-collapse" id="contenido-plegable">
             <ul class="nav navbar-nav navbar-left">
-<li><a ng-click="VSprint0(idPila)"
+<li><a ng-click="VSprint0(idSprint)"
        ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
   Regresar</a></li>
 
@@ -31,6 +31,7 @@
             <div class="form-group" ng-class="{ 'has-error' :  fReunionSubmitted && fReunionForm.Actividades.$invalid && fReunionForm.Actividades.$pristine && fReunionSubmitted}"><label for="fReunion_Actividades">Actividades</label><textarea id="fReunion_Actividades" name="Actividades" class="form-control" ng-model="fReunion.Actividades" placeholder="Actividades" required ng-maxlength="300"></textarea><p ng-show="fReunionSubmitted && fReunionForm.Actividades.$invalid" class="help-block">Error en campo Actividades.</p></div>
             <div class="form-group" ng-class="{ 'has-error' :  fReunionSubmitted && fReunionForm.Sugerencias.$invalid && fReunionForm.Sugerencias.$pristine && fReunionSubmitted}"><label for="fReunion_Sugerencias">Sugerencias</label><textarea id="fReunion_Sugerencias" name="Sugerencias" class="form-control" ng-model="fReunion.Sugerencias" placeholder="Sugerencias" required></textarea><p ng-show="fReunionSubmitted && fReunionForm.Sugerencias.$invalid" class="help-block">Error en campo Sugerencias.</p></div>
             <div class="form-group" ng-class="{ 'has-error' :  fReunionSubmitted && fReunionForm.Retos.$invalid && fReunionForm.Retos.$pristine && fReunionSubmitted}"><label for="fReunion_Retos">Retos</label><textarea id="fReunion_Retos" name="Retos" class="form-control" ng-model="fReunion.Retos" placeholder="Retos" required ng-maxlength="300"></textarea><p ng-show="fReunionSubmitted && fReunionForm.Retos.$invalid" class="help-block">Error en campo Retos.</p></div>
+            <div class="form-group" ng-class="{ 'has-error' :  fReunionSubmitted && fReunionForm.Tipo.$invalid && fReunionForm.Tipo.$pristine && fReunionSubmitted}"><label for="fReunion_Tipo">Presencial o No Presencial</label>:&nbsp;<select id="fReunion_Tipo" ng-model="fReunion.Tipo" required ng-options="item.key as item.value for item in fReunion_OpcionesTipo"></select><p ng-show="fReunionSubmitted && fReunionForm.Tipo.$invalid" class="help-block">Error en campo Presencial o No Presencial.</p></div>
         <button type="submit" class="btn btn-perso btn-lg btn-block">
             <span class="glyphicon glyphicon-flash"></span>Crear
         </button>

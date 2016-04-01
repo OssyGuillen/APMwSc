@@ -15,6 +15,13 @@ from testLogin                  import *
 from testObjective              import *
 from testObjectivesUserHistory  import *
 from testPrueba                 import *
+from testElementMeeting			import *
+from testHistory                import *
+from testLogin                  import *
+from testMeeting 				import *
+from testObjective              import *
+from testObjectivesUserHistory  import *
+#from testPrueba                 import *
 from testRole                   import *
 from testSprint                 import *
 from testTask                   import *

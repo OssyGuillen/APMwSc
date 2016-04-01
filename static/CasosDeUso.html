@@ -1039,7 +1039,7 @@ Parámetros GET: idHistoria
   <ul>
    <li>URL: '/tareas/VTarea'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
-Parámetros GET: idTarea
+Parámetros GET: idHistoria
    <li>Roles: desarrollador duenoProducto maestroScrum </li>
   </ul>
  </li>
@@ -1112,6 +1112,10 @@ Requerido.
 
     </ol>
    </li>
+   <li>URL: '/tareas/VTarea'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idTarea
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
   </ul>
  </li> <li>
   <p></p>
@@ -1124,6 +1128,7 @@ Parámetros GET: idPila
  </li>
 </ol>
 <h2>Sprints</h2>
+<h2>Anexos</h2>
 <p></p>
 <ol>
  <li>
@@ -1133,10 +1138,15 @@ Parámetros GET: idPila
    <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
 <li>Parámetros POST:
     <ul>     <li>idPila -  
+   <li>URL: '/anexo/AAnexo'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>idProyecto -  
 Opcional. 
      </li>     <li>numero -  
 Requerido. 
      </li>     <li>descripcion -  
+     </li>     <li>contenido -  
 Requerido. 
      </li>
     </ul>
@@ -1151,6 +1161,8 @@ Requerido.
       <ul>
        <li>label:'/VSprints',</li>
        <li> msg:"Sprint creado".</li>
+       <li>label:'/VAnexo',</li>
+       <li> msg:"Documento anexado".</li>
       </ul>
      </li>
      <li>
@@ -1158,6 +1170,8 @@ Requerido.
       <ul>
        <li>label:'/VSprint',</li>
        <li> msg:"Error al crear Sprint".</li>
+       <li>label:'/VAnexo',</li>
+       <li> msg:"Error al guardar anexo".</li>
       </ul>
      </li>
 
@@ -1226,6 +1240,9 @@ Requerido.
    <li>URL: '/sprint/AElimSprintTarea'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
    <li>Roles: Sin restricción de rol
+   <li>URL: '/anexo/AElimAnexo'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+   <li>Roles: Sin restricción de rol
    <li>Requisitos: No disponible
    <li>
     <p><strong>Cursos posibles</strong></p>
@@ -1235,6 +1252,8 @@ Requerido.
       <ul>
        <li>label:'/VSprint',</li>
        <li> msg:"Tarea eliminada".</li>
+       <li>label:'/VAnexo',</li>
+       <li> msg:"Anexo eliminado".</li>
       </ul>
      </li>
      <li>
@@ -1242,6 +1261,8 @@ Requerido.
       <ul>
        <li>label:'/VSprint',</li>
        <li> msg:"Error al eliminar tarea".</li>
+       <li>label:'/VAnexo',</li>
+       <li> msg:"Error al eliminar anexo".</li>
       </ul>
      </li>
 
@@ -1260,6 +1281,38 @@ Opcional.
 Requerido. 
      </li>     <li>descripcion -  
 Requerido. 
+   <li>URL: '/anexo/VAnexo'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idPila
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+  </ul>
+ </li>
+</ol>
+<h2>Sprints</h2>
+<p></p>
+<ol>
+ <li>
+  <p></p>
+  <ul>
+   <li>URL: '/sprint/AActualizarEquipoSprint'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>idProyecto -  
+Opcional. 
+     </li>     <li>opcionesRol - <br> 
+Opcional. 
+     </li>     <li>opcionesMiembros -  
+Opcional. 
+     </li>     <li>lista -  
+Opcional. 
+     </li>     <li>miembro -  
+Requerido. 
+     </li>     <li>rol -  
+Requerido. 
+     </li>     <li>lista.eliminar -  
+Opcional. 
+     </li>     <li>Agregar -  
+Opcional. 
      </li>
     </ul>
    </li>
@@ -1349,6 +1402,8 @@ Requerido.
       <ul>
        <li>label:'/VSprint',</li>
        <li> msg:"Tarea asignada".</li>
+       <li>label:'/VEquipoSprint',</li>
+       <li> msg:"Equipo actualizado".</li>
       </ul>
      </li>
      <li>
@@ -1356,6 +1411,8 @@ Requerido.
       <ul>
        <li>label:'/VSprint',</li>
        <li> msg:"Error al asignar tarea".</li>
+       <li>label:'/VEquipoSprint',</li>
+       <li> msg:"Error al actualizar equipo".</li>
       </ul>
      </li>
 
@@ -1367,6 +1424,315 @@ Requerido.
   <ul>
    <li>URL: '/sprint/VCrearSprint'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
+   <li>URL: '/sprint/ACrearElementoMeeting'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>idElemento -  
+Opcional. 
+     </li>     <li>challenge -  
+Opcional. 
+     </li>     <li>planed -  
+Opcional. 
+     </li>     <li>done -  
+Opcional. 
+     </li>     <li>idReunion -  
+Opcional. 
+     </li>     <li>idUser -  
+Opcional. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VReunion',</li>
+       <li> msg:"Elemento de la reunión creado".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VCrearElementoMeeting',</li>
+       <li> msg:"Error al crear un elemento a la reunión".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/sprint/ACrearReunionSprint'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>idReunion -  
+Opcional. 
+     </li>     <li>idSprint -  
+Opcional. 
+     </li>     <li>Fecha -  
+Requerido. 
+     </li>     <li>Actividades -  
+Requerido. 
+Long. máxima: <code>300</code>. 
+     </li>     <li>Sugerencias -  
+Requerido. 
+     </li>     <li>Retos -  
+Requerido. 
+Long. máxima: <code>300</code>. 
+     </li>     <li>Tipo -  
+Requerido. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VSprint',</li>
+       <li> msg:"Reunion creada".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VCrearReunionSprint',</li>
+       <li> msg:"Error creando reunion".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/sprint/ACrearSprint'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>idPila -  
+Opcional. 
+     </li>     <li>numero -  
+Requerido. 
+     </li>     <li>descripcion -  
+Requerido. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: Sin restricción de rol
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VSprints',</li>
+       <li> msg:"Sprint creado".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VSprint',</li>
+       <li> msg:"Error al crear Sprint".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/sprint/AElimSprint'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+   <li>Roles: Sin restricción de rol
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VSprints',</li>
+       <li> msg:"Sprint eliminado".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VSprint',</li>
+       <li> msg:"Error al eliminar Sptrint".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/sprint/AModifElementoMeeting'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>idElemento -  
+Opcional. 
+     </li>     <li>challenge -  
+Opcional. 
+     </li>     <li>planed -  
+Opcional. 
+     </li>     <li>done -  
+Opcional. 
+     </li>     <li>idReunion -  
+Opcional. 
+     </li>     <li>idUser -  
+Opcional. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VReunion',</li>
+       <li> msg:"Elemento Modificado con exito".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VElementoMeeting',</li>
+       <li> msg:"Error al modificar el elemento de la reunión".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/sprint/AModifReunionSprint'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>idReunion -  
+Opcional. 
+     </li>     <li>idSprint -  
+Opcional. 
+     </li>     <li>Fecha -  
+Requerido. 
+     </li>     <li>Actividades -  
+Requerido. 
+Long. máxima: <code>300</code>. 
+     </li>     <li>Sugerencias -  
+Requerido. 
+     </li>     <li>Retos -  
+Requerido. 
+Long. máxima: <code>300</code>. 
+     </li>     <li>Tipo -  
+Requerido. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: desarrollador </li>
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VReunion',</li>
+       <li> msg:"Reunión de sprint modificada".</li>
+      </ul>
+<p>Se continúa con el rol de desarrollador.</p>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VReunion',</li>
+       <li> msg:"Error al modificar reunión".</li>
+      </ul>
+<p>Se continúa con el rol de desarrollador.</p>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/sprint/AModifSprint'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>idPila -  
+Opcional. 
+     </li>     <li>numero -  
+Requerido. 
+     </li>     <li>descripcion -  
+Requerido. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: Sin restricción de rol
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VSprints',</li>
+       <li> msg:"Sprint modificado".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VSprint',</li>
+       <li> msg:"Error al guardar Spront".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/sprint/VCrearElementoMeeting'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idReunion
+   <li>Roles: Sin restricción de rol
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/sprint/VCrearReunionSprint'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idSprint
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/sprint/VCrearSprint'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+>>>>>>> Sprint4
 Parámetros GET: idPila
    <li>Roles: desarrollador duenoProducto maestroScrum </li>
   </ul>
@@ -1374,6 +1740,15 @@ Parámetros GET: idPila
   <p></p>
   <ul>
    <li>URL: '/sprint/VSprint'</li>
+   <li>URL: '/sprint/VElementoMeeting'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idReunion
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/sprint/VEquipoSprint'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
 Parámetros GET: idSprint
    <li>Roles: desarrollador duenoProducto maestroScrum </li>
@@ -1385,6 +1760,10 @@ Parámetros GET: idSprint
    <li>Método: GET</li><li>Formato de salida: JSON</li>
 Parámetros GET: idSprint
    <li>Roles: duenoProducto </li>
+   <li>URL: '/sprint/VReunion'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idSprint
+   <li>Roles: desarrollador </li>
   </ul>
  </li> <li>
   <p></p>
@@ -1393,6 +1772,10 @@ Parámetros GET: idSprint
    <li>Método: GET</li><li>Formato de salida: JSON</li>
 Parámetros GET: idSprint
    <li>Roles: duenoProducto </li>
+   <li>URL: '/sprint/VSprint'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idSprint
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
   </ul>
  </li> <li>
   <p></p>
@@ -1464,6 +1847,10 @@ Parámetros GET: idPila
    <li>Roles: desarrollador duenoProducto maestroScrum </li>
   </ul>
  </li>
+</ol>
+<h2>Reuniones</h2>
+<p></p>
+<ol>
 </ol>
 
 </html>
