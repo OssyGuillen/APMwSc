@@ -101,6 +101,44 @@ class TestsubEquipoClass(unittest.TestCase):
         result = subequipo_object.getSubEquipo(9)
         self.assertFalse(result)
 
+    # Insertar datos incorrectos
+    def testgetSubEquipoWrongData(self):
+        # Creamos el backlog
+        _backlog  = backlog()
+        _backlog.insertBacklog('Backlog','Prueba',2)
+        findId    = _backlog.findName('Backlog')
+        idBacklog = findId[0].BL_idBacklog 
+        # Creamos el actor
+        actor = role()
+        actor.insertActor('Actor','Descripcion',idBacklog)
+        result    = actor.findNameActor('Actor',idBacklog)
+        idActor   = result[0].A_idActor
+        # Creamos el usuario
+        _user = user()
+        _user.insertUser('fullname','userr','password1234','prueba@user.com',idActor)
+        # Creamos el sprint
+        aSprint      = sprints()
+        aSprint.insertSprint(1,'Descripcion sprint',idBacklog)
+        # Agregamos un usuario a team
+        team_object = team()
+        team_object.insertMiembro('userr','Actor',idBacklog)
+        # Creamos el subEquipo
+        subequipo_object = subEquipoClass()
+        # Obtenemos id del sprint
+        foundSprint = aSprint.searchIdSprint(1, idBacklog)[0]
+        # Agregamos el usuario al subEquipo
+        subequipo_object.insertMiembroSubEquipo('userr','Actor',foundSprint.S_numero)
+        # Ejecutamos la funcion
+        result = subequipo_object.getSubEquipo(9)
+        self.assertEqual(result,[])
+        # Eliminamos los datos insertados
+        subequipo_object.deleteMiembroSubEquipo('userr','Actor',1)
+        team_object.deleteMiembro('userr','Actor',idBacklog)
+        aSprint.deleteSprint(1,idBacklog)
+        _user.deleteUser('userr')
+        actor.deleteActor('Actor',idBacklog)
+        _backlog.deleteProduct('Backlog')
+
     #############################################      
     #       Pruebas para verifyScrummaster      #
     #############################################
@@ -264,6 +302,7 @@ class TestsubEquipoClass(unittest.TestCase):
         actor.deleteActor('Actor2',idBacklog)
         _backlog.deleteProduct('Backlog')
 
+
     #############################################      
     #    Pruebas para insertMiembroSubEquipo    #
     #############################################
@@ -300,7 +339,7 @@ class TestsubEquipoClass(unittest.TestCase):
         subequipo_object = subEquipoClass()
         # Agregamos los miembros al subequipo
         result = subequipo_object.insertMiembroSubEquipo('user1','Desarrollador',1)
-        self.assertTrue(result)
+        self.assertFalse(result)
          # Eliminamos los datos insertados
         subequipo_object.deleteMiembroSubEquipo('user1','Desarrollador',1)
         subequipo_object.deleteMiembroSubEquipo('user2','Desarrollador',1)
@@ -344,6 +383,94 @@ class TestsubEquipoClass(unittest.TestCase):
         subequipo_object = subEquipoClass()
         # Agregamos los miembros al subequipo
         result = subequipo_object.insertMiembroSubEquipo('user9','Desarrollador',1)
+        self.assertFalse(result)
+         # Eliminamos los datos insertados
+        subequipo_object.deleteMiembroSubEquipo('user9','Scrum master',1)
+        aSprint.deleteSprint(1,idBacklog)
+        team_object.deleteMiembro('user1','Desarrollador',idBacklog)
+        _user.deleteUser('user1')
+        actor.deleteActor('Actor1',idBacklog)
+        team_object.deleteMiembro('user2','Desarrollador',idBacklog)
+        _user.deleteUser('user2')
+        actor.deleteActor('Actor2',idBacklog)
+        _backlog.deleteProduct('Backlog')
+
+    #  Insertar miembro a un sprint inexistente
+    def testinsertMiembroSubEquipoSprintNone(self):
+        # Creamos el backlog
+        _backlog  = backlog()
+        _backlog.insertBacklog('Backlog','Prueba',2)
+        findId    = _backlog.findName('Backlog')
+        idBacklog = findId[0].BL_idBacklog 
+        # Creamos el actor 1
+        actor = role()
+        actor.insertActor('Actor1','Desarrollador',idBacklog)
+        result    = actor.findNameActor('Actor1',idBacklog)
+        idActor   = result[0].A_idActor
+        # Creamos el actor 2
+        actor.insertActor('Actor2','Desarrollador',idBacklog)
+        result    = actor.findNameActor('Actor2',idBacklog)
+        idActor   = result[0].A_idActor
+        # Creamos el usuario 1
+        _user = user()
+        _user.insertUser('fullname','user1','password1234','prueba@user1.com',idActor)
+        # Creamos el usuario 2
+        _user.insertUser('fullname','user2','password1232','prueba@user2.com',idActor)        
+        # Agregamos los usuarios al equipo
+        team_object = team()
+        team_object.insertMiembro('user1','Desarrollador',idBacklog) 
+        team_object.insertMiembro('user2','Desarrollador',idBacklog) 
+        # Creamos el sprint
+        aSprint      = sprints()
+        aSprint.insertSprint(1,'Descripcion sprint',idBacklog)
+        # Creamos el subequipo
+        subequipo_object = subEquipoClass()
+        # Agregamos los miembros al subequipo
+        result = subequipo_object.insertMiembroSubEquipo('user1','Desarrollador',99)
+        self.assertFalse(result)
+         # Eliminamos los datos insertados
+        subequipo_object.deleteMiembroSubEquipo('user1','Desarrollador',1)
+        subequipo_object.deleteMiembroSubEquipo('user2','Desarrollador',1)
+        aSprint.deleteSprint(1,idBacklog)
+        team_object.deleteMiembro('user1','Desarrollador',idBacklog)
+        _user.deleteUser('user1')
+        actor.deleteActor('Actor1',idBacklog)
+        team_object.deleteMiembro('user2','Desarrollador',idBacklog)
+        _user.deleteUser('user2')
+        actor.deleteActor('Actor2',idBacklog)
+        _backlog.deleteProduct('Backlog')
+
+    # Insertar datos incorrectos
+    def testinsertMiembroWrongData(self):
+        # Creamos el backlog
+        _backlog  = backlog()
+        _backlog.insertBacklog('Backlog','Prueba',2)
+        findId    = _backlog.findName('Backlog')
+        idBacklog = findId[0].BL_idBacklog 
+        # Creamos el actor 1
+        actor = role()
+        actor.insertActor('Actor1','Desarrollador',idBacklog)
+        result    = actor.findNameActor('Actor1',idBacklog)
+        idActor   = result[0].A_idActor
+        # Creamos el actor 2
+        actor.insertActor('Actor2','Desarrollador',idBacklog)
+        result    = actor.findNameActor('Actor2',idBacklog)
+        idActor   = result[0].A_idActor
+        # Creamos el usuario 1
+        _user = user()
+        _user.insertUser('fullname','user1','password1234','prueba@user1.com',idActor)
+        # Creamos el usuario 2
+        _user.insertUser('fullname','user2','password1232','prueba@user2.com',idActor)        
+        # Agregamos los usuarios al equipo
+        team_object = team()
+        team_object.insertMiembro('user1','Desarrollador',idBacklog) 
+        # Creamos el sprint
+        aSprint      = sprints()
+        aSprint.insertSprint(1,'Descripcion sprint',idBacklog)
+        # Creamos el subequipo
+        subequipo_object = subEquipoClass()
+        # Agregamos los miembros al subequipo
+        result = subequipo_object.insertMiembroSubEquipo(1,'Desarrollador',1)
         self.assertFalse(result)
          # Eliminamos los datos insertados
         subequipo_object.deleteMiembroSubEquipo('user9','Scrum master',1)
